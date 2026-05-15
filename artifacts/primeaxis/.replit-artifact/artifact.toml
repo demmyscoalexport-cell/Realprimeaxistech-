@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "PrimeAxis Tech"
+version = "1.0.0"
+id = "artifacts/primeaxis"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 20751
+
+[services.development]
+run = "pnpm --filter @workspace/primeaxis run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/primeaxis", "run", "build" ]
+publicDir = "artifacts/primeaxis/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "20751"
+BASE_PATH = "/"

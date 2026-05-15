@@ -1,0 +1,418 @@
+Add this section directly into your PRIMEAXIS TECH master prompt to push it beyond Engadget-level infrastructure and make it feel like a modern billion-dollar AI-native media company instead of just a traditional tech publication.
+
+━━━━━━━━━━━━━━━━━━━
+ADVANCED ENTERPRISE ARCHITECTURE — SURPASSING ENGADGET
+━━━━━━━━━━━━━━━━━━━
+
+PrimeAxis Tech must not only replicate the strengths of Engadget’s infrastructure — it must significantly evolve beyond it using modern 2026 AI-native architecture, scalable cloud systems, intelligent media pipelines, and enterprise-grade publishing infrastructure.
+
+The platform should combine:
+
+* enterprise media engineering
+* AI-native architecture
+* edge-first delivery systems
+* modern headless publishing
+* ultra-fast rendering
+* intelligent content distribution
+* scalable newsroom infrastructure
+* premium multimedia systems
+* adaptive personalization
+* real-time analytics
+* semantic content intelligence
+
+━━━━━━━━━━━━━━━━━━━
+HEADLESS CMS & CONTENT INFRASTRUCTURE
+━━━━━━━━━━━━━━━━━━━
+
+Unlike traditional WordPress-based blogs, PrimeAxis Tech must use a fully modular headless CMS architecture designed for:
+
+* massive concurrent traffic
+* global publishing
+* multi-device content delivery
+* AI content processing
+* enterprise newsroom workflows
+* multimedia scalability
+
+Build a custom enterprise CMS inspired by:
+
+* modern Yahoo/Engadget systems
+* Bloomberg newsroom infrastructure
+* Netflix content pipelines
+* AI-native publishing systems
+
+CMS Requirements:
+
+* headless architecture
+* API-first content delivery
+* GraphQL + REST APIs
+* modular publishing system
+* role-based newsroom permissions
+* multi-author workflows
+* live collaborative editing
+* scheduled publishing
+* AI-assisted article creation
+* semantic metadata generation
+* media asset management
+* automated SEO generation
+* article versioning
+* multilingual expansion support
+* real-time publishing updates
+* editorial approval pipelines
+* newsroom dashboards
+* revision history
+* content clustering
+* article intelligence engine
+
+━━━━━━━━━━━━━━━━━━━
+NEXT-GENERATION FRONTEND SYSTEM
+━━━━━━━━━━━━━━━━━━━
+
+PrimeAxis Tech must feel faster and smoother than Engadget.
+
+Use:
+
+* Next.js App Router
+* React Server Components
+* Partial prerendering
+* Streaming SSR
+* Edge rendering
+* intelligent hydration
+* server actions
+* optimized lazy loading
+* predictive prefetching
+* adaptive loading systems
+
+The frontend should behave like:
+
+* a premium native app
+* a luxury editorial platform
+* a cinematic media experience
+
+Include:
+
+* infinite article streaming
+* ultra-fast transitions
+* adaptive homepage rendering
+* contextual recommendations
+* smart skeleton loaders
+* predictive UI loading
+* immersive motion systems
+* instant search rendering
+
+━━━━━━━━━━━━━━━━━━━
+AI-NATIVE MEDIA INTELLIGENCE
+━━━━━━━━━━━━━━━━━━━
+
+PrimeAxis Tech must become an AI-first technology publication.
+
+Implement:
+
+* AI-generated summaries
+* conversational article exploration
+* semantic article understanding
+* AI-powered recommendations
+* AI-generated metadata
+* automatic topic tagging
+* smart article clustering
+* AI editorial assistant
+* AI newsroom insights
+* AI content optimization
+* AI-generated transcripts
+* AI voice narration
+* predictive trend analysis
+* semantic internal linking
+* recommendation intelligence engine
+* AI-assisted review comparisons
+* contextual discovery systems
+
+Create a proprietary “PrimeAxis Intelligence Layer” that powers:
+
+* recommendations
+* semantic search
+* homepage personalization
+* trending analysis
+* user behavior learning
+* content optimization
+* audience intelligence
+* engagement prediction
+
+━━━━━━━━━━━━━━━━━━━
+ADVANCED MEDIA DELIVERY SYSTEM
+━━━━━━━━━━━━━━━━━━━
+
+PrimeAxis Tech media infrastructure must exceed Engadget-quality presentation.
+
+Build:
+
+* global edge media delivery
+* adaptive image optimization
+* AI image compression
+* next-gen WebP/AVIF delivery
+* intelligent CDN routing
+* adaptive bitrate streaming
+* smart media caching
+* edge image transformations
+* instant thumbnail generation
+* cinematic video pipelines
+
+All media should load:
+
+* instantly
+* progressively
+* responsively
+* without layout shift
+
+━━━━━━━━━━━━━━━━━━━
+PREMIUM GADGET MEDIA PIPELINE
+━━━━━━━━━━━━━━━━━━━
+
+PrimeAxis Tech gadget imagery must become industry-leading.
+
+Create a professional media pipeline for:
+
+* gadget photography
+* product renders
+* cinematic thumbnails
+* editorial banners
+* review galleries
+* product comparisons
+* video thumbnails
+
+Image standards:
+
+* ultra-HD
+* HDR quality
+* balanced lighting
+* clean backgrounds
+* premium framing
+* editorial compositions
+* Apple-level product presentation
+
+All gadget visuals must feel:
+
+* luxurious
+* cinematic
+* studio-grade
+* highly detailed
+* professionally art-directed
+
+━━━━━━━━━━━━━━━━━━━
+VIDEO INFRASTRUCTURE
+━━━━━━━━━━━━━━━━━━━
+
+Build a world-class streaming and video ecosystem.
+
+Include:
+
+* Mux streaming
+* adaptive streaming
+* 4K support
+* livestream systems
+* event broadcasting
+* floating video player
+* creator channels
+* documentary-style features
+* AI-generated captions
+* automatic chapter generation
+* transcript search
+* smart recommendations
+* picture-in-picture mode
+* immersive fullscreen experiences
+
+Video cards should feel like:
+Netflix + Apple TV + modern editorial systems.
+
+━━━━━━━━━━━━━━━━━━━
+PERSONALIZATION ENGINE
+━━━━━━━━━━━━━━━━━━━
+
+PrimeAxis Tech should intelligently adapt to users.
+
+Build:
+
+* personalized homepage feeds
+* recommendation systems
+* smart topic discovery
+* adaptive article suggestions
+* user behavior intelligence
+* reading pattern analysis
+* engagement prediction
+* contextual content ranking
+
+The homepage should evolve dynamically based on:
+
+* interests
+* reading history
+* trending topics
+* regional relevance
+* engagement signals
+
+━━━━━━━━━━━━━━━━━━━
+SEARCH & DISCOVERY ENGINE
+━━━━━━━━━━━━━━━━━━━
+
+PrimeAxis Tech search should surpass traditional keyword search.
+
+Build:
+
+* semantic AI search
+* conversational search
+* topic intelligence
+* vector embeddings
+* predictive suggestions
+* typo tolerance
+* contextual recommendations
+* smart filtering
+* intelligent discovery systems
+
+Search should understand:
+
+* intent
+* meaning
+* context
+* related technologies
+* semantic relationships
+
+━━━━━━━━━━━━━━━━━━━
+ENTERPRISE ANALYTICS & DATA INTELLIGENCE
+━━━━━━━━━━━━━━━━━━━
+
+Go beyond traditional analytics.
+
+Build:
+
+* real-time newsroom analytics
+* engagement heatmaps
+* article performance intelligence
+* reader retention systems
+* AI-powered editorial insights
+* trend forecasting
+* content performance predictions
+* audience segmentation
+* recommendation analytics
+* creator performance dashboards
+
+Use:
+
+* PostHog
+* Mixpanel
+* BigQuery
+* custom AI analytics layer
+
+━━━━━━━━━━━━━━━━━━━
+ADVERTISING & MONETIZATION SYSTEM
+━━━━━━━━━━━━━━━━━━━
+
+PrimeAxis Tech ads must feel premium and non-intrusive.
+
+Unlike traditional media sites overloaded with ads, PrimeAxis Tech should prioritize:
+
+* elegant sponsor integration
+* contextual advertising
+* native editorial sponsorships
+* premium partner showcases
+* intelligent ad placement
+* minimal visual disruption
+
+Build:
+
+* direct sponsorship systems
+* affiliate commerce
+* memberships
+* premium subscriptions
+* event monetization
+* digital products
+* exclusive reports
+* creator partnerships
+
+━━━━━━━━━━━━━━━━━━━
+GLOBAL INFRASTRUCTURE & PERFORMANCE
+━━━━━━━━━━━━━━━━━━━
+
+PrimeAxis Tech must operate like a global enterprise platform.
+
+Infrastructure Requirements:
+
+* multi-region deployment
+* edge-first architecture
+* Cloudflare optimization
+* Vercel edge rendering
+* distributed caching
+* Redis acceleration
+* global CDN systems
+* instant failover systems
+* image optimization pipelines
+* edge database acceleration
+
+Performance Goals:
+
+* sub-2 second loading
+* 95+ Lighthouse score
+* near-instant navigation
+* minimal layout shifts
+* lightning-fast search
+* optimized mobile performance
+
+━━━━━━━━━━━━━━━━━━━
+MOBILE EXPERIENCE
+━━━━━━━━━━━━━━━━━━━
+
+The mobile experience must feel better than most native apps.
+
+Build:
+
+* app-quality transitions
+* gesture interactions
+* edge-to-edge layouts
+* premium mobile typography
+* adaptive image systems
+* swipe navigation
+* intelligent touch interactions
+* immersive media rendering
+
+Mobile should feel:
+
+* luxurious
+* fluid
+* cinematic
+* ultra-responsive
+
+━━━━━━━━━━━━━━━━━━━
+TRUST & EDITORIAL AUTHORITY
+━━━━━━━━━━━━━━━━━━━
+
+PrimeAxis Tech must become globally respected.
+
+Implement:
+
+* fact-checking systems
+* editorial standards
+* correction policies
+* author verification
+* source transparency
+* review methodologies
+* trust indicators
+* verified reporting systems
+
+━━━━━━━━━━━━━━━━━━━
+FINAL PLATFORM GOAL
+━━━━━━━━━━━━━━━━━━━
+
+PrimeAxis Tech should feel like:
+
+* the future of technology journalism
+* a billion-dollar media company
+* a next-generation AI-native publication
+* a globally trusted newsroom
+* an elite editorial ecosystem
+* a luxury technology magazine
+* a cinematic media platform
+* a premium gadget intelligence hub
+
+When users visit PrimeAxis Tech they should immediately think:
+
+“This feels more advanced than Engadget.”
+“This feels globally elite.”
+“This feels engineered by world-class teams.”
+“This feels like the future of premium technology media.”
+“This platform feels intelligent, cinematic, and enterprise-grade.”

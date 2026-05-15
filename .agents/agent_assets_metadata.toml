@@ -1,0 +1,122 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "Wq7ivA76--_-bMPh-AV1O"
+uri = "file://artifacts/primeaxis/public/seed/hero-laptop.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "PeWVbmN-D_fOFgSEmvQtZ"
+uri = "file://artifacts/primeaxis/public/seed/hero-ai-neural.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "cnWPbjiiN2LSAxOkDghWx"
+uri = "file://artifacts/primeaxis/public/seed/article-phone.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "d30zBMrzmq4xQQJkhFply"
+uri = "file://artifacts/primeaxis/public/seed/article-ev.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "uzA6qlVKdSiz4rYk2t46v"
+uri = "file://artifacts/primeaxis/public/seed/article-chip.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "5vP4rFfBhJaGeMa2meBTX"
+uri = "file://artifacts/primeaxis/public/seed/article-robot.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "O6TxgePLzZEuQTXy3DO9x"
+uri = "file://artifacts/primeaxis/public/seed/article-gaming.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "SYE5YQjVlyHEJOiew1YBH"
+uri = "file://artifacts/primeaxis/public/seed/article-cyber.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "loYnKF2AY3jPvORnhJ4a-"
+uri = "file://artifacts/primeaxis/public/seed/article-startup.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "80dzejEt7tcnlgXZ_1rPJ"
+uri = "file://artifacts/primeaxis/public/seed/article-vr.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "mZ3RReHrhjMc5mWKeRraq"
+uri = "file://artifacts/primeaxis/public/seed/avatar-1.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "eyozn3ef6YgKLxnMQD1qp"
+uri = "file://artifacts/primeaxis/public/seed/avatar-2.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "DHf_Q1PuRDqzDy-obiJGc"
+uri = "file://artifacts/primeaxis/public/seed/avatar-3.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "gicSKkQE1bdY7orVngTly"
+uri = "file://artifacts/primeaxis/public/seed/avatar-4.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "h8NB4zI-dbLbR_jrBQrk5"
+uri = "file://artifacts/primeaxis/public/seed/review-headphones.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "OH3BOBCRmyoBVrbQltZ1t"
+uri = "file://artifacts/primeaxis/public/seed/review-watch.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "29XoBjizj_wRRux9sWqut"
+uri = "file://artifacts/primeaxis/public/seed/review-controller.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "AUWvZN8OIT7f0SD5wjuj8"
+uri = "file://artifacts/primeaxis/public/seed/review-camera.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "FnPKOPEahx2cDjFEkitmB"
+uri = "file://artifacts/primeaxis/public/seed/article-cloud.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "JoEOGNwrof90ZOBCnZOgZ"
+uri = "file://artifacts/primeaxis/public/seed/article-quantum.png"
+type = "image"
+title = "generated_image"

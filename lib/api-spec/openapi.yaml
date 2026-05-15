@@ -3,20 +3,25 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: PrimeAxis Tech — global technology media platform API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
-    description: Health operations
+  - name: articles
+  - name: categories
+  - name: authors
+  - name: reviews
+  - name: videos
+  - name: newsletters
+  - name: home
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,13 +29,670 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /home/feed:
+    get:
+      operationId: getHomeFeed
+      tags: [home]
+      summary: Curated homepage feed bundle
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomeFeed"
+
+  /articles:
+    get:
+      operationId: listArticles
+      tags: [articles]
+      parameters:
+        - in: query
+          name: category
+          schema: { type: string }
+        - in: query
+          name: tag
+          schema: { type: string }
+        - in: query
+          name: limit
+          schema: { type: integer, minimum: 1, maximum: 50 }
+        - in: query
+          name: offset
+          schema: { type: integer, minimum: 0 }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/ArticleSummary" }
+
+  /articles/trending:
+    get:
+      operationId: listTrendingArticles
+      tags: [articles]
+      parameters:
+        - in: query
+          name: limit
+          schema: { type: integer, minimum: 1, maximum: 20 }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/ArticleSummary" }
+
+  /articles/most-discussed:
+    get:
+      operationId: listMostDiscussedArticles
+      tags: [articles]
+      parameters:
+        - in: query
+          name: limit
+          schema: { type: integer, minimum: 1, maximum: 20 }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/ArticleSummary" }
+
+  /articles/search:
+    get:
+      operationId: searchArticles
+      tags: [articles]
+      parameters:
+        - in: query
+          name: q
+          required: true
+          schema: { type: string }
+        - in: query
+          name: limit
+          schema: { type: integer, minimum: 1, maximum: 50 }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/ArticleSummary" }
+
+  /articles/{slug}:
+    get:
+      operationId: getArticleBySlug
+      tags: [articles]
+      parameters:
+        - in: path
+          name: slug
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Article" }
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+
+  /articles/{slug}/related:
+    get:
+      operationId: getRelatedArticles
+      tags: [articles]
+      parameters:
+        - in: path
+          name: slug
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/ArticleSummary" }
+
+  /categories:
+    get:
+      operationId: listCategories
+      tags: [categories]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Category" }
+
+  /categories/{slug}:
+    get:
+      operationId: getCategoryBySlug
+      tags: [categories]
+      parameters:
+        - in: path
+          name: slug
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CategoryDetail" }
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+
+  /authors:
+    get:
+      operationId: listAuthors
+      tags: [authors]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Author" }
+
+  /authors/{slug}:
+    get:
+      operationId: getAuthorBySlug
+      tags: [authors]
+      parameters:
+        - in: path
+          name: slug
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/AuthorDetail" }
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+
+  /reviews:
+    get:
+      operationId: listReviews
+      tags: [reviews]
+      parameters:
+        - in: query
+          name: limit
+          schema: { type: integer, minimum: 1, maximum: 50 }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/ReviewSummary" }
+
+  /reviews/best-picks:
+    get:
+      operationId: listBestPicks
+      tags: [reviews]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/ReviewSummary" }
+
+  /reviews/{slug}:
+    get:
+      operationId: getReviewBySlug
+      tags: [reviews]
+      parameters:
+        - in: path
+          name: slug
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Review" }
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+
+  /videos:
+    get:
+      operationId: listVideos
+      tags: [videos]
+      parameters:
+        - in: query
+          name: limit
+          schema: { type: integer, minimum: 1, maximum: 50 }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Video" }
+
+  /newsletters:
+    get:
+      operationId: listNewsletters
+      tags: [newsletters]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Newsletter" }
+
+  /newsletters/subscribe:
+    post:
+      operationId: subscribeNewsletter
+      tags: [newsletters]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/NewsletterSubscriptionInput" }
+      responses:
+        "201":
+          description: Subscribed
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/NewsletterSubscription" }
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+
 components:
   schemas:
     HealthStatus:
       type: object
+      required: [status]
       properties:
-        status:
-          type: string
-      required:
-        - status
+        status: { type: string }
 
+    ErrorResponse:
+      type: object
+      required: [error]
+      properties:
+        error: { type: string }
+
+    Author:
+      type: object
+      required: [id, slug, name, role, avatarUrl]
+      properties:
+        id: { type: integer }
+        slug: { type: string }
+        name: { type: string }
+        role: { type: string }
+        avatarUrl: { type: string }
+        bio: { type: ["string", "null"] }
+        twitter: { type: ["string", "null"] }
+        articleCount: { type: integer }
+
+    AuthorDetail:
+      type: object
+      required: [author, articles]
+      properties:
+        author: { $ref: "#/components/schemas/Author" }
+        articles:
+          type: array
+          items: { $ref: "#/components/schemas/ArticleSummary" }
+
+    Category:
+      type: object
+      required: [id, slug, name, description, accentColor, articleCount]
+      properties:
+        id: { type: integer }
+        slug: { type: string }
+        name: { type: string }
+        description: { type: string }
+        accentColor: { type: string }
+        articleCount: { type: integer }
+
+    CategoryDetail:
+      type: object
+      required: [category, articles]
+      properties:
+        category: { $ref: "#/components/schemas/Category" }
+        articles:
+          type: array
+          items: { $ref: "#/components/schemas/ArticleSummary" }
+
+    ArticleSummary:
+      type: object
+      required:
+        - id
+        - slug
+        - title
+        - excerpt
+        - heroImageUrl
+        - category
+        - author
+        - publishedAt
+        - readingMinutes
+        - tags
+        - isBreaking
+        - isFeature
+        - viewCount
+        - commentCount
+      properties:
+        id: { type: integer }
+        slug: { type: string }
+        title: { type: string }
+        excerpt: { type: string }
+        heroImageUrl: { type: string }
+        category: { $ref: "#/components/schemas/CategoryRef" }
+        author: { $ref: "#/components/schemas/AuthorRef" }
+        publishedAt: { type: string, format: date-time }
+        readingMinutes: { type: integer }
+        tags:
+          type: array
+          items: { type: string }
+        isBreaking: { type: boolean }
+        isFeature: { type: boolean }
+        viewCount: { type: integer }
+        commentCount: { type: integer }
+
+    Article:
+      type: object
+      required:
+        - id
+        - slug
+        - title
+        - subtitle
+        - excerpt
+        - heroImageUrl
+        - category
+        - author
+        - publishedAt
+        - updatedAt
+        - readingMinutes
+        - tags
+        - body
+        - keyTakeaways
+        - aiSummary
+        - viewCount
+        - commentCount
+        - isBreaking
+        - isFeature
+      properties:
+        id: { type: integer }
+        slug: { type: string }
+        title: { type: string }
+        subtitle: { type: string }
+        excerpt: { type: string }
+        heroImageUrl: { type: string }
+        category: { $ref: "#/components/schemas/CategoryRef" }
+        author: { $ref: "#/components/schemas/AuthorRef" }
+        publishedAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+        readingMinutes: { type: integer }
+        tags:
+          type: array
+          items: { type: string }
+        body:
+          type: array
+          items: { $ref: "#/components/schemas/ArticleBlock" }
+        keyTakeaways:
+          type: array
+          items: { type: string }
+        aiSummary: { type: string }
+        viewCount: { type: integer }
+        commentCount: { type: integer }
+        isBreaking: { type: boolean }
+        isFeature: { type: boolean }
+
+    ArticleBlock:
+      type: object
+      required: [type, content]
+      properties:
+        type:
+          type: string
+          enum: [paragraph, heading, quote, image, list]
+        content: { type: string }
+        caption: { type: ["string", "null"] }
+        items:
+          type: ["array", "null"]
+          items: { type: string }
+
+    CategoryRef:
+      type: object
+      required: [slug, name, accentColor]
+      properties:
+        slug: { type: string }
+        name: { type: string }
+        accentColor: { type: string }
+
+    AuthorRef:
+      type: object
+      required: [slug, name, avatarUrl, role]
+      properties:
+        slug: { type: string }
+        name: { type: string }
+        avatarUrl: { type: string }
+        role: { type: string }
+
+    ReviewSummary:
+      type: object
+      required:
+        - id
+        - slug
+        - productName
+        - tagline
+        - heroImageUrl
+        - score
+        - verdict
+        - category
+        - publishedAt
+        - priceUsd
+      properties:
+        id: { type: integer }
+        slug: { type: string }
+        productName: { type: string }
+        tagline: { type: string }
+        heroImageUrl: { type: string }
+        score: { type: number }
+        verdict: { type: string }
+        category: { $ref: "#/components/schemas/CategoryRef" }
+        publishedAt: { type: string, format: date-time }
+        priceUsd: { type: number }
+
+    Review:
+      type: object
+      required:
+        - id
+        - slug
+        - productName
+        - tagline
+        - heroImageUrl
+        - galleryImages
+        - score
+        - verdict
+        - summary
+        - category
+        - author
+        - publishedAt
+        - priceUsd
+        - pros
+        - cons
+        - ratings
+        - sections
+      properties:
+        id: { type: integer }
+        slug: { type: string }
+        productName: { type: string }
+        tagline: { type: string }
+        heroImageUrl: { type: string }
+        galleryImages:
+          type: array
+          items: { type: string }
+        score: { type: number }
+        verdict: { type: string }
+        summary: { type: string }
+        category: { $ref: "#/components/schemas/CategoryRef" }
+        author: { $ref: "#/components/schemas/AuthorRef" }
+        publishedAt: { type: string, format: date-time }
+        priceUsd: { type: number }
+        pros:
+          type: array
+          items: { type: string }
+        cons:
+          type: array
+          items: { type: string }
+        ratings:
+          type: array
+          items: { $ref: "#/components/schemas/ReviewRating" }
+        sections:
+          type: array
+          items: { $ref: "#/components/schemas/ReviewSection" }
+
+    ReviewRating:
+      type: object
+      required: [label, score]
+      properties:
+        label: { type: string }
+        score: { type: number }
+
+    ReviewSection:
+      type: object
+      required: [heading, body]
+      properties:
+        heading: { type: string }
+        body: { type: string }
+
+    Video:
+      type: object
+      required:
+        - id
+        - slug
+        - title
+        - description
+        - thumbnailUrl
+        - durationSeconds
+        - publishedAt
+        - category
+        - viewCount
+      properties:
+        id: { type: integer }
+        slug: { type: string }
+        title: { type: string }
+        description: { type: string }
+        thumbnailUrl: { type: string }
+        durationSeconds: { type: integer }
+        publishedAt: { type: string, format: date-time }
+        category: { $ref: "#/components/schemas/CategoryRef" }
+        viewCount: { type: integer }
+
+    Newsletter:
+      type: object
+      required: [id, slug, name, tagline, cadence, subscriberCount, accentColor]
+      properties:
+        id: { type: integer }
+        slug: { type: string }
+        name: { type: string }
+        tagline: { type: string }
+        cadence: { type: string }
+        subscriberCount: { type: integer }
+        accentColor: { type: string }
+
+    NewsletterSubscriptionInput:
+      type: object
+      required: [email, newsletterSlug]
+      properties:
+        email: { type: string, format: email }
+        newsletterSlug: { type: string }
+
+    NewsletterSubscription:
+      type: object
+      required: [id, email, newsletterSlug, createdAt]
+      properties:
+        id: { type: integer }
+        email: { type: string }
+        newsletterSlug: { type: string }
+        createdAt: { type: string, format: date-time }
+
+    HomeFeed:
+      type: object
+      required:
+        - hero
+        - spotlight
+        - trending
+        - latest
+        - featuredReviews
+        - aiAndFuture
+        - gamingAndEntertainment
+        - videos
+        - investigations
+        - buyingGuides
+        - startups
+        - mostDiscussed
+        - categories
+      properties:
+        hero: { $ref: "#/components/schemas/ArticleSummary" }
+        spotlight:
+          type: array
+          items: { $ref: "#/components/schemas/ArticleSummary" }
+        trending:
+          type: array
+          items: { $ref: "#/components/schemas/ArticleSummary" }
+        latest:
+          type: array
+          items: { $ref: "#/components/schemas/ArticleSummary" }
+        featuredReviews:
+          type: array
+          items: { $ref: "#/components/schemas/ReviewSummary" }
+        aiAndFuture:
+          type: array
+          items: { $ref: "#/components/schemas/ArticleSummary" }
+        gamingAndEntertainment:
+          type: array
+          items: { $ref: "#/components/schemas/ArticleSummary" }
+        videos:
+          type: array
+          items: { $ref: "#/components/schemas/Video" }
+        investigations:
+          type: array
+          items: { $ref: "#/components/schemas/ArticleSummary" }
+        buyingGuides:
+          type: array
+          items: { $ref: "#/components/schemas/ArticleSummary" }
+        startups:
+          type: array
+          items: { $ref: "#/components/schemas/ArticleSummary" }
+        mostDiscussed:
+          type: array
+          items: { $ref: "#/components/schemas/ArticleSummary" }
+        categories:
+          type: array
+          items: { $ref: "#/components/schemas/Category" }
