@@ -1,0 +1,405 @@
+Your platform is already beyond “just a tech blog.”
+What’s remaining now is refinement — especially typography, spacing rhythm, editorial hierarchy, image treatment, and visual polish.
+
+The biggest difference between average tech sites and platforms like Engadget￼, The Verge￼, and Wired￼ is not features anymore — it’s:
+
+* typography precision
+* spacing systems
+* image treatment
+* editorial rhythm
+* layout density
+* hover behavior
+* visual consistency
+* media polish
+* motion restraint
+* premium readability
+
+Add this directly into your PrimeAxis Tech build prompt:
+
+━━━━━━━━━━━━━━━━━━━
+FINAL EDITORIAL POLISH & TYPOGRAPHY REFINEMENT — ENGADGET / WIRED / BLOOMBERG LEVEL
+━━━━━━━━━━━━━━━━━━━
+
+PrimeAxis Tech is now feature-rich and enterprise-grade.
+
+The remaining objective is achieving:
+
+* elite editorial polish
+* typography precision
+* visual maturity
+* luxury readability
+* magazine-quality rhythm
+* premium image presentation
+* cinematic layout balance
+
+The platform must now feel visually comparable to:
+
+* Engadget
+* The Verge
+* Wired
+* Bloomberg Technology
+* Apple News
+* Financial Times
+* Linear
+
+━━━━━━━━━━━━━━━━━━━
+TYPOGRAPHY REFINEMENT
+━━━━━━━━━━━━━━━━━━━
+
+Typography is now the highest priority.
+
+The typography system should feel:
+
+* editorial
+* intelligent
+* cinematic
+* premium
+* calm
+* luxurious
+* highly readable
+
+━━━━━━━━━━━━━━━━━━━
+FONT STACK
+━━━━━━━━━━━━━━━━━━━
+
+Use EXACT editorial pairing refinement:
+
+Headlines:
+
+* Inter Tight
+* Geist
+* SF Pro Display fallback
+
+Feature Headlines / Longform:
+
+* Fraunces
+* Canela fallback
+* Editorial serif styling
+
+Body:
+
+* Inter
+* IBM Plex Sans fallback
+
+UI Elements:
+
+* Inter Medium
+* Inter Tight
+
+━━━━━━━━━━━━━━━━━━━
+HEADLINE STYLING
+━━━━━━━━━━━━━━━━━━━
+
+Headlines should feel closer to:
+
+* Engadget article hierarchy
+* Bloomberg editorial seriousness
+* Wired feature presentation
+
+Adjust:
+
+* tighter tracking
+* stronger weight balancing
+* improved line wrapping
+* refined letter spacing
+* premium line-height rhythm
+
+Headline behavior:
+
+* large but controlled
+* cinematic without feeling exaggerated
+* luxurious spacing
+* visually balanced across breakpoints
+
+Avoid:
+
+* oversized startup typography
+* overly bold SaaS-style headings
+* cramped text
+* inconsistent line lengths
+
+━━━━━━━━━━━━━━━━━━━
+ARTICLE BODY REFINEMENT
+━━━━━━━━━━━━━━━━━━━
+
+Article text should feel magazine-grade.
+
+Improve:
+
+* line-height rhythm
+* paragraph spacing
+* quote styling
+* paragraph width
+* visual breathing room
+* text contrast
+
+Target:
+
+* 65–75 character line length
+* luxurious whitespace
+* highly readable dark mode
+
+Use:
+
+* softer text colors
+* premium contrast ratios
+* smooth font rendering
+* optical alignment
+
+━━━━━━━━━━━━━━━━━━━
+ENGADGET-STYLE CONTENT DENSITY
+━━━━━━━━━━━━━━━━━━━
+
+Refine article density to feel more like Engadget.
+
+Current goal:
+
+* more editorial balance
+* slightly tighter content rhythm
+* cleaner section spacing
+* reduced visual clutter
+
+Cards should:
+
+* breathe naturally
+* align consistently
+* maintain equal spacing rhythm
+* avoid oversized padding
+
+━━━━━━━━━━━━━━━━━━━
+IMAGE TREATMENT REFINEMENT
+━━━━━━━━━━━━━━━━━━━
+
+Images should now feel:
+
+* cinematic
+* premium
+* editorially art-directed
+
+Apply:
+
+* subtle contrast grading
+* intelligent cropping
+* premium aspect ratios
+* soft radius consistency
+* layered shadows
+* immersive edge-to-edge presentation
+
+Hero images should resemble:
+
+* Apple editorial pages
+* Engadget feature banners
+* Wired longform imagery
+
+Avoid:
+
+* flat thumbnails
+* inconsistent crops
+* excessive rounded corners
+* noisy overlays
+
+━━━━━━━━━━━━━━━━━━━
+CARD SYSTEM REFINEMENT
+━━━━━━━━━━━━━━━━━━━
+
+Article cards must feel more premium.
+
+Refine:
+
+* hover transitions
+* border transparency
+* elevation hierarchy
+* typography alignment
+* thumbnail scaling
+* metadata placement
+
+Hover behavior:
+
+* subtle image scale
+* soft shadow lift
+* intelligent motion
+* no exaggerated animations
+
+━━━━━━━━━━━━━━━━━━━
+LAYOUT RHYTHM
+━━━━━━━━━━━━━━━━━━━
+
+The overall layout should feel calmer and more mature.
+
+Improve:
+
+* vertical spacing consistency
+* grid rhythm
+* alignment precision
+* editorial whitespace
+* balanced density
+
+The experience should feel:
+
+* intentional
+* polished
+* premium
+* globally professional
+
+━━━━━━━━━━━━━━━━━━━
+MOTION REFINEMENT
+━━━━━━━━━━━━━━━━━━━
+
+Motion should now become more restrained and luxury-focused.
+
+Transitions should feel:
+
+* smooth
+* expensive
+* subtle
+* cinematic
+
+Reduce:
+
+* unnecessary movement
+* aggressive easing
+* startup-style animations
+
+Prefer:
+
+* opacity fades
+* gentle transforms
+* premium hover easing
+* subtle parallax
+* smooth content reveal
+
+━━━━━━━━━━━━━━━━━━━
+HEADER & NAVIGATION POLISH
+━━━━━━━━━━━━━━━━━━━
+
+Refine the header to feel closer to:
+
+* Bloomberg
+* Engadget
+* Apple News
+
+Improve:
+
+* navigation spacing
+* category typography
+* sticky behavior
+* glass blur refinement
+* hover states
+* active states
+
+Navigation should feel:
+
+* calm
+* editorial
+* precise
+* intelligent
+
+━━━━━━━━━━━━━━━━━━━
+DARK MODE REFINEMENT
+━━━━━━━━━━━━━━━━━━━
+
+Dark mode should feel:
+
+* OLED premium
+* cinematic
+* luxurious
+* easy on the eyes
+
+Avoid:
+
+* pure black backgrounds
+* harsh contrast
+* neon accents
+
+Use:
+
+* graphite blacks
+* layered dark surfaces
+* soft borders
+* subtle gradients
+
+━━━━━━━━━━━━━━━━━━━
+LIGHT MODE REFINEMENT
+━━━━━━━━━━━━━━━━━━━
+
+Light mode should resemble:
+
+* premium editorial paper
+* Financial Times polish
+* Apple editorial design
+
+Use:
+
+* warm whites
+* subtle gray separation
+* refined typography contrast
+* elegant shadows
+
+━━━━━━━━━━━━━━━━━━━
+REVIEW PAGE REFINEMENT
+━━━━━━━━━━━━━━━━━━━
+
+Review pages should feel more cinematic.
+
+Improve:
+
+* score badge styling
+* gallery transitions
+* specification layouts
+* benchmark readability
+* product hero sections
+
+Product reviews should resemble:
+
+* premium YouTube tech review aesthetics
+* Apple campaign pages
+* Engadget review presentation
+
+━━━━━━━━━━━━━━━━━━━
+VIDEO SECTION POLISH
+━━━━━━━━━━━━━━━━━━━
+
+Video cards should feel:
+
+* cinematic
+* Netflix-inspired
+* editorially premium
+
+Refine:
+
+* thumbnail overlays
+* hover previews
+* metadata spacing
+* playback transitions
+
+━━━━━━━━━━━━━━━━━━━
+FINAL VISUAL GOAL
+━━━━━━━━━━━━━━━━━━━
+
+PrimeAxis Tech should now feel:
+
+* calmer
+* more luxurious
+* more editorial
+* more mature
+* more globally elite
+
+The final polish should make users immediately think:
+
+“This feels like a billion-dollar technology publication.”
+“This looks professionally art-directed.”
+“This typography feels premium.”
+“This looks cleaner than most tech sites.”
+“This feels more refined than startup media brands.”
+“This feels like Engadget evolved into a futuristic luxury editorial platform.”
+
+Every final detail should feel:
+
+* intentional
+* premium
+* cinematic
+* editorial
+* refined
+* sophisticated
+* balanced
+* globally competitive

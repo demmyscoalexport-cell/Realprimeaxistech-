@@ -20,7 +20,7 @@ const PRIMARY_NAV = [
 export function Header({ onOpenSearch }: { onOpenSearch: () => void }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [, navigate] = useLocation();
+  const [loc, navigate] = useLocation();
   const cats = useListCategories();
 
   useEffect(() => {
@@ -32,24 +32,36 @@ export function Header({ onOpenSearch }: { onOpenSearch: () => void }) {
 
   return (
     <header
-      className={`sticky top-0 z-40 transition-colors duration-300 ${
+      className={`sticky top-0 z-40 transition-[background-color,backdrop-filter,border-color] duration-500 ${
         scrolled
-          ? "border-b hairline bg-background/80 backdrop-blur-xl"
-          : "bg-transparent"
+          ? "border-b hairline bg-background/75 backdrop-blur-xl backdrop-saturate-150"
+          : "border-b border-transparent bg-background/30 backdrop-blur-md"
       }`}
     >
-      <div className="container-page flex h-16 items-center gap-6">
+      <div className="container-page flex h-[68px] items-center gap-8">
         <Wordmark />
-        <nav className="hidden flex-1 items-center gap-1 lg:flex">
-          {PRIMARY_NAV.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="rounded-md px-3 py-1.5 text-sm font-medium text-foreground/70 transition hover:bg-accent hover:text-foreground"
-            >
-              {item.label}
-            </Link>
-          ))}
+        <nav className="hidden flex-1 items-center gap-0.5 lg:flex">
+          {PRIMARY_NAV.map((item) => {
+            const active =
+              item.href === loc ||
+              (item.href !== "/" && loc.startsWith(item.href));
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`relative rounded-md px-3 py-1.5 text-[13px] font-medium tracking-[-0.005em] transition-colors ${
+                  active
+                    ? "text-foreground"
+                    : "text-foreground/65 hover:text-foreground"
+                }`}
+              >
+                {item.label}
+                {active && (
+                  <span className="absolute inset-x-3 -bottom-[19px] h-px bg-foreground" />
+                )}
+              </Link>
+            );
+          })}
         </nav>
         <div className="ml-auto flex items-center gap-2">
           <button

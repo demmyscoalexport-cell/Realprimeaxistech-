@@ -86,7 +86,7 @@ export function ArticleHeroCard({ article }: { article: ArticleLite }) {
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease: [0.22, 0.65, 0.32, 1] }}
-      className="group relative overflow-hidden rounded-3xl border hairline"
+      className="group relative overflow-hidden rounded-2xl border hairline bg-card/40"
     >
       <Link href={`/article/${article.slug}`}>
         <div className="relative aspect-[16/9] overflow-hidden md:aspect-[21/9]">
@@ -94,14 +94,15 @@ export function ArticleHeroCard({ article }: { article: ArticleLite }) {
             src={withBase(article.heroImageUrl)}
             alt={article.title}
             loading="eager"
-            className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-105"
+            className="editorial-img h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.03]"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent" />
         </div>
-        <div className="absolute inset-x-0 bottom-0 p-6 text-white md:p-12">
+        <div className="absolute inset-x-0 bottom-0 p-6 text-white md:p-12 lg:p-14">
           <div className="flex flex-wrap items-center gap-2">
             {article.isBreaking && (
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-red-500/90 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-red-500/90 px-2.5 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.18em]">
                 <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-white" />
                 Breaking
               </span>
@@ -112,28 +113,30 @@ export function ArticleHeroCard({ article }: { article: ArticleLite }) {
               className="bg-white/10 text-white border-white/20"
             />
           </div>
-          <h1 className="mt-4 max-w-4xl font-display text-3xl font-bold leading-[1.05] text-balance md:text-5xl lg:text-6xl">
+          <h1 className="mt-5 max-w-4xl font-display text-[2rem] font-bold leading-[1.04] tracking-[-0.025em] text-balance md:text-[2.85rem] lg:text-[3.6rem]">
             {article.title}
           </h1>
           {article.excerpt && (
-            <p className="mt-4 max-w-2xl text-base text-white/75 md:text-lg">
+            <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-white/75 md:text-[17px]">
               {article.excerpt}
             </p>
           )}
-          <div className="mt-6 flex items-center gap-3">
+          <div className="mt-7 flex items-center gap-3">
             <img
               src={withBase(article.author.avatarUrl)}
               alt={article.author.name}
               className="h-9 w-9 rounded-full border border-white/20 object-cover"
             />
-            <div className="text-sm">
-              <div className="font-medium">{article.author.name}</div>
-              <div className="text-white/60 text-xs">
+            <div className="text-sm leading-tight">
+              <div className="font-medium tracking-[-0.005em]">
+                {article.author.name}
+              </div>
+              <div className="text-white/55 text-xs mt-0.5">
                 {timeAgo(article.publishedAt)} · {article.readingMinutes} min
                 read
               </div>
             </div>
-            <div className="ml-auto hidden items-center gap-1 text-sm text-white/80 transition group-hover:translate-x-1 md:inline-flex">
+            <div className="ml-auto hidden items-center gap-1 text-sm text-white/75 transition-transform duration-500 group-hover:translate-x-1 md:inline-flex">
               Read story <ArrowUpRight className="h-4 w-4" />
             </div>
           </div>
@@ -170,15 +173,15 @@ export function ArticleCard({
             <img
               src={withBase(article.heroImageUrl)}
               alt=""
-              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+              className="editorial-img h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
             />
           </div>
           <div className="min-w-0 flex-1">
             <CategoryChip category={article.category} asLink={false} />
-            <h3 className="mt-1.5 text-sm font-semibold leading-snug text-pretty group-hover:text-primary line-clamp-3">
+            <h3 className="mt-2 text-[14.5px] font-semibold leading-[1.35] tracking-[-0.01em] text-pretty transition-colors group-hover:text-primary line-clamp-3">
               {article.title}
             </h3>
-            <div className="mt-1 text-xs text-muted-foreground">
+            <div className="mt-1.5 text-[11px] text-muted-foreground">
               {timeAgo(article.publishedAt)}
             </div>
           </div>
@@ -195,24 +198,24 @@ export function ArticleCard({
       >
         <Link
           href={`/article/${article.slug}`}
-          className="relative aspect-[16/10] overflow-hidden rounded-2xl"
+          className="img-frame relative aspect-[16/10] overflow-hidden rounded-xl"
         >
           <img
             src={withBase(article.heroImageUrl)}
             alt={article.title}
-            className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-105"
+            className="editorial-img h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.03]"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 transition group-hover:opacity-100" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
         </Link>
         <div className="flex flex-col justify-center">
           <CategoryChip category={article.category} className="self-start" />
           <Link href={`/article/${article.slug}`}>
-            <h3 className="mt-3 font-display text-2xl font-bold leading-tight text-balance group-hover:text-primary md:text-3xl">
+            <h3 className="mt-3 font-display text-[1.55rem] font-bold leading-[1.12] tracking-[-0.022em] text-balance transition-colors group-hover:text-primary md:text-[1.85rem]">
               {article.title}
             </h3>
           </Link>
           {article.excerpt && (
-            <p className="mt-3 text-sm text-muted-foreground line-clamp-3 md:text-base">
+            <p className="mt-3 text-[14.5px] leading-relaxed text-muted-foreground line-clamp-3 md:text-[15px]">
               {article.excerpt}
             </p>
           )}
@@ -240,22 +243,22 @@ export function ArticleCard({
       >
         <Link
           href={`/article/${article.slug}`}
-          className="relative aspect-[16/10] overflow-hidden rounded-xl"
+          className="img-frame relative aspect-[16/10] overflow-hidden rounded-lg"
         >
           <img
             src={withBase(article.heroImageUrl)}
             alt={article.title}
-            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+            className="editorial-img h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.035]"
           />
         </Link>
-        <div className="mt-3 flex flex-1 flex-col">
+        <div className="mt-3.5 flex flex-1 flex-col">
           <CategoryChip category={article.category} className="self-start" />
           <Link href={`/article/${article.slug}`}>
-            <h3 className="mt-2 font-display text-base font-semibold leading-snug text-pretty group-hover:text-primary line-clamp-3">
+            <h3 className="mt-2.5 font-display text-[17px] font-semibold leading-[1.28] tracking-[-0.018em] text-pretty transition-colors group-hover:text-primary line-clamp-3">
               {article.title}
             </h3>
           </Link>
-          <div className="mt-auto pt-2">
+          <div className="mt-auto pt-3">
             <MetaLine article={article} />
           </div>
         </div>
@@ -266,7 +269,7 @@ export function ArticleCard({
   return (
     <motion.article
       {...motionProps}
-      className="group flex flex-col overflow-hidden rounded-2xl border hairline bg-card/40 transition hover:bg-card hover:shadow-2xl hover:shadow-primary/5"
+      className="group lift flex flex-col overflow-hidden rounded-2xl border hairline bg-card/40 hover:bg-card"
     >
       <Link
         href={`/article/${article.slug}`}
@@ -275,10 +278,10 @@ export function ArticleCard({
         <img
           src={withBase(article.heroImageUrl)}
           alt={article.title}
-          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          className="editorial-img h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]"
         />
         {article.isBreaking && (
-          <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-red-500 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest text-white">
+          <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-red-500 px-2.5 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-white">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-white" />
             Breaking
           </span>
@@ -287,12 +290,12 @@ export function ArticleCard({
       <div className="flex flex-1 flex-col p-5">
         <CategoryChip category={article.category} className="self-start" />
         <Link href={`/article/${article.slug}`}>
-          <h3 className="mt-2 font-display text-lg font-semibold leading-snug text-pretty group-hover:text-primary line-clamp-3">
+          <h3 className="mt-2.5 font-display text-[18px] font-semibold leading-[1.25] tracking-[-0.02em] text-pretty transition-colors group-hover:text-primary line-clamp-3">
             {article.title}
           </h3>
         </Link>
         {article.excerpt && (
-          <p className="mt-2 text-sm text-muted-foreground line-clamp-2">
+          <p className="mt-2 text-[14px] leading-relaxed text-muted-foreground line-clamp-2">
             {article.excerpt}
           </p>
         )}

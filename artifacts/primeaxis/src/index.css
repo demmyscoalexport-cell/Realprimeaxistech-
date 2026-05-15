@@ -46,69 +46,71 @@
 }
 
 :root {
-  --background: 40 30% 98%;
-  --foreground: 240 10% 8%;
+  /* warm editorial paper */
+  --background: 36 28% 97.5%;
+  --foreground: 230 14% 10%;
 
   --card: 0 0% 100%;
-  --card-foreground: 240 10% 8%;
-  --card-border: 240 6% 90%;
+  --card-foreground: 230 14% 10%;
+  --card-border: 230 8% 88%;
 
   --popover: 0 0% 100%;
-  --popover-foreground: 240 10% 8%;
-  --popover-border: 240 6% 90%;
+  --popover-foreground: 230 14% 10%;
+  --popover-border: 230 8% 88%;
 
-  --primary: 222 87% 50%;
+  --primary: 222 84% 46%;
   --primary-foreground: 0 0% 100%;
 
-  --secondary: 240 6% 95%;
-  --secondary-foreground: 240 10% 12%;
+  --secondary: 230 10% 96%;
+  --secondary-foreground: 230 14% 14%;
 
-  --muted: 240 6% 95%;
-  --muted-foreground: 240 4% 40%;
+  --muted: 230 10% 96%;
+  --muted-foreground: 230 6% 38%;
 
-  --accent: 240 6% 94%;
-  --accent-foreground: 240 10% 12%;
+  --accent: 230 12% 95%;
+  --accent-foreground: 230 14% 14%;
 
-  --destructive: 0 84% 60%;
+  --destructive: 0 78% 52%;
   --destructive-foreground: 0 0% 100%;
 
-  --border: 240 6% 90%;
-  --input: 240 6% 92%;
-  --ring: 222 87% 50%;
+  --border: 230 10% 88%;
+  --input: 230 10% 92%;
+  --ring: 222 84% 46%;
 
-  --radius: 0.625rem;
+  --radius: 0.5rem;
 }
 
 .dark {
-  --background: 240 12% 4%;
-  --foreground: 0 0% 98%;
+  /* graphite OLED-friendly */
+  --background: 230 14% 5%;
+  --foreground: 0 0% 96%;
 
-  --card: 240 12% 6%;
-  --card-foreground: 0 0% 98%;
-  --card-border: 240 12% 12%;
+  --card: 230 14% 7.5%;
+  --card-foreground: 0 0% 96%;
+  --card-border: 230 12% 14%;
 
-  --popover: 240 14% 5%;
-  --popover-foreground: 0 0% 98%;
-  --popover-border: 240 12% 12%;
+  --popover: 230 16% 6%;
+  --popover-foreground: 0 0% 96%;
+  --popover-border: 230 12% 14%;
 
-  --primary: 188 95% 55%;
-  --primary-foreground: 240 14% 6%;
+  --primary: 188 92% 58%;
+  --primary-foreground: 230 16% 7%;
 
-  --secondary: 240 12% 10%;
-  --secondary-foreground: 0 0% 98%;
+  --secondary: 230 13% 11%;
+  --secondary-foreground: 0 0% 96%;
 
-  --muted: 240 12% 10%;
-  --muted-foreground: 240 5% 64%;
+  --muted: 230 13% 11%;
+  --muted-foreground: 230 6% 66%;
 
-  --accent: 240 12% 11%;
-  --accent-foreground: 0 0% 98%;
+  --accent: 230 13% 12%;
+  --accent-foreground: 0 0% 96%;
 
-  --destructive: 0 70% 50%;
+  --destructive: 0 70% 52%;
   --destructive-foreground: 0 0% 98%;
 
-  --border: 240 12% 13%;
-  --input: 240 12% 13%;
-  --ring: 188 95% 55%;
+  --border: 230 12% 14%;
+  --input: 230 12% 14%;
+  --ring: 188 92% 58%;
 }
 
 @layer base {
@@ -117,28 +119,39 @@
   }
   html {
     scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
   }
   body {
     font-family: var(--font-sans);
     background: hsl(var(--background));
     color: hsl(var(--foreground));
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    font-feature-settings: "ss01", "ss02", "cv11";
+    font-feature-settings: "ss01", "ss02", "cv11", "cv09", "calt";
+    font-optical-sizing: auto;
+  }
+  h1, h2, h3, h4, h5 {
+    font-feature-settings: "ss01", "ss02", "cv11", "kern";
   }
   ::selection {
-    background: hsl(var(--primary) / 0.25);
+    background: hsl(var(--primary) / 0.22);
     color: hsl(var(--foreground));
+  }
+  img {
+    color: transparent;
   }
 }
 
 @layer utilities {
   .font-display {
     font-family: var(--font-display);
-    letter-spacing: -0.02em;
+    letter-spacing: -0.022em;
+    font-feature-settings: "ss01", "ss02", "cv11", "kern";
   }
   .font-serif {
     font-family: var(--font-serif);
+    font-feature-settings: "ss01", "kern", "liga";
   }
   .font-mono {
     font-family: var(--font-mono);
@@ -153,11 +166,16 @@
     width: 100%;
     margin-inline: auto;
     padding-inline: 1.25rem;
-    max-width: 1400px;
+    max-width: 1440px;
   }
   @media (min-width: 768px) {
     .container-page {
-      padding-inline: 2rem;
+      padding-inline: 2.25rem;
+    }
+  }
+  @media (min-width: 1280px) {
+    .container-page {
+      padding-inline: 3rem;
     }
   }
   .grain::after {
@@ -165,49 +183,108 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background-image: radial-gradient(hsl(var(--foreground) / 0.04) 1px, transparent 1px);
+    background-image: radial-gradient(hsl(var(--foreground) / 0.035) 1px, transparent 1px);
     background-size: 3px 3px;
     mix-blend-mode: overlay;
-    opacity: 0.4;
+    opacity: 0.35;
   }
   .glow-aurora {
     background:
-      radial-gradient(40rem 30rem at 15% 0%, hsl(188 95% 55% / 0.18), transparent 60%),
-      radial-gradient(35rem 28rem at 85% 10%, hsl(265 90% 65% / 0.16), transparent 55%),
-      radial-gradient(40rem 35rem at 50% 100%, hsl(330 85% 60% / 0.10), transparent 60%);
+      radial-gradient(40rem 30rem at 15% 0%, hsl(188 92% 58% / 0.14), transparent 62%),
+      radial-gradient(35rem 28rem at 85% 10%, hsl(265 88% 65% / 0.12), transparent 58%),
+      radial-gradient(40rem 35rem at 50% 100%, hsl(330 80% 60% / 0.08), transparent 62%);
   }
   .glow-aurora-light {
     background:
-      radial-gradient(40rem 30rem at 15% 0%, hsl(222 87% 60% / 0.12), transparent 60%),
-      radial-gradient(35rem 28rem at 85% 10%, hsl(265 90% 65% / 0.10), transparent 55%);
+      radial-gradient(40rem 30rem at 15% 0%, hsl(222 84% 60% / 0.08), transparent 62%),
+      radial-gradient(35rem 28rem at 85% 10%, hsl(265 80% 65% / 0.07), transparent 58%);
   }
   .gradient-text {
-    background: linear-gradient(135deg, hsl(188 95% 60%), hsl(265 95% 70%) 50%, hsl(330 95% 65%));
+    background: linear-gradient(135deg, hsl(188 92% 60%), hsl(265 90% 70%) 50%, hsl(330 88% 65%));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
   .hairline {
-    border-color: hsl(var(--foreground) / 0.08);
+    border-color: hsl(var(--foreground) / 0.07);
+  }
+  .dark .hairline {
+    border-color: hsl(0 0% 100% / 0.06);
   }
   .scroll-fade-mask {
     mask-image: linear-gradient(to right, transparent, black 4%, black 96%, transparent);
   }
+  /* Premium image treatment */
+  .editorial-img {
+    background: hsl(var(--muted));
+    filter: saturate(1.02) contrast(1.01);
+  }
+  .img-frame {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    box-shadow:
+      0 1px 0 hsl(0 0% 100% / 0.03) inset,
+      0 0 0 1px hsl(var(--foreground) / 0.04);
+  }
+  .img-frame::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    box-shadow: inset 0 0 0 1px hsl(0 0% 100% / 0.04);
+    border-radius: inherit;
+  }
+  .lift {
+    transition:
+      transform 0.5s cubic-bezier(0.22, 0.65, 0.32, 1),
+      box-shadow 0.5s cubic-bezier(0.22, 0.65, 0.32, 1);
+  }
+  .lift:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 1px 0 hsl(var(--foreground) / 0.04),
+      0 24px 40px -24px hsl(var(--foreground) / 0.18);
+  }
+  .editorial-prose {
+    max-width: 68ch;
+  }
   .editorial-prose p {
-    font-size: 1.125rem;
-    line-height: 1.75;
-    color: hsl(var(--foreground) / 0.85);
-    margin-bottom: 1.5em;
+    font-size: 1.1875rem;
+    line-height: 1.78;
+    letter-spacing: -0.005em;
+    color: hsl(var(--foreground) / 0.86);
+    margin-bottom: 1.55em;
+    font-feature-settings: "ss01", "ss02", "kern", "calt";
   }
   .editorial-prose p:first-of-type::first-letter {
     font-family: var(--font-serif);
-    font-size: 4.5em;
+    font-size: 4.4em;
     float: left;
     line-height: 0.85;
     margin-right: 0.08em;
-    margin-top: 0.05em;
-    font-weight: 600;
-    color: hsl(var(--primary));
+    margin-top: 0.06em;
+    font-weight: 500;
+    color: hsl(var(--foreground));
+  }
+  .editorial-prose h2 {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    line-height: 1.18;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+    margin-top: 2.4em;
+    margin-bottom: 0.7em;
+  }
+  .editorial-prose blockquote {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.5rem;
+    line-height: 1.45;
+    border-left: 2px solid hsl(var(--foreground) / 0.15);
+    padding-left: 1.25rem;
+    margin: 2em 0;
+    color: hsl(var(--foreground));
   }
 }
 
