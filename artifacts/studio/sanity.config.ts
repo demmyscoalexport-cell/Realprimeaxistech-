@@ -3,6 +3,14 @@ import { structureTool } from "sanity/structure";
 import { visionTool } from "@sanity/vision";
 import { schemaTypes } from "./schemas";
 
+const viteAllowAllHosts = (config: Record<string, unknown>) => {
+  const server = (config.server as Record<string, unknown> | undefined) ?? {};
+  return {
+    ...config,
+    server: { ...server, allowedHosts: true, host: true },
+  };
+};
+
 export default defineConfig({
   name: "primeaxis",
   title: "PrimeAxis Tech Newsroom",
@@ -51,4 +59,5 @@ export default defineConfig({
     visionTool(),
   ],
   schema: { types: schemaTypes },
+  vite: viteAllowAllHosts,
 });
