@@ -1,4 +1,5 @@
-import { Switch, Route, Router as WouterRouter } from "wouter";
+import { Switch, Route, Router as WouterRouter, useLocation } from "wouter";
+import { AnimatePresence, motion } from "framer-motion";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -25,19 +26,30 @@ const queryClient = new QueryClient({
 });
 
 function Routes() {
+  const [loc] = useLocation();
   return (
-    <Switch>
-      <Route path="/" component={HomePage} />
-      <Route path="/article/:slug" component={ArticlePage} />
-      <Route path="/category/:slug" component={CategoryPage} />
-      <Route path="/reviews" component={ReviewsPage} />
-      <Route path="/review/:slug" component={ReviewPage} />
-      <Route path="/videos" component={VideosPage} />
-      <Route path="/author/:slug" component={AuthorPage} />
-      <Route path="/search" component={SearchPage} />
-      <Route path="/newsletters" component={NewslettersPage} />
-      <Route component={NotFound} />
-    </Switch>
+    <AnimatePresence mode="wait" initial={false}>
+      <motion.div
+        key={loc}
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -4 }}
+        transition={{ duration: 0.32, ease: [0.22, 0.65, 0.32, 1] }}
+      >
+        <Switch>
+          <Route path="/" component={HomePage} />
+          <Route path="/article/:slug" component={ArticlePage} />
+          <Route path="/category/:slug" component={CategoryPage} />
+          <Route path="/reviews" component={ReviewsPage} />
+          <Route path="/review/:slug" component={ReviewPage} />
+          <Route path="/videos" component={VideosPage} />
+          <Route path="/author/:slug" component={AuthorPage} />
+          <Route path="/search" component={SearchPage} />
+          <Route path="/newsletters" component={NewslettersPage} />
+          <Route component={NotFound} />
+        </Switch>
+      </motion.div>
+    </AnimatePresence>
   );
 }
 

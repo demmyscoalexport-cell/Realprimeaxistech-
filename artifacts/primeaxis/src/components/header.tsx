@@ -134,11 +134,45 @@ export function Header({ onOpenSearch }: { onOpenSearch: () => void }) {
                 key={item.href}
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
-                className="rounded-md px-3 py-2 text-sm font-medium hover:bg-accent"
+                className="rounded-md px-3 py-2.5 text-sm font-medium hover:bg-accent"
               >
                 {item.label}
               </Link>
             ))}
+            {cats.data && cats.data.length > 0 && (
+              <div className="mt-3 border-t hairline pt-3">
+                <div className="px-3 pb-2 font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+                  All topics
+                </div>
+                <div className="grid grid-cols-2 gap-1">
+                  {cats.data.map((c) => (
+                    <Link
+                      key={c.id}
+                      href={`/category/${c.slug}`}
+                      onClick={() => setMobileOpen(false)}
+                      className="inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-accent"
+                    >
+                      <span
+                        className="h-1.5 w-1.5 rounded-full"
+                        style={{ background: c.accentColor }}
+                      />
+                      {c.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+            <button
+              type="button"
+              onClick={() => {
+                setMobileOpen(false);
+                navigate("/newsletters");
+              }}
+              className="mt-3 inline-flex items-center justify-center gap-1.5 rounded-full bg-foreground px-4 py-2.5 text-sm font-semibold text-background"
+            >
+              Subscribe to The Axis
+              <ArrowUpRight className="h-3.5 w-3.5" />
+            </button>
           </div>
         </div>
       )}

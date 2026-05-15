@@ -2,9 +2,12 @@ import { useRoute, Link } from "wouter";
 import {
   useGetArticleBySlug,
   useGetRelatedArticles,
+  useListVideos,
   getGetArticleBySlugQueryKey,
   getGetRelatedArticlesQueryKey,
 } from "@workspace/api-client-react";
+import { VideoLightbox } from "@/components/video-lightbox";
+import { formatDuration } from "@/lib/format";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
@@ -13,6 +16,7 @@ import {
   Clock,
   Eye,
   MessageCircle,
+  Play,
   Share2,
   Sparkles,
   Twitter,
@@ -39,7 +43,9 @@ export default function ArticlePage() {
   const { data: related } = useGetRelatedArticles(slug, {
     query: { enabled: !!slug, queryKey: getGetRelatedArticlesQueryKey(slug) },
   });
+  const { data: allVideos } = useListVideos({ limit: 12 });
   const [progress, setProgress] = useState(0);
+  const [activeVideo, setActiveVideo] = useState<string | null>(null);
 
   useEffect(() => {
     const onScroll = () => {
@@ -54,6 +60,7 @@ export default function ArticlePage() {
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
+    setActiveVideo(null);
   }, [slug]);
 
   useEffect(() => {
@@ -389,6 +396,67 @@ export default function ArticlePage() {
           </Link>
         </aside>
       </div>
+
+      {/* RELATED VIDEO */}
+      {(() => {
+        const match = (allVideos ?? []).find(
+          (v) => v.category.slug === article.category.slug,
+        );
+        if (!match) return null;
+        return (
+          <section className="container-page max-w-6xl pt-16">
+            <SectionHeader
+              eyebrow="Watch"
+              title="On video"
+              description={`The ${article.category.name} desk's latest report.`}
+            />
+            <button
+              type="button"
+              onClick={() => setActiveVideo(match.slug)}
+              className="group relative block w-full overflow-hidden rounded-2xl border hairline text-left"
+            >
+              <div className="relative aspect-[21/9]">
+                <img
+                  src={withBase(match.thumbnailUrl)}
+                  alt={match.title}
+                  className="editorial-img h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.02]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+                <div className="absolute right-4 top-4 rounded-md bg-black/70 px-2 py-1 font-mono text-[10px] text-white backdrop-blur">
+                  {formatDuration(match.durationSeconds)}
+                </div>
+                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/10 backdrop-blur-md ring-1 ring-white/30 transition group-hover:scale-110 group-hover:bg-white/20">
+                    <Play className="h-6 w-6 fill-white text-white" />
+                  </div>
+                </div>
+                <div className="absolute inset-x-0 bottom-0 p-6 text-white md:p-8">
+                  <CategoryChip
+                    category={match.category}
+                    asLink={false}
+                    className="bg-white/10 text-white border-white/20"
+                  />
+                  <h3 className="mt-3 max-w-3xl font-display text-2xl font-bold leading-tight tracking-[-0.02em] text-balance md:text-3xl">
+                    {match.title}
+                  </h3>
+                </div>
+              </div>
+            </button>
+          </section>
+        );
+      })()}
+
+      <VideoLightbox
+        open={!!activeVideo}
+        onClose={() => setActiveVideo(null)}
+        title={
+          (allVideos ?? []).find((v) => v.slug === activeVideo)?.title ?? ""
+        }
+        thumbnailUrl={
+          (allVideos ?? []).find((v) => v.slug === activeVideo)
+            ?.thumbnailUrl ?? ""
+        }
+      />
 
       {/* RELATED */}
       {related && related.length > 0 && (
