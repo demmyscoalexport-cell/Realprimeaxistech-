@@ -158,3 +158,7 @@ overrides:
   # drizzle-kit uses esbuild internally on an older version that's vulnerable, this overrides it
   "@esbuild-kit/esm-loader": "npm:tsx@^4.21.0"
   esbuild: "0.27.3"
+  # glob <10.5.0 has a CLI command injection vulnerability (GHSA-5j98-mcp5-4vw2)
+  glob: "^10.5.0"
+  # prismjs <1.28.0 has a vulnerability (GHSA-x7hr-w5r2-h6wg)
+  prismjs: "^1.30.0"
