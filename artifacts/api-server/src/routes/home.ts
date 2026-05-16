@@ -5,7 +5,7 @@ import {
   listReviewSummaries,
   listVideoSummaries,
   listCategoriesWithCounts,
-} from "../lib/sanity";
+} from "../lib/cms";
 
 const router: IRouter = Router();
 

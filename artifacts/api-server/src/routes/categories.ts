@@ -8,7 +8,7 @@ import {
   listCategoriesWithCounts,
   getCategoryBySlug,
   listArticleSummaries,
-} from "../lib/sanity";
+} from "../lib/cms";
 
 const router: IRouter = Router();
 

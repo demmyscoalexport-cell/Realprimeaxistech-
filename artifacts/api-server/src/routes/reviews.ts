@@ -6,7 +6,7 @@ import {
   GetReviewBySlugParams,
   GetReviewBySlugResponse,
 } from "@workspace/api-zod";
-import { listReviewSummaries, getReviewBySlug } from "../lib/sanity";
+import { listReviewSummaries, getReviewBySlug } from "../lib/cms";
 
 const router: IRouter = Router();
 

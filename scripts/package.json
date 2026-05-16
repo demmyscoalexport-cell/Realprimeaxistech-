@@ -6,6 +6,7 @@
   "scripts": {
     "hello": "tsx ./src/hello.ts",
     "seed": "tsx ./src/seed-primeaxis.ts",
+    "migrate:sanity-to-wp": "tsx ./src/migrate-sanity-to-wp.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {

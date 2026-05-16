@@ -111,8 +111,22 @@ add_action('init', function () {
 });
 
 /* ------------------------------------------------------------------ */
-/*  4. Author profile fields → exposed via REST users                  */
+/*  4. Author profile fields — registered as user meta + REST-visible  */
+/*     (registering here makes the migration script's writes persist   */
+/*      and exposes the values on every user response.)                */
 /* ------------------------------------------------------------------ */
+add_action('init', function () {
+  $user_meta_auth = function () { return current_user_can('edit_users'); };
+  foreach (['role_title', 'twitter', 'avatar_url'] as $key) {
+    register_meta('user', $key, [
+      'type'          => 'string',
+      'single'        => true,
+      'show_in_rest'  => true,
+      'auth_callback' => $user_meta_auth,
+    ]);
+  }
+});
+
 add_filter('rest_prepare_user', function ($response, $user) {
   $data = $response->get_data();
   $data['role_title'] = get_user_meta($user->ID, 'role_title', true);
@@ -123,14 +137,37 @@ add_filter('rest_prepare_user', function ($response, $user) {
 }, 10, 2);
 
 /* ------------------------------------------------------------------ */
-/*  5. Always include _embedded by default for posts/reviews/videos    */
-/*     (saves clients an extra round-trip for author + featured image) */
+/*  5. Translate ?subcategory_slug=foo into a meta_query on REST       */
+/*     reads of posts / reviews / videos. This lets the headless       */
+/*     adapter filter by subcategory in the database, not client-side. */
 /* ------------------------------------------------------------------ */
-add_filter('rest_post_query',   'primeaxis_force_embed', 10, 2);
-add_filter('rest_review_query', 'primeaxis_force_embed', 10, 2);
-add_filter('rest_video_query',  'primeaxis_force_embed', 10, 2);
-function primeaxis_force_embed($args, $request) {
-  return $args; // _embed is requested by the client; this is a placeholder hook.
+function primeaxis_subcategory_query($args, $request) {
+  $sub = $request->get_param('subcategory_slug');
+  if (!empty($sub) && is_string($sub)) {
+    $existing = isset($args['meta_query']) && is_array($args['meta_query']) ? $args['meta_query'] : [];
+    $existing[] = [
+      'key'     => 'subcategory_slug',
+      'value'   => sanitize_title($sub),
+      'compare' => '=',
+    ];
+    $args['meta_query'] = $existing;
+  }
+  return $args;
+}
+add_filter('rest_post_query',   'primeaxis_subcategory_query', 10, 2);
+add_filter('rest_review_query', 'primeaxis_subcategory_query', 10, 2);
+add_filter('rest_video_query',  'primeaxis_subcategory_query', 10, 2);
+
+// Whitelist subcategory_slug as a known REST query param so WP doesn't strip it
+add_filter('rest_post_collection_params', 'primeaxis_add_sub_param');
+add_filter('rest_review_collection_params', 'primeaxis_add_sub_param');
+add_filter('rest_video_collection_params', 'primeaxis_add_sub_param');
+function primeaxis_add_sub_param($params) {
+  $params['subcategory_slug'] = [
+    'description' => 'Filter by primeaxis subcategory_slug post-meta.',
+    'type'        => 'string',
+  ];
+  return $params;
 }
 
 /* ------------------------------------------------------------------ */

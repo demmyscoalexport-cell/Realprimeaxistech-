@@ -19,17 +19,50 @@ function authHeaders(): Record<string, string> {
   return { Authorization: `Basic ${token}` };
 }
 
-async function wp<T>(path: string, init?: RequestInit): Promise<T> {
+async function wp<T>(path: string, init?: RequestInit & { unauth?: boolean }): Promise<T> {
   if (!WP_BASE) throw new Error("WORDPRESS_URL env var is required");
   const url = path.startsWith("http") ? path : `${WP_BASE}/wp-json${path}`;
-  const res = await fetch(url, {
-    ...init,
-    headers: { Accept: "application/json", ...authHeaders(), ...(init?.headers || {}) },
-  });
+  const headers: Record<string, string> = {
+    Accept: "application/json",
+    ...(init?.headers as Record<string, string> | undefined),
+  };
+  if (!init?.unauth) Object.assign(headers, authHeaders());
+  const res = await fetch(url, { ...init, headers });
   if (!res.ok) {
     throw new Error(`WP ${res.status} ${res.statusText} on ${url}`);
   }
   return (await res.json()) as T;
+}
+
+/* ----------------------------------------------------------- */
+/*  Category accent-color cache (refreshed every 60s)           */
+/*  Embedded WP terms don't include term meta, so we enrich     */
+/*  article/review/video summaries from this in-memory cache.   */
+/* ----------------------------------------------------------- */
+const accentCache = new Map<string, string>();
+let accentCacheLoadedAt = 0;
+const ACCENT_TTL_MS = 60_000;
+
+async function refreshAccentCache(): Promise<void> {
+  if (Date.now() - accentCacheLoadedAt < ACCENT_TTL_MS && accentCache.size) return;
+  try {
+    const cats = await wp<WpCategory[]>(
+      `/wp/v2/categories?per_page=100&hide_empty=false`,
+      { unauth: true },
+    );
+    accentCache.clear();
+    for (const c of cats) {
+      accentCache.set(c.slug, metaStr(c, "accent_color", "#888888") || "#888888");
+    }
+    accentCacheLoadedAt = Date.now();
+  } catch {
+    /* leave previous cache in place */
+  }
+}
+
+function accentFor(slug: string | undefined): string {
+  if (!slug) return "#888888";
+  return accentCache.get(slug) ?? "#888888";
 }
 
 /* ----------------------------------------------------------- */
@@ -143,10 +176,11 @@ function authorFromEmbed(p: WpPost): AuthorWithCount["slug"] extends never ? nev
 function categoryFromEmbed(p: WpPost): ArticleSummary["category"] {
   const terms = (p._embedded?.["wp:term"] ?? []).flat();
   const cat = terms.find((t) => t.taxonomy === "category");
+  const slug = cat?.slug ?? "uncategorized";
   return {
-    slug: cat?.slug ?? "uncategorized",
+    slug,
     name: cat?.name ?? "Uncategorized",
-    accentColor: "#888888", // Filled in by listCategoriesWithCounts cache
+    accentColor: accentFor(slug),
   };
 }
 
@@ -192,36 +226,56 @@ export async function listArticleSummaries(opts: {
   offset?: number;
   orderBy?: "published" | "views" | "comments";
 } = {}): Promise<ArticleSummary[]> {
+  await refreshAccentCache();
   const limit = opts.limit ?? 20;
-  const page = Math.floor((opts.offset ?? 0) / limit) + 1;
+  const offset = opts.offset ?? 0;
 
   const params = new URLSearchParams({
     per_page: String(limit),
-    page: String(page),
+    offset: String(offset),
     _embed: "1",
     orderby: "date",
     order: "desc",
   });
 
   if (opts.categorySlug) {
-    const cats = await wp<WpCategory[]>(`/wp/v2/categories?slug=${encodeURIComponent(opts.categorySlug)}`);
-    if (cats[0]) params.set("categories", String(cats[0].id));
+    const cats = await wp<WpCategory[]>(
+      `/wp/v2/categories?slug=${encodeURIComponent(opts.categorySlug)}`,
+      { unauth: true },
+    );
+    if (!cats[0]) return [];
+    params.set("categories", String(cats[0].id));
   }
   if (opts.tag) {
-    const tags = await wp<{ id: number }[]>(`/wp/v2/tags?slug=${encodeURIComponent(opts.tag)}`);
-    if (tags[0]) params.set("tags", String(tags[0].id));
+    const tags = await wp<{ id: number }[]>(
+      `/wp/v2/tags?slug=${encodeURIComponent(opts.tag)}`,
+      { unauth: true },
+    );
+    if (!tags[0]) return [];
+    params.set("tags", String(tags[0].id));
   }
   if (opts.authorSlug) {
-    const users = await wp<WpUser[]>(`/wp/v2/users?slug=${encodeURIComponent(opts.authorSlug)}`);
-    if (users[0]) params.set("author", String(users[0].id));
+    const users = await wp<WpUser[]>(
+      `/wp/v2/users?slug=${encodeURIComponent(opts.authorSlug)}`,
+      { unauth: true },
+    );
+    if (!users[0]) return [];
+    params.set("author", String(users[0].id));
   }
-  if (opts.subcategorySlug) params.set("meta_key", "subcategory_slug"); // best-effort; relies on WP query loop
+  if (opts.subcategorySlug) {
+    // Plugin translates this query param into a meta_query; we still
+    // post-filter as a defensive guard if the plugin is missing.
+    params.set("subcategory_slug", opts.subcategorySlug);
+  }
   if (opts.excludeSlug) {
-    const excl = await wp<WpPost[]>(`/wp/v2/posts?slug=${encodeURIComponent(opts.excludeSlug)}`);
+    const excl = await wp<WpPost[]>(
+      `/wp/v2/posts?slug=${encodeURIComponent(opts.excludeSlug)}`,
+      { unauth: true },
+    );
     if (excl[0]) params.set("exclude", String(excl[0].id));
   }
 
-  let posts = await wp<WpPost[]>(`/wp/v2/posts?${params.toString()}`);
+  let posts = await wp<WpPost[]>(`/wp/v2/posts?${params.toString()}`, { unauth: true });
   if (opts.subcategorySlug) {
     posts = posts.filter((p) => metaStr(p, "subcategory_slug") === opts.subcategorySlug);
   }
@@ -357,12 +411,21 @@ function toAuthorWithCount(u: WpUser, articleCount = 0): AuthorWithCount {
 }
 
 export async function listAuthorsWithCounts(): Promise<AuthorWithCount[]> {
-  const users = await wp<WpUser[]>(`/wp/v2/users?per_page=100&orderby=name&order=asc`);
+  // `who=authors` restricts to users with publish_posts capability and,
+  // when called unauthenticated, WP only returns those with at least one
+  // published post — exactly what we want on a public /authors endpoint.
+  const users = await wp<WpUser[]>(
+    `/wp/v2/users?per_page=100&orderby=name&order=asc&who=authors`,
+    { unauth: true },
+  );
   return users.map((u) => toAuthorWithCount(u));
 }
 
 export async function getAuthorBySlug(slug: string): Promise<AuthorWithCount | null> {
-  const users = await wp<WpUser[]>(`/wp/v2/users?slug=${encodeURIComponent(slug)}`);
+  const users = await wp<WpUser[]>(
+    `/wp/v2/users?slug=${encodeURIComponent(slug)}&who=authors`,
+    { unauth: true },
+  );
   return users[0] ? toAuthorWithCount(users[0]) : null;
 }
 

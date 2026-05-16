@@ -3,7 +3,7 @@ import {
   ListVideosQueryParams,
   ListVideosResponse,
 } from "@workspace/api-zod";
-import { listVideoSummaries } from "../lib/sanity";
+import { listVideoSummaries } from "../lib/cms";
 
 const router: IRouter = Router();
 

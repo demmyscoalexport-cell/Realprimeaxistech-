@@ -17,7 +17,7 @@ import {
   listArticleSummaries,
   searchArticleSummaries,
   getArticleBySlug,
-} from "../lib/sanity";
+} from "../lib/cms";
 
 const router: IRouter = Router();
 
