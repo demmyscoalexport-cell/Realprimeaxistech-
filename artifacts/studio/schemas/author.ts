@@ -30,7 +30,6 @@ export const author = defineType({
       title: "Avatar",
       type: "image",
       options: { hotspot: true },
-      validation: (r) => r.required(),
     }),
     defineField({
       name: "bio",
