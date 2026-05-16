@@ -3,7 +3,7 @@ import { createClient } from "@sanity/client";
 import { readdirSync } from "node:fs";
 import { join, basename, extname } from "node:path";
 
-const SEED_DIR = "artifacts/primeaxis/public/seed";
+const SEED_DIR = "/home/runner/workspace/artifacts/primeaxis/public/seed";
 const FOLDER = "primeaxis/seed";
 
 if (!process.env.CLOUDINARY_URL) {
