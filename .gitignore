@@ -47,3 +47,10 @@ Thumbs.db
 # Replit
 .cache/
 .local/
+
+# Replit
+attached_assets/
+.replit-artifact/
+/tmp/
+*.log
+.DS_Store
