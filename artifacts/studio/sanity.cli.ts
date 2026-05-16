@@ -5,6 +5,9 @@ export default defineCliConfig({
     projectId: "jyppkgsk",
     dataset: "production",
   },
+  project: {
+    basePath: "/studio",
+  },
   vite: (config) => {
     return {
       ...config,
