@@ -39,10 +39,9 @@ export const article = defineType({
       type: "image",
       options: { hotspot: true },
       fields: [
-        { name: "alt", type: "string", title: "Alt text", validation: (r) => r.required() },
+        { name: "alt", type: "string", title: "Alt text" },
         { name: "credit", type: "string", title: "Photo credit" },
       ],
-      validation: (r) => r.required(),
     }),
     defineField({
       name: "category",
@@ -83,7 +82,6 @@ export const article = defineType({
       name: "body",
       title: "Body",
       type: "blockContent",
-      validation: (r) => r.required(),
     }),
     defineField({
       name: "keyTakeaways",
