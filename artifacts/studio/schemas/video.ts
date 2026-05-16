@@ -41,7 +41,6 @@ export const video = defineType({
       title: "Video URL",
       type: "url",
       description: "Direct MP4 URL or YouTube / Vimeo embed URL. Switch to Mux later for HLS streaming.",
-      validation: (r) => r.required(),
     }),
     defineField({
       name: "duration",
