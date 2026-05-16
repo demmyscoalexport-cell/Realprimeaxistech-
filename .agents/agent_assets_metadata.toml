@@ -149,3 +149,9 @@ id = "qTS_sol-lSH2Nttxbaqc1"
 uri = "file://attached_assets/brand/BRAND_GUIDE.md"
 type = "text"
 title = "Brand guide"
+
+[[outputs]]
+id = "pQBXeAM5GWFkugwXndSmd"
+uri = "file://exports/primeaxis-tech-project.tar.gz"
+type = "unspecified"
+title = "PrimeAxis Tech — full project source (58 MB)"
