@@ -1078,7 +1078,10 @@ async function main() {
   process.exit(0);
 }
 
-main().catch((e) => {
-  console.error(e);
-  process.exit(1);
-});
+const isMain = import.meta.url === `file://${process.argv[1]}`;
+if (isMain) {
+  main().catch((e) => {
+    console.error(e);
+    process.exit(1);
+  });
+}

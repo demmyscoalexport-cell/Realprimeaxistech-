@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "@sanity/client": "^7.22.0",
-    "@workspace/db": "workspace:*"
+    "@workspace/db": "workspace:*",
+    "cloudinary": "^2.10.0"
   },
   "devDependencies": {
     "@types/node": "catalog:",
