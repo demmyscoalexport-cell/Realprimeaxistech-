@@ -155,3 +155,9 @@ id = "pQBXeAM5GWFkugwXndSmd"
 uri = "file://exports/primeaxis-tech-project.tar.gz"
 type = "unspecified"
 title = "PrimeAxis Tech — full project source (58 MB)"
+
+[[outputs]]
+id = "xuJ0BzMoUlA-z6Lf6HYW7"
+uri = "file://exports/primeaxis-tech-FULL-20260516-051926.tar.gz"
+type = "unspecified"
+title = "PrimeAxis Tech — EVERYTHING (source + Sanity content + Cloudinary URLs + brand + restore guide, 58 MB)"
