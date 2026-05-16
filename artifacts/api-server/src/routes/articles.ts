@@ -1,11 +1,4 @@
 import { Router, type IRouter } from "express";
-import { eq } from "drizzle-orm";
-import {
-  db,
-  articlesTable,
-  categoriesTable,
-  authorsTable,
-} from "@workspace/db";
 import {
   ListArticlesQueryParams,
   ListArticlesResponse,
@@ -23,7 +16,8 @@ import {
 import {
   listArticleSummaries,
   searchArticleSummaries,
-} from "./articles-helpers";
+  getArticleBySlug,
+} from "../lib/sanity";
 
 const router: IRouter = Router();
 
@@ -84,52 +78,12 @@ router.get("/articles/:slug", async (req, res): Promise<void> => {
     res.status(400).json({ error: params.error.message });
     return;
   }
-  const [row] = await db
-    .select()
-    .from(articlesTable)
-    .innerJoin(
-      categoriesTable,
-      eq(articlesTable.categoryId, categoriesTable.id),
-    )
-    .innerJoin(authorsTable, eq(articlesTable.authorId, authorsTable.id))
-    .where(eq(articlesTable.slug, params.data.slug));
-
-  if (!row) {
+  const article = await getArticleBySlug(params.data.slug);
+  if (!article) {
     res.status(404).json({ error: "Article not found" });
     return;
   }
-  const a = row.articles;
-  const c = row.categories;
-  const au = row.authors;
-
-  res.json(
-    GetArticleBySlugResponse.parse({
-      id: a.id,
-      slug: a.slug,
-      title: a.title,
-      subtitle: a.subtitle,
-      excerpt: a.excerpt,
-      heroImageUrl: a.heroImageUrl,
-      category: { slug: c.slug, name: c.name, accentColor: c.accentColor },
-      author: {
-        slug: au.slug,
-        name: au.name,
-        avatarUrl: au.avatarUrl,
-        role: au.role,
-      },
-      publishedAt: a.publishedAt.toISOString(),
-      updatedAt: a.updatedAt.toISOString(),
-      readingMinutes: a.readingMinutes,
-      tags: a.tags,
-      body: a.body,
-      keyTakeaways: a.keyTakeaways,
-      aiSummary: a.aiSummary,
-      viewCount: a.viewCount,
-      commentCount: a.commentCount,
-      isBreaking: a.isBreaking,
-      isFeature: a.isFeature,
-    }),
-  );
+  res.json(GetArticleBySlugResponse.parse(article));
 });
 
 router.get("/articles/:slug/related", async (req, res): Promise<void> => {
@@ -138,17 +92,14 @@ router.get("/articles/:slug/related", async (req, res): Promise<void> => {
     res.status(400).json({ error: params.error.message });
     return;
   }
-  const [a] = await db
-    .select()
-    .from(articlesTable)
-    .where(eq(articlesTable.slug, params.data.slug));
-  if (!a) {
+  const article = await getArticleBySlug(params.data.slug);
+  if (!article) {
     res.json(GetRelatedArticlesResponse.parse([]));
     return;
   }
   const rows = await listArticleSummaries({
-    categoryId: a.categoryId,
-    excludeId: a.id,
+    categorySlug: article.category.slug,
+    excludeSlug: article.slug,
     limit: 6,
   });
   res.json(GetRelatedArticlesResponse.parse(rows));
