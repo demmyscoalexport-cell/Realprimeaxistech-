@@ -105,10 +105,18 @@ AI_INTEGRATIONS_ANTHROPIC_API_KEY=
 AI_INTEGRATIONS_ANTHROPIC_BASE_URL=https://api.anthropic.com
 EOF
 
-# 5. BRAND ASSETS ------------------------------------------------------------
-echo "▶ [5/6] Bundling brand assets…"
+# 5. BRAND ASSETS + ONE-COMMAND BOOTSTRAP -----------------------------------
+echo "▶ [5/6] Bundling brand assets + bootstrap scripts…"
 if [ -d "$ROOT/attached_assets/brand" ]; then
   cp -r "$ROOT/attached_assets/brand" "$STAGE/brand"
+fi
+# Place bootstrap scripts inside source/ so users `cd source && ./start.sh`
+if [ -f "$ROOT/scripts/templates/start.ps1" ]; then
+  cp "$ROOT/scripts/templates/start.ps1" "$STAGE/source/start.ps1"
+fi
+if [ -f "$ROOT/scripts/templates/start.sh" ]; then
+  cp "$ROOT/scripts/templates/start.sh" "$STAGE/source/start.sh"
+  chmod +x "$STAGE/source/start.sh"
 fi
 
 # 6. RESTORE INSTRUCTIONS ----------------------------------------------------
@@ -126,32 +134,35 @@ Generated: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
 - \`.env.template\` — required env vars
 - \`brand/\` — logo SVGs, favicon, brand guide
 
-## Restore on a fresh machine
+## ⚡ One-command restore (recommended)
+
+After unpacking the tarball:
+
+**Windows / VS Code (PowerShell):**
+\`\`\`powershell
+cd source
+powershell -ExecutionPolicy Bypass -File .\start.ps1
+\`\`\`
+
+**macOS / Linux / WSL / Git Bash:**
+\`\`\`bash
+cd source && bash start.sh
+\`\`\`
+
+The bootstrap script will: check Node/pnpm → copy & open .env → load env → \`pnpm install\` → push DB schema → optionally restore Sanity content → launch all three dev servers.
+
+## Manual restore (if you prefer step-by-step)
 
 \`\`\`bash
-# 1. unpack
 tar -xzf primeaxis-tech-FULL-*.tar.gz
-cd _stage-*/source
-
-# 2. install deps
+cd source
 pnpm install
-
-# 3. wire env
-cp ../.env.template .env
-# edit .env — paste real secrets
-
-# 4. push DB schema (if using a fresh Postgres)
+cp ../.env.template .env       # edit and paste real secrets
 pnpm --filter @workspace/db run push
-
-# 5. (optional) restore Sanity content into a fresh dataset
-# Install Sanity CLI: npm i -g @sanity/cli
-# sanity dataset create production
-sanity dataset import ../sanity/dataset.ndjson production --replace
-
-# 6. run dev
+sanity dataset import ../sanity/dataset.ndjson production --replace   # optional
 pnpm --filter @workspace/api-server run dev   # port 5000
-pnpm --filter @workspace/primeaxis run dev    # frontend
-pnpm --filter @workspace/studio run dev       # Sanity studio
+pnpm --filter @workspace/primeaxis  run dev   # frontend
+pnpm --filter @workspace/studio     run dev   # Sanity studio (port 3333)
 \`\`\`
 
 ## Where things live
