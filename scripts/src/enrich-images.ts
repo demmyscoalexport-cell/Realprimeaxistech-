@@ -123,35 +123,56 @@ type Job = {
 };
 
 async function main() {
+  const skipExisting = process.env.FORCE !== "1";
+  const hasAi = (u?: string) => !!u && u.includes("/primeaxis/ai/");
+
   const articles = await sanity.fetch<
     {
       _id: string;
       title: string;
       slug: { current: string };
+      heroImageUrl?: string;
       category?: { name: string };
     }[]
-  >(`*[_type=="article"]{_id,title,slug,"category":category->{name}}`);
+  >(
+    `*[_type=="article"]{_id,title,slug,heroImageUrl,"category":category->{name}}`,
+  );
 
   const reviews = await sanity.fetch<
     {
       _id: string;
       productName: string;
       slug: { current: string };
+      heroImageUrl?: string;
       category?: { name: string };
     }[]
-  >(`*[_type=="review"]{_id,productName,slug,"category":category->{name}}`);
+  >(
+    `*[_type=="review"]{_id,productName,slug,heroImageUrl,"category":category->{name}}`,
+  );
 
   const videos = await sanity.fetch<
-    { _id: string; title: string; slug: { current: string } }[]
-  >(`*[_type=="video"]{_id,title,slug}`);
+    {
+      _id: string;
+      title: string;
+      slug: { current: string };
+      thumbnailUrl?: string;
+    }[]
+  >(`*[_type=="video"]{_id,title,slug,thumbnailUrl}`);
 
   const authors = await sanity.fetch<
-    { _id: string; name: string; slug: { current: string }; role?: string }[]
-  >(`*[_type=="author"]{_id,name,slug,role}`);
+    {
+      _id: string;
+      name: string;
+      slug: { current: string };
+      role?: string;
+      avatarUrl?: string;
+    }[]
+  >(`*[_type=="author"]{_id,name,slug,role,avatarUrl}`);
 
   const jobs: Job[] = [];
 
   for (const a of articles) {
+    if (skipExisting && hasAi(a.heroImageUrl)) continue;
     jobs.push({
       _id: a._id,
       type: "article",
@@ -162,6 +183,7 @@ async function main() {
     });
   }
   for (const r of reviews) {
+    if (skipExisting && hasAi(r.heroImageUrl)) continue;
     jobs.push({
       _id: r._id,
       type: "review",
@@ -172,6 +194,7 @@ async function main() {
     });
   }
   for (const v of videos) {
+    if (skipExisting && hasAi(v.thumbnailUrl)) continue;
     jobs.push({
       _id: v._id,
       type: "video",
@@ -182,6 +205,7 @@ async function main() {
     });
   }
   for (const au of authors) {
+    if (skipExisting && hasAi(au.avatarUrl)) continue;
     jobs.push({
       _id: au._id,
       type: "author",
@@ -196,7 +220,7 @@ async function main() {
 
   let done = 0;
   let failed = 0;
-  const concurrency = 4;
+  const concurrency = Number(process.env.CONCURRENCY ?? "6");
   const queue = [...jobs];
 
   async function worker(id: number) {

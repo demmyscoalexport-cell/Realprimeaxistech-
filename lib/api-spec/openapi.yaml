@@ -52,6 +52,9 @@ paths:
           name: category
           schema: { type: string }
         - in: query
+          name: subcategory
+          schema: { type: string }
+        - in: query
           name: tag
           schema: { type: string }
         - in: query
@@ -371,7 +374,7 @@ components:
 
     Category:
       type: object
-      required: [id, slug, name, description, accentColor, articleCount]
+      required: [id, slug, name, description, accentColor, articleCount, subcategories]
       properties:
         id: { type: integer }
         slug: { type: string }
@@ -379,6 +382,17 @@ components:
         description: { type: string }
         accentColor: { type: string }
         articleCount: { type: integer }
+        subcategories:
+          type: array
+          items: { $ref: "#/components/schemas/Subcategory" }
+
+    Subcategory:
+      type: object
+      required: [name, slug, description]
+      properties:
+        name: { type: string }
+        slug: { type: string }
+        description: { type: string }
 
     CategoryDetail:
       type: object
@@ -398,6 +412,7 @@ components:
         - excerpt
         - heroImageUrl
         - category
+        - subcategorySlug
         - author
         - publishedAt
         - readingMinutes
@@ -413,6 +428,7 @@ components:
         excerpt: { type: string }
         heroImageUrl: { type: string }
         category: { $ref: "#/components/schemas/CategoryRef" }
+        subcategorySlug: { type: ["string", "null"] }
         author: { $ref: "#/components/schemas/AuthorRef" }
         publishedAt: { type: string, format: date-time }
         readingMinutes: { type: integer }

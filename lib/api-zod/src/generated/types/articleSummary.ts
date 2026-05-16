@@ -15,6 +15,8 @@ export interface ArticleSummary {
   excerpt: string;
   heroImageUrl: string;
   category: CategoryRef;
+  /** @nullable */
+  subcategorySlug: string | null;
   author: AuthorRef;
   publishedAt: Date;
   readingMinutes: number;

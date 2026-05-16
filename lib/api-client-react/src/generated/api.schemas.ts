@@ -46,6 +46,8 @@ export interface ArticleSummary {
   excerpt: string;
   heroImageUrl: string;
   category: CategoryRef;
+  /** @nullable */
+  subcategorySlug: string | null;
   author: AuthorRef;
   publishedAt: string;
   readingMinutes: number;
@@ -61,6 +63,12 @@ export interface AuthorDetail {
   articles: ArticleSummary[];
 }
 
+export interface Subcategory {
+  name: string;
+  slug: string;
+  description: string;
+}
+
 export interface Category {
   id: number;
   slug: string;
@@ -68,6 +76,7 @@ export interface Category {
   description: string;
   accentColor: string;
   articleCount: number;
+  subcategories: Subcategory[];
 }
 
 export interface CategoryDetail {
@@ -212,6 +221,7 @@ export interface HomeFeed {
 
 export type ListArticlesParams = {
 category?: string;
+subcategory?: string;
 tag?: string;
 /**
  * @minimum 1

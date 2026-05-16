@@ -31,6 +31,7 @@ export const GetHomeFeedResponse = zod.object({
   "name": zod.string(),
   "accentColor": zod.string()
 }),
+  "subcategorySlug": zod.string().nullable(),
   "author": zod.object({
   "slug": zod.string(),
   "name": zod.string(),
@@ -56,6 +57,7 @@ export const GetHomeFeedResponse = zod.object({
   "name": zod.string(),
   "accentColor": zod.string()
 }),
+  "subcategorySlug": zod.string().nullable(),
   "author": zod.object({
   "slug": zod.string(),
   "name": zod.string(),
@@ -81,6 +83,7 @@ export const GetHomeFeedResponse = zod.object({
   "name": zod.string(),
   "accentColor": zod.string()
 }),
+  "subcategorySlug": zod.string().nullable(),
   "author": zod.object({
   "slug": zod.string(),
   "name": zod.string(),
@@ -106,6 +109,7 @@ export const GetHomeFeedResponse = zod.object({
   "name": zod.string(),
   "accentColor": zod.string()
 }),
+  "subcategorySlug": zod.string().nullable(),
   "author": zod.object({
   "slug": zod.string(),
   "name": zod.string(),
@@ -147,6 +151,7 @@ export const GetHomeFeedResponse = zod.object({
   "name": zod.string(),
   "accentColor": zod.string()
 }),
+  "subcategorySlug": zod.string().nullable(),
   "author": zod.object({
   "slug": zod.string(),
   "name": zod.string(),
@@ -172,6 +177,7 @@ export const GetHomeFeedResponse = zod.object({
   "name": zod.string(),
   "accentColor": zod.string()
 }),
+  "subcategorySlug": zod.string().nullable(),
   "author": zod.object({
   "slug": zod.string(),
   "name": zod.string(),
@@ -212,6 +218,7 @@ export const GetHomeFeedResponse = zod.object({
   "name": zod.string(),
   "accentColor": zod.string()
 }),
+  "subcategorySlug": zod.string().nullable(),
   "author": zod.object({
   "slug": zod.string(),
   "name": zod.string(),
@@ -237,6 +244,7 @@ export const GetHomeFeedResponse = zod.object({
   "name": zod.string(),
   "accentColor": zod.string()
 }),
+  "subcategorySlug": zod.string().nullable(),
   "author": zod.object({
   "slug": zod.string(),
   "name": zod.string(),
@@ -262,6 +270,7 @@ export const GetHomeFeedResponse = zod.object({
   "name": zod.string(),
   "accentColor": zod.string()
 }),
+  "subcategorySlug": zod.string().nullable(),
   "author": zod.object({
   "slug": zod.string(),
   "name": zod.string(),
@@ -287,6 +296,7 @@ export const GetHomeFeedResponse = zod.object({
   "name": zod.string(),
   "accentColor": zod.string()
 }),
+  "subcategorySlug": zod.string().nullable(),
   "author": zod.object({
   "slug": zod.string(),
   "name": zod.string(),
@@ -307,7 +317,12 @@ export const GetHomeFeedResponse = zod.object({
   "name": zod.string(),
   "description": zod.string(),
   "accentColor": zod.string(),
-  "articleCount": zod.number()
+  "articleCount": zod.number(),
+  "subcategories": zod.array(zod.object({
+  "name": zod.string(),
+  "slug": zod.string(),
+  "description": zod.string()
+}))
 }))
 })
 
@@ -320,6 +335,7 @@ export const listArticlesQueryOffsetMin = 0;
 
 export const ListArticlesQueryParams = zod.object({
   "category": zod.coerce.string().optional(),
+  "subcategory": zod.coerce.string().optional(),
   "tag": zod.coerce.string().optional(),
   "limit": zod.coerce.number().min(1).max(listArticlesQueryLimitMax).optional(),
   "offset": zod.coerce.number().min(listArticlesQueryOffsetMin).optional()
@@ -336,6 +352,7 @@ export const ListArticlesResponseItem = zod.object({
   "name": zod.string(),
   "accentColor": zod.string()
 }),
+  "subcategorySlug": zod.string().nullable(),
   "author": zod.object({
   "slug": zod.string(),
   "name": zod.string(),
@@ -372,6 +389,7 @@ export const ListTrendingArticlesResponseItem = zod.object({
   "name": zod.string(),
   "accentColor": zod.string()
 }),
+  "subcategorySlug": zod.string().nullable(),
   "author": zod.object({
   "slug": zod.string(),
   "name": zod.string(),
@@ -408,6 +426,7 @@ export const ListMostDiscussedArticlesResponseItem = zod.object({
   "name": zod.string(),
   "accentColor": zod.string()
 }),
+  "subcategorySlug": zod.string().nullable(),
   "author": zod.object({
   "slug": zod.string(),
   "name": zod.string(),
@@ -445,6 +464,7 @@ export const SearchArticlesResponseItem = zod.object({
   "name": zod.string(),
   "accentColor": zod.string()
 }),
+  "subcategorySlug": zod.string().nullable(),
   "author": zod.object({
   "slug": zod.string(),
   "name": zod.string(),
@@ -518,6 +538,7 @@ export const GetRelatedArticlesResponseItem = zod.object({
   "name": zod.string(),
   "accentColor": zod.string()
 }),
+  "subcategorySlug": zod.string().nullable(),
   "author": zod.object({
   "slug": zod.string(),
   "name": zod.string(),
@@ -541,7 +562,12 @@ export const ListCategoriesResponseItem = zod.object({
   "name": zod.string(),
   "description": zod.string(),
   "accentColor": zod.string(),
-  "articleCount": zod.number()
+  "articleCount": zod.number(),
+  "subcategories": zod.array(zod.object({
+  "name": zod.string(),
+  "slug": zod.string(),
+  "description": zod.string()
+}))
 })
 export const ListCategoriesResponse = zod.array(ListCategoriesResponseItem)
 
@@ -557,7 +583,12 @@ export const GetCategoryBySlugResponse = zod.object({
   "name": zod.string(),
   "description": zod.string(),
   "accentColor": zod.string(),
-  "articleCount": zod.number()
+  "articleCount": zod.number(),
+  "subcategories": zod.array(zod.object({
+  "name": zod.string(),
+  "slug": zod.string(),
+  "description": zod.string()
+}))
 }),
   "articles": zod.array(zod.object({
   "id": zod.number(),
@@ -570,6 +601,7 @@ export const GetCategoryBySlugResponse = zod.object({
   "name": zod.string(),
   "accentColor": zod.string()
 }),
+  "subcategorySlug": zod.string().nullable(),
   "author": zod.object({
   "slug": zod.string(),
   "name": zod.string(),
@@ -626,6 +658,7 @@ export const GetAuthorBySlugResponse = zod.object({
   "name": zod.string(),
   "accentColor": zod.string()
 }),
+  "subcategorySlug": zod.string().nullable(),
   "author": zod.object({
   "slug": zod.string(),
   "name": zod.string(),

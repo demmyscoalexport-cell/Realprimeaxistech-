@@ -40,12 +40,19 @@ function imageUrl(img: unknown, fallback = ""): string {
   return fallback;
 }
 
+type SanitySubcategory = {
+  name: string;
+  slug: string;
+  description?: string;
+};
+
 type SanityCategory = {
   _id: string;
   slug: string;
   name: string;
   description?: string;
   accentColor?: string;
+  subcategories?: SanitySubcategory[];
 };
 type SanityAuthor = {
   _id: string;
@@ -58,7 +65,7 @@ type SanityAuthor = {
   avatarUrl?: string;
 };
 
-const CATEGORY_PROJ = `_id, "slug": slug.current, name, description, accentColor`;
+const CATEGORY_PROJ = `_id, "slug": slug.current, name, description, accentColor, subcategories`;
 const AUTHOR_PROJ = `_id, "slug": slug.current, name, role, bio, twitter, avatar, avatarUrl`;
 
 export type ArticleSummary = {
@@ -68,6 +75,7 @@ export type ArticleSummary = {
   excerpt: string;
   heroImageUrl: string;
   category: { slug: string; name: string; accentColor: string };
+  subcategorySlug: string | null;
   author: { slug: string; name: string; avatarUrl: string; role: string };
   publishedAt: string;
   readingMinutes: number;
@@ -90,6 +98,7 @@ type RawArticleSummary = {
   tags?: string[];
   isBreaking?: boolean;
   isFeature?: boolean;
+  subcategorySlug?: string | null;
   category?: SanityCategory | null;
   author?: SanityAuthor | null;
 };
@@ -106,6 +115,7 @@ const ARTICLE_SUMMARY_PROJ = `
   tags,
   isBreaking,
   isFeature,
+  subcategorySlug,
   "category": category->{ ${CATEGORY_PROJ} },
   "author": author->{ ${AUTHOR_PROJ} }
 `;
@@ -122,6 +132,7 @@ function toArticleSummary(r: RawArticleSummary): ArticleSummary {
       name: r.category?.name ?? "Uncategorized",
       accentColor: r.category?.accentColor ?? "#888888",
     },
+    subcategorySlug: r.subcategorySlug ?? null,
     author: {
       slug: r.author?.slug ?? "staff",
       name: r.author?.name ?? "PrimeAxis Staff",
@@ -142,6 +153,7 @@ export async function listArticleSummaries(opts: {
   categorySlug?: string;
   tag?: string;
   authorSlug?: string;
+  subcategorySlug?: string;
   excludeSlug?: string;
   limit?: number;
   offset?: number;
@@ -152,6 +164,10 @@ export async function listArticleSummaries(opts: {
   if (opts.categorySlug) {
     conditions.push(`category->slug.current == $categorySlug`);
     params.categorySlug = opts.categorySlug;
+  }
+  if (opts.subcategorySlug) {
+    conditions.push(`subcategorySlug == $subcategorySlug`);
+    params.subcategorySlug = opts.subcategorySlug;
   }
   if (opts.tag) {
     conditions.push(`$tag in tags`);
@@ -291,6 +307,8 @@ export async function getArticleBySlug(
   };
 }
 
+export type Subcategory = { name: string; slug: string; description: string };
+
 export type CategoryWithCount = {
   id: number;
   slug: string;
@@ -298,7 +316,18 @@ export type CategoryWithCount = {
   description: string;
   accentColor: string;
   articleCount: number;
+  subcategories: Subcategory[];
 };
+
+function toSubs(s?: SanitySubcategory[] | null): Subcategory[] {
+  return (s ?? [])
+    .filter((x) => x && x.slug && x.name)
+    .map((x) => ({
+      name: x.name,
+      slug: x.slug,
+      description: x.description ?? "",
+    }));
+}
 
 export async function listCategoriesWithCounts(): Promise<CategoryWithCount[]> {
   const groq = `*[_type == "category" && defined(slug.current)] | order(order asc, name asc) {
@@ -315,6 +344,7 @@ export async function listCategoriesWithCounts(): Promise<CategoryWithCount[]> {
     description: c.description ?? "",
     accentColor: c.accentColor ?? "#888888",
     articleCount: c.articleCount ?? 0,
+    subcategories: toSubs(c.subcategories),
   }));
 }
 
@@ -336,6 +366,7 @@ export async function getCategoryBySlug(
     description: r.description ?? "",
     accentColor: r.accentColor ?? "#888888",
     articleCount: r.articleCount ?? 0,
+    subcategories: toSubs(r.subcategories),
   };
 }
 

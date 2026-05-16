@@ -154,7 +154,7 @@ async function main() {
 
   let done = 0;
   let failed = 0;
-  const concurrency = 3;
+  const concurrency = Number(process.env.CONCURRENCY ?? "8");
   const queue = [...toDo];
 
   async function worker(id: number) {

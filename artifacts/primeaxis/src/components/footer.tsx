@@ -137,12 +137,23 @@ export function Footer() {
           <h4 className="mb-4 font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
             Newsroom
           </h4>
-          <ul className="space-y-2.5 text-sm text-foreground/70">
-            <li>About PrimeAxis</li>
-            <li>Editorial Standards</li>
-            <li>Ethics &amp; Corrections</li>
-            <li>Press Inquiries</li>
-            <li>Careers</li>
+          <ul className="space-y-2.5 text-sm">
+            {[
+              { href: "/about", label: "About PrimeAxis" },
+              { href: "/about", label: "Editorial Standards" },
+              { href: "/contact", label: "Ethics & Corrections" },
+              { href: "/contact", label: "Press Inquiries" },
+              { href: "/contact", label: "Careers" },
+            ].map((l, i) => (
+              <li key={i}>
+                <Link
+                  href={l.href}
+                  className="text-foreground/70 transition hover:text-foreground"
+                >
+                  {l.label}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
       </div>
@@ -152,9 +163,15 @@ export function Footer() {
             © {new Date().getFullYear()} PrimeAxis Tech. The future, reported.
           </div>
           <div className="flex items-center gap-5">
-            <span>Privacy</span>
-            <span>Terms</span>
-            <span>Cookies</span>
+            <Link href="/privacy" className="hover:text-foreground">
+              Privacy
+            </Link>
+            <Link href="/terms" className="hover:text-foreground">
+              Terms
+            </Link>
+            <Link href="/privacy" className="hover:text-foreground">
+              Cookies
+            </Link>
             <span className="font-mono uppercase tracking-[0.2em]">v1.0</span>
           </div>
         </div>

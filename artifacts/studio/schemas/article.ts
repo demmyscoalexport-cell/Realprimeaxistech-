@@ -79,6 +79,13 @@ export const article = defineType({
       initialValue: 5,
     }),
     defineField({
+      name: "subcategorySlug",
+      title: "Subcategory",
+      type: "string",
+      description:
+        "Slug of one of the parent category's subcategories (e.g. 'llms').",
+    }),
+    defineField({
       name: "tags",
       title: "Tags",
       type: "array",

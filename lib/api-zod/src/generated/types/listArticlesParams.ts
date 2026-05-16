@@ -8,6 +8,7 @@
 
 export type ListArticlesParams = {
 category?: string;
+subcategory?: string;
 tag?: string;
 /**
  * @minimum 1

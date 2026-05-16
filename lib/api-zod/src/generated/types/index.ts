@@ -32,4 +32,5 @@ export * from './reviewRating';
 export * from './reviewSection';
 export * from './reviewSummary';
 export * from './searchArticlesParams';
+export * from './subcategory';
 export * from './video';

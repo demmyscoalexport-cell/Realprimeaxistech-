@@ -29,6 +29,7 @@ router.get("/articles", async (req, res): Promise<void> => {
   }
   const rows = await listArticleSummaries({
     categorySlug: q.data.category,
+    subcategorySlug: q.data.subcategory,
     tag: q.data.tag,
     limit: q.data.limit,
     offset: q.data.offset,

@@ -14,6 +14,7 @@ import VideosPage from "@/pages/videos";
 import AuthorPage from "@/pages/author";
 import SearchPage from "@/pages/search";
 import NewslettersPage from "@/pages/newsletters";
+import { AboutPage, ContactPage, PrivacyPage, TermsPage } from "@/pages/static-pages";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient({
@@ -46,6 +47,12 @@ function Routes() {
           <Route path="/author/:slug" component={AuthorPage} />
           <Route path="/search" component={SearchPage} />
           <Route path="/newsletters" component={NewslettersPage} />
+          <Route path="/about" component={AboutPage} />
+          <Route path="/contact" component={ContactPage} />
+          <Route path="/privacy" component={PrivacyPage} />
+          <Route path="/terms" component={TermsPage} />
+          <Route path="/ethics" component={AboutPage} />
+          <Route path="/careers" component={ContactPage} />
           <Route component={NotFound} />
         </Switch>
       </motion.div>

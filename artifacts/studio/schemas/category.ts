@@ -41,6 +41,27 @@ export const category = defineType({
       type: "number",
       initialValue: 0,
     }),
+    defineField({
+      name: "subcategories",
+      title: "Subcategories",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          fields: [
+            { name: "name", type: "string", title: "Name" },
+            {
+              name: "slug",
+              type: "string",
+              title: "Slug",
+              description: "URL-friendly id, e.g. 'llms'",
+            },
+            { name: "description", type: "string", title: "Short description" },
+          ],
+          preview: { select: { title: "name", subtitle: "slug" } },
+        },
+      ],
+    }),
   ],
   preview: {
     select: { title: "name", subtitle: "description" },

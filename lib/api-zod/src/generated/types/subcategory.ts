@@ -5,14 +5,9 @@
  * PrimeAxis Tech — global technology media platform API
  * OpenAPI spec version: 0.1.0
  */
-import type { Subcategory } from './subcategory';
 
-export interface Category {
-  id: number;
-  slug: string;
+export interface Subcategory {
   name: string;
+  slug: string;
   description: string;
-  accentColor: string;
-  articleCount: number;
-  subcategories: Subcategory[];
 }
