@@ -8,12 +8,9 @@ const wsKey = process.env.WAVESPEED_API_KEY;
 if (!projectId || !sanityToken || !wsKey)
   throw new Error("Missing SANITY/WAVESPEED env");
 
-cloudinary.config({
-  cloud_name: "dxizihlmo",
-  api_key: "654919554582831",
-  api_secret: "j4GLSAjjApKUgInR41eCUiQIqUo",
-  secure: true,
-});
+if (!process.env.CLOUDINARY_URL)
+  throw new Error("Missing CLOUDINARY_URL env (cloudinary://key:secret@cloud)");
+cloudinary.config({ secure: true });
 
 const sanity = createClient({
   projectId,

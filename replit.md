@@ -22,23 +22,39 @@ _Replace the heading above with the project's name, and this line with one sente
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/primeaxis/` — React + Vite frontend (PrimeAxis Tech site)
+  - `src/pages/` — Home, Category, Article, static (About/Contact/Privacy/Terms)
+  - `src/components/header.tsx` — top nav (PRIMARY_NAV holds 8 short labels)
+- `artifacts/api-server/` — Express 5 + Drizzle backend
+- `artifacts/studio/` — Sanity Studio (project `jyppkgsk` / dataset `production`)
+- `scripts/src/regen-by-sub.ts` — Per-subcategory content + image regenerator (HN → Claude → WaveSpeed → Cloudinary). Idempotent via `regen-v3` tag.
+- `scripts/src/seed-subcategories.ts`, `enrich-content.ts`, `enrich-images.ts` — earlier seeding pipeline.
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- **Sanity is the source of truth** for articles, categories, and authors. The frontend reads via Sanity client; no app DB tables for content.
+- **Cloudinary `primeaxis/ai/`** holds all generated hero images, named `article-hero-<slug>`.
+- **Per-subcategory visual identity**: `CAT_PROFILE` (11 entries) defines aesthetic + HN keyword extras; `SUB_PROFILE` (63 entries) adds keywords/visual nudge/editorial angle. Image prompt = `title + cat aesthetic + sub visual nudge + cinema technical block`.
+- **Hacker News (Algolia)** is used as a free real-world topic anchor — no API key required. We pull ~12 recent headlines per subcategory and feed them to Claude as factual inspiration (not for verbatim copying).
+- **Idempotent regen**: every regenerated article carries the `regen-v3` tag. Re-running `regen-by-sub.ts` skips fully-tagged subs and only retries failures.
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+PrimeAxis Tech is a premium global tech-media site (Engadget × Wired in tone). 11 categories × ~5 subs each, with longform editorial articles (1500–2000 words), AI summaries, key takeaways, and cinematic hero imagery. Static pages for About / Contact / Privacy / Terms.
 
 ## User preferences
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
+- Cinematic / editorial visual tone — no marketing-speak, no emoji in articles, no logos/text in hero images.
+- Every subcategory's articles & images must be visually and editorially distinct.
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- **Never run `pnpm dev` at the repo root.** Use the configured workflows.
+- **Sanity writes** require `SANITY_API_TOKEN` exported in the shell before running scripts.
+- **Long-running scripts** must be run via a Replit workflow (e.g., `regen-articles`). Bash-detached children (`nohup`/`disown`/`setsid`) get killed when the parent shell exits.
+- **Claude JSON output** occasionally appends commentary or truncates mid-array — `regen-by-sub.ts` walks brackets to extract the outermost array and includes a trailing-comma repair fallback. Re-run for any sub still failing — different sampling usually succeeds.
+- **WaveSpeed** prompts must end with `no text, no watermark, no logo, no captions` to avoid garbled overlays.
+- **Header `PRIMARY_NAV`** is intentionally limited to 8 short labels to avoid wrap. Add new categories to the dropdown menu, not the top bar.
 
 ## Pointers
 
