@@ -55,10 +55,11 @@ type SanityAuthor = {
   bio?: string;
   twitter?: string;
   avatar?: unknown;
+  avatarUrl?: string;
 };
 
 const CATEGORY_PROJ = `_id, "slug": slug.current, name, description, accentColor`;
-const AUTHOR_PROJ = `_id, "slug": slug.current, name, role, bio, twitter, avatar`;
+const AUTHOR_PROJ = `_id, "slug": slug.current, name, role, bio, twitter, avatar, avatarUrl`;
 
 export type ArticleSummary = {
   id: number;
@@ -83,6 +84,7 @@ type RawArticleSummary = {
   title: string;
   excerpt?: string;
   heroImage?: unknown;
+  heroImageUrl?: string;
   publishedAt?: string;
   readingMinutes?: number;
   tags?: string[];
@@ -98,6 +100,7 @@ const ARTICLE_SUMMARY_PROJ = `
   title,
   excerpt,
   heroImage,
+  heroImageUrl,
   publishedAt,
   readingMinutes,
   tags,
@@ -113,7 +116,7 @@ function toArticleSummary(r: RawArticleSummary): ArticleSummary {
     slug: r.slug ?? "",
     title: r.title ?? "",
     excerpt: r.excerpt ?? "",
-    heroImageUrl: imageUrl(r.heroImage),
+    heroImageUrl: imageUrl(r.heroImage, r.heroImageUrl ?? ""),
     category: {
       slug: r.category?.slug ?? "uncategorized",
       name: r.category?.name ?? "Uncategorized",
@@ -122,7 +125,7 @@ function toArticleSummary(r: RawArticleSummary): ArticleSummary {
     author: {
       slug: r.author?.slug ?? "staff",
       name: r.author?.name ?? "PrimeAxis Staff",
-      avatarUrl: imageUrl(r.author?.avatar),
+      avatarUrl: imageUrl(r.author?.avatar, r.author?.avatarUrl ?? ""),
       role: r.author?.role ?? "Staff",
     },
     publishedAt: r.publishedAt ?? new Date(0).toISOString(),
@@ -360,7 +363,7 @@ export async function listAuthorsWithCounts(): Promise<AuthorWithCount[]> {
     slug: a.slug,
     name: a.name,
     role: a.role ?? "",
-    avatarUrl: imageUrl(a.avatar),
+    avatarUrl: imageUrl(a.avatar, a.avatarUrl ?? ""),
     bio: a.bio ?? "",
     twitter: a.twitter ?? "",
     articleCount: a.articleCount ?? 0,
@@ -383,7 +386,7 @@ export async function getAuthorBySlug(
     slug: r.slug,
     name: r.name,
     role: r.role ?? "",
-    avatarUrl: imageUrl(r.avatar),
+    avatarUrl: imageUrl(r.avatar, r.avatarUrl ?? ""),
     bio: r.bio ?? "",
     twitter: r.twitter ?? "",
     articleCount: r.articleCount ?? 0,
@@ -409,6 +412,7 @@ type RawReviewSummary = {
   productName: string;
   tagline?: string;
   heroImage?: unknown;
+  heroImageUrl?: string;
   score?: number;
   verdict?: string;
   publishedAt?: string;
@@ -417,7 +421,7 @@ type RawReviewSummary = {
 };
 
 const REVIEW_SUMMARY_PROJ = `
-  _id, "slug": slug.current, productName, tagline, heroImage, score, verdict,
+  _id, "slug": slug.current, productName, tagline, heroImage, heroImageUrl, score, verdict,
   publishedAt, priceUsd,
   "category": category->{ ${CATEGORY_PROJ} }
 `;
@@ -428,7 +432,7 @@ function toReviewSummary(r: RawReviewSummary): ReviewSummary {
     slug: r.slug ?? "",
     productName: r.productName ?? "",
     tagline: r.tagline ?? "",
-    heroImageUrl: imageUrl(r.heroImage),
+    heroImageUrl: imageUrl(r.heroImage, r.heroImageUrl ?? ""),
     score: r.score ?? 0,
     verdict: r.verdict ?? "",
     publishedAt: r.publishedAt ?? new Date(0).toISOString(),
@@ -457,6 +461,7 @@ export async function getReviewBySlug(slug: string) {
   const groq = `*[_type == "review" && slug.current == $slug][0]{
     ${REVIEW_SUMMARY_PROJ},
     galleryImages,
+    galleryImageUrls,
     summary,
     "author": author->{ ${AUTHOR_PROJ} },
     pros, cons, ratings, sections
@@ -464,6 +469,7 @@ export async function getReviewBySlug(slug: string) {
   const r = await sanity.fetch<
     | (RawReviewSummary & {
         galleryImages?: unknown[];
+        galleryImageUrls?: string[];
         summary?: string;
         author?: SanityAuthor | null;
         pros?: string[];
@@ -475,14 +481,16 @@ export async function getReviewBySlug(slug: string) {
   >(groq, { slug });
   if (!r) return null;
   const summary = toReviewSummary(r);
+  const gallery = (r.galleryImages ?? []).map((g) => imageUrl(g)).filter(Boolean);
+  const galleryFromUrls = r.galleryImageUrls ?? [];
   return {
     ...summary,
-    galleryImages: (r.galleryImages ?? []).map((g) => imageUrl(g)),
+    galleryImages: gallery.length > 0 ? gallery : galleryFromUrls,
     summary: r.summary ?? "",
     author: {
       slug: r.author?.slug ?? "staff",
       name: r.author?.name ?? "PrimeAxis Staff",
-      avatarUrl: imageUrl(r.author?.avatar),
+      avatarUrl: imageUrl(r.author?.avatar, r.author?.avatarUrl ?? ""),
       role: r.author?.role ?? "Staff",
     },
     pros: r.pros ?? [],
@@ -506,7 +514,7 @@ export type VideoSummary = {
 
 export async function listVideoSummaries(limit = 20): Promise<VideoSummary[]> {
   const groq = `*[_type == "video" && defined(slug.current)] | order(publishedAt desc) [0...${limit}] {
-    _id, "slug": slug.current, title, description, thumbnail, "durationSeconds": duration, publishedAt,
+    _id, "slug": slug.current, title, description, thumbnail, thumbnailUrl, "durationSeconds": duration, publishedAt,
     "category": category->{ ${CATEGORY_PROJ} }
   }`;
   const rows = await sanity.fetch<
@@ -516,6 +524,7 @@ export async function listVideoSummaries(limit = 20): Promise<VideoSummary[]> {
       title?: string;
       description?: string;
       thumbnail?: unknown;
+      thumbnailUrl?: string;
       durationSeconds?: number;
       publishedAt?: string;
       category?: SanityCategory | null;
@@ -526,7 +535,7 @@ export async function listVideoSummaries(limit = 20): Promise<VideoSummary[]> {
     slug: v.slug ?? "",
     title: v.title ?? "",
     description: v.description ?? "",
-    thumbnailUrl: imageUrl(v.thumbnail),
+    thumbnailUrl: imageUrl(v.thumbnail, v.thumbnailUrl ?? ""),
     durationSeconds: v.durationSeconds ?? 0,
     publishedAt: v.publishedAt ?? new Date(0).toISOString(),
     viewCount: 0,

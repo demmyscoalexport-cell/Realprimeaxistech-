@@ -32,6 +32,11 @@ export const author = defineType({
       options: { hotspot: true },
     }),
     defineField({
+      name: "avatarUrl",
+      title: "Avatar URL (fallback)",
+      type: "string",
+    }),
+    defineField({
       name: "bio",
       title: "Short bio",
       type: "text",

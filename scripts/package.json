@@ -9,6 +9,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
+    "@sanity/client": "^7.22.0",
     "@workspace/db": "workspace:*"
   },
   "devDependencies": {

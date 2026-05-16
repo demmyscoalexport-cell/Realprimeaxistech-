@@ -13,7 +13,7 @@ import {
 
 const IMG = (name: string) => `/seed/${name}`;
 
-const categoriesSeed = [
+export const categoriesSeed = [
   {
     slug: "ai",
     name: "AI",
@@ -86,7 +86,7 @@ const categoriesSeed = [
   },
 ];
 
-const authorsSeed = [
+export const authorsSeed = [
   {
     slug: "amelia-okafor",
     name: "Amelia Okafor",
@@ -121,7 +121,7 @@ const authorsSeed = [
   },
 ];
 
-const newslettersSeed = [
+export const newslettersSeed = [
   {
     slug: "the-axis",
     name: "The Axis",
@@ -199,7 +199,7 @@ const list = (items: string[]): ArticleBlock => ({
   items,
 });
 
-const articlesSeed: ArticleSeed[] = [
+export const articlesSeed: ArticleSeed[] = [
   {
     slug: "the-machine-that-thinks",
     title:
@@ -694,7 +694,7 @@ const articlesSeed: ArticleSeed[] = [
   },
 ];
 
-const reviewsSeed = [
+export const reviewsSeed = [
   {
     slug: "axis-laptop-flagship-2026",
     productName: "Axis Pro 16 (2026)",
@@ -922,7 +922,7 @@ const reviewsSeed = [
   },
 ];
 
-const videosSeed = [
+export const videosSeed = [
   {
     slug: "the-machine-that-thinks-explained",
     title: "The Machine That Thinks, Explained in Six Minutes",

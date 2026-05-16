@@ -44,6 +44,13 @@ export const article = defineType({
       ],
     }),
     defineField({
+      name: "heroImageUrl",
+      title: "Hero image URL (fallback)",
+      type: "string",
+      description:
+        "Optional. Used only when no Hero image is uploaded above. Useful for seeded/imported content.",
+    }),
+    defineField({
       name: "category",
       title: "Category",
       type: "reference",

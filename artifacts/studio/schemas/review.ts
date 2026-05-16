@@ -30,7 +30,17 @@ export const review = defineType({
       title: "Hero image",
       type: "image",
       options: { hotspot: true },
-      validation: (r) => r.required(),
+    }),
+    defineField({
+      name: "heroImageUrl",
+      title: "Hero image URL (fallback)",
+      type: "string",
+    }),
+    defineField({
+      name: "galleryImageUrls",
+      title: "Gallery image URLs (fallback)",
+      type: "array",
+      of: [{ type: "string" }],
     }),
     defineField({
       name: "galleryImages",

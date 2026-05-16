@@ -30,7 +30,11 @@ export const video = defineType({
       title: "Thumbnail",
       type: "image",
       options: { hotspot: true },
-      validation: (r) => r.required(),
+    }),
+    defineField({
+      name: "thumbnailUrl",
+      title: "Thumbnail URL (fallback)",
+      type: "string",
     }),
     defineField({
       name: "videoUrl",
