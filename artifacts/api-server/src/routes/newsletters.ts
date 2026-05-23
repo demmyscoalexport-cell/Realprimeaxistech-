@@ -1,5 +1,10 @@
 import { Router, type IRouter } from "express";
-import { db, newslettersTable, newsletterSubscriptionsTable } from "@workspace/db";
+import {
+  getDb,
+  isDatabaseConfigured,
+  newslettersTable,
+  newsletterSubscriptionsTable,
+} from "@workspace/db";
 import {
   ListNewslettersResponse,
   SubscribeNewsletterBody,
@@ -9,17 +14,35 @@ import { sql } from "drizzle-orm";
 const router: IRouter = Router();
 
 router.get("/newsletters", async (_req, res): Promise<void> => {
-  const rows = await db.select().from(newslettersTable);
-  res.json(ListNewslettersResponse.parse(rows));
+  if (!isDatabaseConfigured()) {
+    res.json(ListNewslettersResponse.parse([]));
+    return;
+  }
+  try {
+    const db = getDb();
+    const rows = await db.select().from(newslettersTable);
+    res.json(ListNewslettersResponse.parse(rows));
+  } catch (e) {
+    res.json(ListNewslettersResponse.parse([]));
+  }
 });
 
 router.post("/newsletters/subscribe", async (req, res): Promise<void> => {
+  if (!isDatabaseConfigured()) {
+    res.status(503).json({
+      error:
+        "Newsletter subscriptions require DATABASE_URL to be configured in .env",
+    });
+    return;
+  }
+
   const parsed = SubscribeNewsletterBody.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: parsed.error.message });
     return;
   }
   try {
+    const db = getDb();
     const [row] = await db
       .insert(newsletterSubscriptionsTable)
       .values({

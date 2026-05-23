@@ -167,15 +167,3 @@ id = "xUhMepqpdjpi1sHw-mMVb"
 uri = "file://exports/primeaxis-tech-FULL-20260516-052344.tar.gz"
 type = "unspecified"
 title = "PrimeAxis Tech — EVERYTHING + one-command bootstrap (58 MB)"
-
-[[outputs]]
-id = "KhIeDNco5sPHg0Q_E7siN"
-uri = "file://exports/primeaxis-wordpress-bridge.tar.gz"
-type = "unspecified"
-title = "WordPress bridge — plugin + Hostinger guide"
-
-[[outputs]]
-id = "GeQetcBgSHkW8ghMDb6Qe"
-uri = "file://wordpress/HOSTINGER_SETUP.md"
-type = "text"
-title = "Hostinger setup guide (markdown)"

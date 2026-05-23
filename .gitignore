@@ -54,3 +54,12 @@ attached_assets/
 /tmp/
 *.log
 .DS_Store
+
+# Secrets — never commit real credentials
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Local tool config
+.config/

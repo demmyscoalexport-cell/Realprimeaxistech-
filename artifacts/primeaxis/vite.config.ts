@@ -1,3 +1,4 @@
+import "../../scripts/load-env.mjs";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
@@ -68,7 +69,7 @@ export default defineConfig({
     },
     proxy: {
       "/api": {
-        target: process.env.API_PROXY_TARGET || "http://localhost:8080",
+        target: process.env.API_PROXY_TARGET || "http://localhost:5000",
         changeOrigin: true,
       },
     },

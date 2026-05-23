@@ -4,9 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "hello": "tsx ./src/hello.ts",
-    "seed": "tsx ./src/seed-primeaxis.ts",
-    "migrate:sanity-to-wp": "tsx ./src/migrate-sanity-to-wp.ts",
+    "hello": "tsx --import ../load-env.mjs ./src/hello.ts",
+    "seed": "tsx --import ../load-env.mjs ./src/seed-primeaxis.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {

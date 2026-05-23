@@ -1,19 +1,7 @@
 /**
- * CMS adapter switch — selects Sanity or WordPress at runtime
- * based on the CMS_SOURCE env var. Routes import from this file
- * so we can swap back-ends without touching any route code.
- *
- *   CMS_SOURCE=sanity     (default — uses @sanity/client)
- *   CMS_SOURCE=wordpress  (uses WP REST API + Application Password)
+ * CMS layer — Sanity is the content source for articles, categories, and authors.
  */
-const SOURCE = (process.env.CMS_SOURCE || "sanity").toLowerCase();
-
-const impl =
-  SOURCE === "wordpress"
-    ? await import("./wordpress")
-    : await import("./sanity");
-
-export const {
+export {
   listArticleSummaries,
   searchArticleSummaries,
   getArticleBySlug,
@@ -25,7 +13,7 @@ export const {
   getReviewBySlug,
   listVideoSummaries,
   stableNumericId,
-} = impl;
+} from "./sanity";
 
 export type {
   ArticleSummary,
