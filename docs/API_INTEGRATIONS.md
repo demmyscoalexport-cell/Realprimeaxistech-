@@ -108,6 +108,7 @@ Production requirement:
 - Verify `primeaxishy.com` as the sending domain in Resend.
 - Set `RESEND_FROM_EMAIL` to an address on that verified domain.
 - Keep Resend sending limits and compliance requirements in mind before sending bulk newsletters.
+- See `docs/RESEND_DNS_SETUP.md` for the DNS records checklist.
 
 ## Anthropic API
 
