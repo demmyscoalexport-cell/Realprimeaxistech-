@@ -43,10 +43,20 @@ export type ArticleSummary = {
   publishedAt: string;
   readingMinutes: number;
   tags: string[];
+  podcastAudioUrl: string | null;
+  podcastDurationSeconds: number | null;
+  podcastAudioBytes: number | null;
+  podcastGeneratedAt: string | null;
+  podcastPlatforms: PodcastPlatformLink[];
   isBreaking: boolean;
   isFeature: boolean;
   viewCount: number;
   commentCount: number;
+};
+
+export type PodcastPlatformLink = {
+  platform: string;
+  url: string;
 };
 
 export type ArticleBlock = {
@@ -62,6 +72,13 @@ export type ArticleDetail = ArticleSummary & {
   body: ArticleBlock[];
   keyTakeaways: string[];
   aiSummary: string;
+  podcastScript: string;
+};
+
+export type PodcastEpisode = ArticleSummary & {
+  subtitle: string;
+  updatedAt: string;
+  podcastScript: string;
 };
 
 export type ReviewSummary = {

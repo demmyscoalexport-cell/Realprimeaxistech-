@@ -209,6 +209,83 @@ export function useGetHomeFeed<TData = Awaited<ReturnType<typeof getHomeFeed>>, 
 
 
 
+export const getGetPodcastFeedUrl = () => {
+
+
+
+
+  return `/api/podcast/feed.xml`
+}
+
+/**
+ * @summary Podcast RSS feed for generated article episodes
+ */
+export const getPodcastFeed = async ( options?: RequestInit): Promise<string> => {
+
+  return customFetch<string>(getGetPodcastFeedUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetPodcastFeedQueryKey = () => {
+    return [
+    `/api/podcast/feed.xml`
+    ] as const;
+    }
+
+
+export const getGetPodcastFeedQueryOptions = <TData = Awaited<ReturnType<typeof getPodcastFeed>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPodcastFeed>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetPodcastFeedQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPodcastFeed>>> = ({ signal }) => getPodcastFeed({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getPodcastFeed>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetPodcastFeedQueryResult = NonNullable<Awaited<ReturnType<typeof getPodcastFeed>>>
+export type GetPodcastFeedQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Podcast RSS feed for generated article episodes
+ */
+
+export function useGetPodcastFeed<TData = Awaited<ReturnType<typeof getPodcastFeed>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPodcastFeed>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetPodcastFeedQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
 export const getListArticlesUrl = (params?: ListArticlesParams,) => {
   const normalizedParams = new URLSearchParams();
 

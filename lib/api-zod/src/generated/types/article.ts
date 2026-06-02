@@ -8,6 +8,7 @@
 import type { ArticleBlock } from './articleBlock';
 import type { AuthorRef } from './authorRef';
 import type { CategoryRef } from './categoryRef';
+import type { PodcastPlatformLink } from './podcastPlatformLink';
 
 export interface Article {
   id: number;
@@ -22,6 +23,16 @@ export interface Article {
   updatedAt: Date;
   readingMinutes: number;
   tags: string[];
+  /** @nullable */
+  podcastAudioUrl: string | null;
+  /** @nullable */
+  podcastDurationSeconds: number | null;
+  /** @nullable */
+  podcastAudioBytes: number | null;
+  /** @nullable */
+  podcastGeneratedAt: Date | null;
+  podcastPlatforms: PodcastPlatformLink[];
+  podcastScript: string;
   body: ArticleBlock[];
   keyTakeaways: string[];
   aiSummary: string;

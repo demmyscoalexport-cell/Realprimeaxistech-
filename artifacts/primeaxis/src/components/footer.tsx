@@ -10,7 +10,7 @@ const SOCIALS = [
   { label: "YouTube", href: "https://youtube.com", icon: Youtube },
   { label: "Instagram", href: "https://instagram.com", icon: Instagram },
   { label: "LinkedIn", href: "https://linkedin.com", icon: Linkedin },
-  { label: "RSS", href: "/rss.xml", icon: Rss },
+  { label: "Podcast RSS", href: "/api/podcast/feed.xml", icon: Rss },
 ];
 
 export function Footer() {

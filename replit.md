@@ -28,12 +28,14 @@ _Replace the heading above with the project's name, and this line with one sente
 - `artifacts/api-server/` — Express 5 + Drizzle backend
 - `artifacts/studio/` — Sanity Studio (project `jyppkgsk` / dataset `production`)
 - `scripts/src/regen-by-sub.ts` — Per-subcategory content + image regenerator (HN → Claude → WaveSpeed → Cloudinary). Idempotent via `regen-v3` tag.
+- `scripts/src/generate-podcast-audio.ts` — Article → ElevenLabs MP3 → Cloudinary → Sanity podcast metadata. Idempotent via existing `podcastAudioUrl` unless `FORCE=1`.
 - `scripts/src/seed-subcategories.ts`, `enrich-content.ts`, `enrich-images.ts` — earlier seeding pipeline.
 
 ## Architecture decisions
 
 - **Sanity is the source of truth** for articles, categories, and authors. The frontend reads via Sanity client; no app DB tables for content.
 - **Cloudinary `primeaxis/ai/`** holds all generated hero images, named `article-hero-<slug>`.
+- **Cloudinary `primeaxis/podcasts/`** holds ElevenLabs-generated MP3 episodes, named `article-podcast-<slug>`.
 - **Per-subcategory visual identity**: `CAT_PROFILE` (11 entries) defines aesthetic + HN keyword extras; `SUB_PROFILE` (63 entries) adds keywords/visual nudge/editorial angle. Image prompt = `title + cat aesthetic + sub visual nudge + cinema technical block`.
 - **Hacker News (Algolia)** is used as a free real-world topic anchor — no API key required. We pull ~12 recent headlines per subcategory and feed them to Claude as factual inspiration (not for verbatim copying).
 - **Idempotent regen**: every regenerated article carries the `regen-v3` tag. Re-running `regen-by-sub.ts` skips fully-tagged subs and only retries failures.
@@ -54,6 +56,7 @@ PrimeAxis Tech is a premium global tech-media site (Engadget × Wired in tone). 
 - **Long-running scripts** must be run via a Replit workflow (e.g., `regen-articles`). Bash-detached children (`nohup`/`disown`/`setsid`) get killed when the parent shell exits.
 - **Claude JSON output** occasionally appends commentary or truncates mid-array — `regen-by-sub.ts` walks brackets to extract the outermost array and includes a trailing-comma repair fallback. Re-run for any sub still failing — different sampling usually succeeds.
 - **WaveSpeed** prompts must end with `no text, no watermark, no logo, no captions` to avoid garbled overlays.
+- **ElevenLabs podcasts** require `ELEVENLABS_API_KEY`, `ELEVENLABS_VOICE_ID`, `CLOUDINARY_URL`, and `SANITY_API_TOKEN`. Generated episodes are exposed at `/api/podcast/feed.xml` for podcast platforms.
 - **Header `PRIMARY_NAV`** is intentionally limited to 8 short labels to avoid wrap. Add new categories to the dropdown menu, not the top bar.
 
 ## Pointers

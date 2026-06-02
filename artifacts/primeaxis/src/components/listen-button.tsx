@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Headphones, Pause, Play, Square } from "lucide-react";
 import type { ArticleBlock } from "@workspace/api-client-react";
+import { formatDuration, withBase } from "@/lib/format";
 
 function blocksToText(blocks: ArticleBlock[]): string {
   const parts: string[] = [];
@@ -17,13 +18,18 @@ function blocksToText(blocks: ArticleBlock[]): string {
 export function ListenButton({
   title,
   blocks,
+  audioUrl,
+  audioDurationSeconds,
 }: {
   title: string;
   blocks: ArticleBlock[];
+  audioUrl?: string | null;
+  audioDurationSeconds?: number | null;
 }) {
   const [supported, setSupported] = useState(false);
   const [state, setState] = useState<"idle" | "playing" | "paused">("idle");
   const utterRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const hostedAudioUrl = audioUrl ? withBase(audioUrl) : "";
 
   useEffect(() => {
     setSupported(typeof window !== "undefined" && "speechSynthesis" in window);
@@ -33,6 +39,31 @@ export function ListenButton({
       }
     };
   }, []);
+
+  if (hostedAudioUrl) {
+    return (
+      <div className="rounded-2xl border hairline bg-card/40 p-5">
+        <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
+          <Headphones className="h-3.5 w-3.5 text-primary" />
+          Podcast episode
+        </div>
+        <p className="mt-2 text-sm text-muted-foreground">
+          AI-narrated audio for this story
+          {audioDurationSeconds
+            ? ` · ${formatDuration(audioDurationSeconds)}`
+            : ""}
+        </p>
+        <audio
+          className="mt-4 w-full"
+          controls
+          preload="metadata"
+          src={hostedAudioUrl}
+        >
+          <a href={hostedAudioUrl}>Download the episode</a>
+        </audio>
+      </div>
+    );
+  }
 
   if (!supported) return null;
 

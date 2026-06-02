@@ -39,6 +39,11 @@ export interface AuthorRef {
   role: string;
 }
 
+export interface PodcastPlatformLink {
+  platform: string;
+  url: string;
+}
+
 export interface ArticleSummary {
   id: number;
   slug: string;
@@ -52,6 +57,15 @@ export interface ArticleSummary {
   publishedAt: string;
   readingMinutes: number;
   tags: string[];
+  /** @nullable */
+  podcastAudioUrl: string | null;
+  /** @nullable */
+  podcastDurationSeconds: number | null;
+  /** @nullable */
+  podcastAudioBytes: number | null;
+  /** @nullable */
+  podcastGeneratedAt: string | null;
+  podcastPlatforms: PodcastPlatformLink[];
   isBreaking: boolean;
   isFeature: boolean;
   viewCount: number;
@@ -117,6 +131,16 @@ export interface Article {
   updatedAt: string;
   readingMinutes: number;
   tags: string[];
+  /** @nullable */
+  podcastAudioUrl: string | null;
+  /** @nullable */
+  podcastDurationSeconds: number | null;
+  /** @nullable */
+  podcastAudioBytes: number | null;
+  /** @nullable */
+  podcastGeneratedAt: string | null;
+  podcastPlatforms: PodcastPlatformLink[];
+  podcastScript: string;
   body: ArticleBlock[];
   keyTakeaways: string[];
   aiSummary: string;

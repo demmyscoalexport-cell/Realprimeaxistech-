@@ -7,6 +7,7 @@ import authorsRouter from "./authors";
 import reviewsRouter from "./reviews";
 import videosRouter from "./videos";
 import newslettersRouter from "./newsletters";
+import podcastRouter from "./podcast";
 
 const router: IRouter = Router();
 
@@ -18,5 +19,6 @@ router.use(authorsRouter);
 router.use(reviewsRouter);
 router.use(videosRouter);
 router.use(newslettersRouter);
+router.use(podcastRouter);
 
 export default router;

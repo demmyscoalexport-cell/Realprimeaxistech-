@@ -27,6 +27,7 @@ export * from './listVideosParams';
 export * from './newsletter';
 export * from './newsletterSubscription';
 export * from './newsletterSubscriptionInput';
+export * from './podcastPlatformLink';
 export * from './review';
 export * from './reviewRating';
 export * from './reviewSection';

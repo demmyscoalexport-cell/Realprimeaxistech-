@@ -80,10 +80,20 @@ export type ArticleSummary = {
   publishedAt: string;
   readingMinutes: number;
   tags: string[];
+  podcastAudioUrl: string | null;
+  podcastDurationSeconds: number | null;
+  podcastAudioBytes: number | null;
+  podcastGeneratedAt: string | null;
+  podcastPlatforms: PodcastPlatformLink[];
   isBreaking: boolean;
   isFeature: boolean;
   viewCount: number;
   commentCount: number;
+};
+
+export type PodcastPlatformLink = {
+  platform: string;
+  url: string;
 };
 
 type RawArticleSummary = {
@@ -96,6 +106,11 @@ type RawArticleSummary = {
   publishedAt?: string;
   readingMinutes?: number;
   tags?: string[];
+  podcastAudioUrl?: string | null;
+  podcastDurationSeconds?: number | null;
+  podcastAudioBytes?: number | null;
+  podcastGeneratedAt?: string | null;
+  podcastPlatforms?: PodcastPlatformLink[];
   isBreaking?: boolean;
   isFeature?: boolean;
   subcategorySlug?: string | null;
@@ -113,6 +128,11 @@ const ARTICLE_SUMMARY_PROJ = `
   publishedAt,
   readingMinutes,
   tags,
+  podcastAudioUrl,
+  podcastDurationSeconds,
+  podcastAudioBytes,
+  podcastGeneratedAt,
+  podcastPlatforms,
   isBreaking,
   isFeature,
   subcategorySlug,
@@ -142,6 +162,13 @@ function toArticleSummary(r: RawArticleSummary): ArticleSummary {
     publishedAt: r.publishedAt ?? new Date(0).toISOString(),
     readingMinutes: r.readingMinutes ?? 5,
     tags: r.tags ?? [],
+    podcastAudioUrl: r.podcastAudioUrl ?? null,
+    podcastDurationSeconds: r.podcastDurationSeconds ?? null,
+    podcastAudioBytes: r.podcastAudioBytes ?? null,
+    podcastGeneratedAt: r.podcastGeneratedAt ?? null,
+    podcastPlatforms: (r.podcastPlatforms ?? []).filter(
+      (p) => p?.platform && p?.url,
+    ),
     isBreaking: r.isBreaking ?? false,
     isFeature: r.isFeature ?? false,
     viewCount: 0,
@@ -272,6 +299,7 @@ export type ArticleDetail = ArticleSummary & {
   body: ArticleBlock[];
   keyTakeaways: string[];
   aiSummary: string;
+  podcastScript: string;
 };
 
 export async function getArticleBySlug(
@@ -283,7 +311,8 @@ export async function getArticleBySlug(
     _updatedAt,
     body,
     keyTakeaways,
-    aiSummary
+    aiSummary,
+    podcastScript
   }`;
   const r = await sanity.fetch<
     | (RawArticleSummary & {
@@ -292,6 +321,7 @@ export async function getArticleBySlug(
         body?: PortableTextBlock[];
         keyTakeaways?: string[];
         aiSummary?: string;
+        podcastScript?: string;
       })
     | null
   >(groq, { slug });
@@ -304,7 +334,40 @@ export async function getArticleBySlug(
     body: portableTextToArticleBlocks(r.body),
     keyTakeaways: r.keyTakeaways ?? [],
     aiSummary: r.aiSummary ?? "",
+    podcastScript: r.podcastScript ?? "",
   };
+}
+
+export type PodcastEpisode = ArticleSummary & {
+  subtitle: string;
+  updatedAt: string;
+  podcastScript: string;
+};
+
+export async function listPodcastEpisodes(limit = 100): Promise<PodcastEpisode[]> {
+  const groq = `*[_type == "article" && defined(slug.current) && defined(podcastAudioUrl)] | order(coalesce(podcastGeneratedAt, publishedAt) desc) [0...${limit}] {
+    ${ARTICLE_SUMMARY_PROJ},
+    subtitle,
+    _updatedAt,
+    podcastScript
+  }`;
+  const rows = await sanity.fetch<
+    (RawArticleSummary & {
+      subtitle?: string;
+      _updatedAt?: string;
+      podcastScript?: string;
+    })[]
+  >(groq);
+
+  return rows.map((r) => {
+    const summary = toArticleSummary(r);
+    return {
+      ...summary,
+      subtitle: r.subtitle ?? "",
+      updatedAt: r._updatedAt ?? summary.publishedAt,
+      podcastScript: r.podcastScript ?? "",
+    };
+  });
 }
 
 export type Subcategory = { name: string; slug: string; description: string };

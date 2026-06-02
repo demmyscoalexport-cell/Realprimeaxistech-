@@ -7,6 +7,7 @@
  */
 import type { AuthorRef } from './authorRef';
 import type { CategoryRef } from './categoryRef';
+import type { PodcastPlatformLink } from './podcastPlatformLink';
 
 export interface ArticleSummary {
   id: number;
@@ -21,6 +22,15 @@ export interface ArticleSummary {
   publishedAt: Date;
   readingMinutes: number;
   tags: string[];
+  /** @nullable */
+  podcastAudioUrl: string | null;
+  /** @nullable */
+  podcastDurationSeconds: number | null;
+  /** @nullable */
+  podcastAudioBytes: number | null;
+  /** @nullable */
+  podcastGeneratedAt: Date | null;
+  podcastPlatforms: PodcastPlatformLink[];
   isBreaking: boolean;
   isFeature: boolean;
   viewCount: number;

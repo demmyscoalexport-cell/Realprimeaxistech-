@@ -6,6 +6,7 @@
   "scripts": {
     "hello": "tsx --import ../load-env.mjs ./src/hello.ts",
     "seed": "tsx --import ../load-env.mjs ./src/seed-primeaxis.ts",
+    "podcasts": "tsx --import ../load-env.mjs ./src/generate-podcast-audio.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {

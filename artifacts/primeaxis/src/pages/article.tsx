@@ -323,7 +323,12 @@ export default function ArticlePage() {
 
         {/* Sidebar — share + author */}
         <aside className="space-y-6 lg:sticky lg:top-24 lg:self-start">
-          <ListenButton title={article.title} blocks={article.body} />
+          <ListenButton
+            title={article.title}
+            blocks={article.body}
+            audioUrl={article.podcastAudioUrl}
+            audioDurationSeconds={article.podcastDurationSeconds}
+          />
           <div className="rounded-2xl border hairline bg-card/40 p-5">
             <div className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
               Share

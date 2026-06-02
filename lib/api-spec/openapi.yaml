@@ -14,6 +14,7 @@ tags:
   - name: authors
   - name: reviews
   - name: videos
+  - name: podcasts
   - name: newsletters
   - name: home
 paths:
@@ -42,6 +43,19 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HomeFeed"
+
+  /podcast/feed.xml:
+    get:
+      operationId: getPodcastFeed
+      tags: [podcasts]
+      summary: Podcast RSS feed for generated article episodes
+      responses:
+        "200":
+          description: RSS feed
+          content:
+            application/rss+xml:
+              schema:
+                type: string
 
   /articles:
     get:
@@ -417,6 +431,11 @@ components:
         - publishedAt
         - readingMinutes
         - tags
+        - podcastAudioUrl
+        - podcastDurationSeconds
+        - podcastAudioBytes
+        - podcastGeneratedAt
+        - podcastPlatforms
         - isBreaking
         - isFeature
         - viewCount
@@ -435,6 +454,13 @@ components:
         tags:
           type: array
           items: { type: string }
+        podcastAudioUrl: { type: ["string", "null"] }
+        podcastDurationSeconds: { type: ["integer", "null"] }
+        podcastAudioBytes: { type: ["integer", "null"] }
+        podcastGeneratedAt: { type: ["string", "null"], format: date-time }
+        podcastPlatforms:
+          type: array
+          items: { $ref: "#/components/schemas/PodcastPlatformLink" }
         isBreaking: { type: boolean }
         isFeature: { type: boolean }
         viewCount: { type: integer }
@@ -455,6 +481,12 @@ components:
         - updatedAt
         - readingMinutes
         - tags
+        - podcastAudioUrl
+        - podcastDurationSeconds
+        - podcastAudioBytes
+        - podcastGeneratedAt
+        - podcastPlatforms
+        - podcastScript
         - body
         - keyTakeaways
         - aiSummary
@@ -477,6 +509,14 @@ components:
         tags:
           type: array
           items: { type: string }
+        podcastAudioUrl: { type: ["string", "null"] }
+        podcastDurationSeconds: { type: ["integer", "null"] }
+        podcastAudioBytes: { type: ["integer", "null"] }
+        podcastGeneratedAt: { type: ["string", "null"], format: date-time }
+        podcastPlatforms:
+          type: array
+          items: { $ref: "#/components/schemas/PodcastPlatformLink" }
+        podcastScript: { type: string }
         body:
           type: array
           items: { $ref: "#/components/schemas/ArticleBlock" }
@@ -501,6 +541,13 @@ components:
         items:
           type: ["array", "null"]
           items: { type: string }
+
+    PodcastPlatformLink:
+      type: object
+      required: [platform, url]
+      properties:
+        platform: { type: string }
+        url: { type: string }
 
     CategoryRef:
       type: object

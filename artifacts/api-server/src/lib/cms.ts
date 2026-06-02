@@ -12,6 +12,7 @@ export {
   listReviewSummaries,
   getReviewBySlug,
   listVideoSummaries,
+  listPodcastEpisodes,
   stableNumericId,
 } from "./sanity";
 
@@ -23,5 +24,7 @@ export type {
   AuthorWithCount,
   ReviewSummary,
   VideoSummary,
+  PodcastEpisode,
+  PodcastPlatformLink,
   Subcategory,
 } from "./sanity-types";

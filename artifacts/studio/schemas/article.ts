@@ -93,6 +93,72 @@ export const article = defineType({
       options: { layout: "tags" },
     }),
     defineField({
+      name: "podcastAudioUrl",
+      title: "Podcast audio URL",
+      type: "url",
+      description:
+        "Hosted MP3 generated from this article. Used by the site player and podcast RSS feed.",
+    }),
+    defineField({
+      name: "podcastDurationSeconds",
+      title: "Podcast duration (seconds)",
+      type: "number",
+      validation: (r) => r.min(0),
+    }),
+    defineField({
+      name: "podcastAudioBytes",
+      title: "Podcast audio size (bytes)",
+      type: "number",
+      validation: (r) => r.min(0),
+    }),
+    defineField({
+      name: "podcastGeneratedAt",
+      title: "Podcast generated at",
+      type: "datetime",
+      description: "Timestamp of the latest ElevenLabs podcast generation.",
+    }),
+    defineField({
+      name: "podcastScript",
+      title: "Podcast script",
+      type: "text",
+      rows: 8,
+      description:
+        "Narration script sent to ElevenLabs. Regeneration can overwrite this field.",
+    }),
+    defineField({
+      name: "podcastPlatforms",
+      title: "Podcast platform links",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          fields: [
+            defineField({
+              name: "platform",
+              title: "Platform",
+              type: "string",
+              options: {
+                list: [
+                  { title: "RSS", value: "rss" },
+                  { title: "Spotify", value: "spotify" },
+                  { title: "Apple Podcasts", value: "apple" },
+                  { title: "YouTube", value: "youtube" },
+                  { title: "Other", value: "other" },
+                ],
+              },
+              validation: (r) => r.required(),
+            }),
+            defineField({
+              name: "url",
+              title: "URL",
+              type: "url",
+              validation: (r) => r.required(),
+            }),
+          ],
+        },
+      ],
+    }),
+    defineField({
       name: "body",
       title: "Body",
       type: "blockContent",

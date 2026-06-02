@@ -11,4 +11,7 @@
 #      pnpm dev:site     → http://localhost:5173
 #      pnpm dev:studio   → http://localhost:3333
 #
+# 4. Generate article podcast audio (requires Sanity, Cloudinary, ElevenLabs):
+#      pnpm --filter @workspace/scripts run podcasts
+#
 # Secrets live in .env (gitignored). Never commit real keys to .env.example.

@@ -41,6 +41,14 @@ export const GetHomeFeedResponse = zod.object({
   "publishedAt": zod.coerce.date(),
   "readingMinutes": zod.number(),
   "tags": zod.array(zod.string()),
+  "podcastAudioUrl": zod.string().nullable(),
+  "podcastDurationSeconds": zod.number().nullable(),
+  "podcastAudioBytes": zod.number().nullable(),
+  "podcastGeneratedAt": zod.coerce.date().nullable(),
+  "podcastPlatforms": zod.array(zod.object({
+  "platform": zod.string(),
+  "url": zod.string()
+})),
   "isBreaking": zod.boolean(),
   "isFeature": zod.boolean(),
   "viewCount": zod.number(),
@@ -67,6 +75,14 @@ export const GetHomeFeedResponse = zod.object({
   "publishedAt": zod.coerce.date(),
   "readingMinutes": zod.number(),
   "tags": zod.array(zod.string()),
+  "podcastAudioUrl": zod.string().nullable(),
+  "podcastDurationSeconds": zod.number().nullable(),
+  "podcastAudioBytes": zod.number().nullable(),
+  "podcastGeneratedAt": zod.coerce.date().nullable(),
+  "podcastPlatforms": zod.array(zod.object({
+  "platform": zod.string(),
+  "url": zod.string()
+})),
   "isBreaking": zod.boolean(),
   "isFeature": zod.boolean(),
   "viewCount": zod.number(),
@@ -93,6 +109,14 @@ export const GetHomeFeedResponse = zod.object({
   "publishedAt": zod.coerce.date(),
   "readingMinutes": zod.number(),
   "tags": zod.array(zod.string()),
+  "podcastAudioUrl": zod.string().nullable(),
+  "podcastDurationSeconds": zod.number().nullable(),
+  "podcastAudioBytes": zod.number().nullable(),
+  "podcastGeneratedAt": zod.coerce.date().nullable(),
+  "podcastPlatforms": zod.array(zod.object({
+  "platform": zod.string(),
+  "url": zod.string()
+})),
   "isBreaking": zod.boolean(),
   "isFeature": zod.boolean(),
   "viewCount": zod.number(),
@@ -119,6 +143,14 @@ export const GetHomeFeedResponse = zod.object({
   "publishedAt": zod.coerce.date(),
   "readingMinutes": zod.number(),
   "tags": zod.array(zod.string()),
+  "podcastAudioUrl": zod.string().nullable(),
+  "podcastDurationSeconds": zod.number().nullable(),
+  "podcastAudioBytes": zod.number().nullable(),
+  "podcastGeneratedAt": zod.coerce.date().nullable(),
+  "podcastPlatforms": zod.array(zod.object({
+  "platform": zod.string(),
+  "url": zod.string()
+})),
   "isBreaking": zod.boolean(),
   "isFeature": zod.boolean(),
   "viewCount": zod.number(),
@@ -161,6 +193,14 @@ export const GetHomeFeedResponse = zod.object({
   "publishedAt": zod.coerce.date(),
   "readingMinutes": zod.number(),
   "tags": zod.array(zod.string()),
+  "podcastAudioUrl": zod.string().nullable(),
+  "podcastDurationSeconds": zod.number().nullable(),
+  "podcastAudioBytes": zod.number().nullable(),
+  "podcastGeneratedAt": zod.coerce.date().nullable(),
+  "podcastPlatforms": zod.array(zod.object({
+  "platform": zod.string(),
+  "url": zod.string()
+})),
   "isBreaking": zod.boolean(),
   "isFeature": zod.boolean(),
   "viewCount": zod.number(),
@@ -187,6 +227,14 @@ export const GetHomeFeedResponse = zod.object({
   "publishedAt": zod.coerce.date(),
   "readingMinutes": zod.number(),
   "tags": zod.array(zod.string()),
+  "podcastAudioUrl": zod.string().nullable(),
+  "podcastDurationSeconds": zod.number().nullable(),
+  "podcastAudioBytes": zod.number().nullable(),
+  "podcastGeneratedAt": zod.coerce.date().nullable(),
+  "podcastPlatforms": zod.array(zod.object({
+  "platform": zod.string(),
+  "url": zod.string()
+})),
   "isBreaking": zod.boolean(),
   "isFeature": zod.boolean(),
   "viewCount": zod.number(),
@@ -228,6 +276,14 @@ export const GetHomeFeedResponse = zod.object({
   "publishedAt": zod.coerce.date(),
   "readingMinutes": zod.number(),
   "tags": zod.array(zod.string()),
+  "podcastAudioUrl": zod.string().nullable(),
+  "podcastDurationSeconds": zod.number().nullable(),
+  "podcastAudioBytes": zod.number().nullable(),
+  "podcastGeneratedAt": zod.coerce.date().nullable(),
+  "podcastPlatforms": zod.array(zod.object({
+  "platform": zod.string(),
+  "url": zod.string()
+})),
   "isBreaking": zod.boolean(),
   "isFeature": zod.boolean(),
   "viewCount": zod.number(),
@@ -254,6 +310,14 @@ export const GetHomeFeedResponse = zod.object({
   "publishedAt": zod.coerce.date(),
   "readingMinutes": zod.number(),
   "tags": zod.array(zod.string()),
+  "podcastAudioUrl": zod.string().nullable(),
+  "podcastDurationSeconds": zod.number().nullable(),
+  "podcastAudioBytes": zod.number().nullable(),
+  "podcastGeneratedAt": zod.coerce.date().nullable(),
+  "podcastPlatforms": zod.array(zod.object({
+  "platform": zod.string(),
+  "url": zod.string()
+})),
   "isBreaking": zod.boolean(),
   "isFeature": zod.boolean(),
   "viewCount": zod.number(),
@@ -280,6 +344,14 @@ export const GetHomeFeedResponse = zod.object({
   "publishedAt": zod.coerce.date(),
   "readingMinutes": zod.number(),
   "tags": zod.array(zod.string()),
+  "podcastAudioUrl": zod.string().nullable(),
+  "podcastDurationSeconds": zod.number().nullable(),
+  "podcastAudioBytes": zod.number().nullable(),
+  "podcastGeneratedAt": zod.coerce.date().nullable(),
+  "podcastPlatforms": zod.array(zod.object({
+  "platform": zod.string(),
+  "url": zod.string()
+})),
   "isBreaking": zod.boolean(),
   "isFeature": zod.boolean(),
   "viewCount": zod.number(),
@@ -306,6 +378,14 @@ export const GetHomeFeedResponse = zod.object({
   "publishedAt": zod.coerce.date(),
   "readingMinutes": zod.number(),
   "tags": zod.array(zod.string()),
+  "podcastAudioUrl": zod.string().nullable(),
+  "podcastDurationSeconds": zod.number().nullable(),
+  "podcastAudioBytes": zod.number().nullable(),
+  "podcastGeneratedAt": zod.coerce.date().nullable(),
+  "podcastPlatforms": zod.array(zod.object({
+  "platform": zod.string(),
+  "url": zod.string()
+})),
   "isBreaking": zod.boolean(),
   "isFeature": zod.boolean(),
   "viewCount": zod.number(),
@@ -362,6 +442,14 @@ export const ListArticlesResponseItem = zod.object({
   "publishedAt": zod.coerce.date(),
   "readingMinutes": zod.number(),
   "tags": zod.array(zod.string()),
+  "podcastAudioUrl": zod.string().nullable(),
+  "podcastDurationSeconds": zod.number().nullable(),
+  "podcastAudioBytes": zod.number().nullable(),
+  "podcastGeneratedAt": zod.coerce.date().nullable(),
+  "podcastPlatforms": zod.array(zod.object({
+  "platform": zod.string(),
+  "url": zod.string()
+})),
   "isBreaking": zod.boolean(),
   "isFeature": zod.boolean(),
   "viewCount": zod.number(),
@@ -399,6 +487,14 @@ export const ListTrendingArticlesResponseItem = zod.object({
   "publishedAt": zod.coerce.date(),
   "readingMinutes": zod.number(),
   "tags": zod.array(zod.string()),
+  "podcastAudioUrl": zod.string().nullable(),
+  "podcastDurationSeconds": zod.number().nullable(),
+  "podcastAudioBytes": zod.number().nullable(),
+  "podcastGeneratedAt": zod.coerce.date().nullable(),
+  "podcastPlatforms": zod.array(zod.object({
+  "platform": zod.string(),
+  "url": zod.string()
+})),
   "isBreaking": zod.boolean(),
   "isFeature": zod.boolean(),
   "viewCount": zod.number(),
@@ -436,6 +532,14 @@ export const ListMostDiscussedArticlesResponseItem = zod.object({
   "publishedAt": zod.coerce.date(),
   "readingMinutes": zod.number(),
   "tags": zod.array(zod.string()),
+  "podcastAudioUrl": zod.string().nullable(),
+  "podcastDurationSeconds": zod.number().nullable(),
+  "podcastAudioBytes": zod.number().nullable(),
+  "podcastGeneratedAt": zod.coerce.date().nullable(),
+  "podcastPlatforms": zod.array(zod.object({
+  "platform": zod.string(),
+  "url": zod.string()
+})),
   "isBreaking": zod.boolean(),
   "isFeature": zod.boolean(),
   "viewCount": zod.number(),
@@ -474,6 +578,14 @@ export const SearchArticlesResponseItem = zod.object({
   "publishedAt": zod.coerce.date(),
   "readingMinutes": zod.number(),
   "tags": zod.array(zod.string()),
+  "podcastAudioUrl": zod.string().nullable(),
+  "podcastDurationSeconds": zod.number().nullable(),
+  "podcastAudioBytes": zod.number().nullable(),
+  "podcastGeneratedAt": zod.coerce.date().nullable(),
+  "podcastPlatforms": zod.array(zod.object({
+  "platform": zod.string(),
+  "url": zod.string()
+})),
   "isBreaking": zod.boolean(),
   "isFeature": zod.boolean(),
   "viewCount": zod.number(),
@@ -508,6 +620,15 @@ export const GetArticleBySlugResponse = zod.object({
   "updatedAt": zod.coerce.date(),
   "readingMinutes": zod.number(),
   "tags": zod.array(zod.string()),
+  "podcastAudioUrl": zod.string().nullable(),
+  "podcastDurationSeconds": zod.number().nullable(),
+  "podcastAudioBytes": zod.number().nullable(),
+  "podcastGeneratedAt": zod.coerce.date().nullable(),
+  "podcastPlatforms": zod.array(zod.object({
+  "platform": zod.string(),
+  "url": zod.string()
+})),
+  "podcastScript": zod.string(),
   "body": zod.array(zod.object({
   "type": zod.enum(['paragraph', 'heading', 'quote', 'image', 'list']),
   "content": zod.string(),
@@ -548,6 +669,14 @@ export const GetRelatedArticlesResponseItem = zod.object({
   "publishedAt": zod.coerce.date(),
   "readingMinutes": zod.number(),
   "tags": zod.array(zod.string()),
+  "podcastAudioUrl": zod.string().nullable(),
+  "podcastDurationSeconds": zod.number().nullable(),
+  "podcastAudioBytes": zod.number().nullable(),
+  "podcastGeneratedAt": zod.coerce.date().nullable(),
+  "podcastPlatforms": zod.array(zod.object({
+  "platform": zod.string(),
+  "url": zod.string()
+})),
   "isBreaking": zod.boolean(),
   "isFeature": zod.boolean(),
   "viewCount": zod.number(),
@@ -611,6 +740,14 @@ export const GetCategoryBySlugResponse = zod.object({
   "publishedAt": zod.coerce.date(),
   "readingMinutes": zod.number(),
   "tags": zod.array(zod.string()),
+  "podcastAudioUrl": zod.string().nullable(),
+  "podcastDurationSeconds": zod.number().nullable(),
+  "podcastAudioBytes": zod.number().nullable(),
+  "podcastGeneratedAt": zod.coerce.date().nullable(),
+  "podcastPlatforms": zod.array(zod.object({
+  "platform": zod.string(),
+  "url": zod.string()
+})),
   "isBreaking": zod.boolean(),
   "isFeature": zod.boolean(),
   "viewCount": zod.number(),
@@ -668,6 +805,14 @@ export const GetAuthorBySlugResponse = zod.object({
   "publishedAt": zod.coerce.date(),
   "readingMinutes": zod.number(),
   "tags": zod.array(zod.string()),
+  "podcastAudioUrl": zod.string().nullable(),
+  "podcastDurationSeconds": zod.number().nullable(),
+  "podcastAudioBytes": zod.number().nullable(),
+  "podcastGeneratedAt": zod.coerce.date().nullable(),
+  "podcastPlatforms": zod.array(zod.object({
+  "platform": zod.string(),
+  "url": zod.string()
+})),
   "isBreaking": zod.boolean(),
   "isFeature": zod.boolean(),
   "viewCount": zod.number(),
