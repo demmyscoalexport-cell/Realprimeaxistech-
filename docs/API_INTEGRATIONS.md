@@ -76,6 +76,39 @@ Used by:
 
 Current note: Sanity remains the editorial CMS. Do not move article/category/author content into Postgres unless the product architecture intentionally changes.
 
+## Resend API
+
+Resend sends transactional/newsletter-related email. It is currently wired to send a welcome email after a new newsletter subscription is stored.
+
+| Env var | Purpose |
+| --- | --- |
+| `RESEND_API_KEY` | Resend API key. |
+| `RESEND_BASE_URL` | Base URL, usually `https://api.resend.com`. |
+| `RESEND_FROM_EMAIL` | Verified sender, e.g. `PrimeAxis Tech <news@yourdomain.com>`. Required before sending email. |
+| `RESEND_REPLY_TO` | Optional reply-to address. |
+
+Used by:
+
+- `artifacts/api-server/src/lib/resend.ts`
+- `artifacts/api-server/src/routes/newsletters.ts`
+- `scripts/src/check-resend.ts`
+
+Utility:
+
+- `pnpm --filter @workspace/scripts run resend:check`
+
+Behavior:
+
+- `POST /api/newsletters/subscribe` stores the subscription in Postgres.
+- If `RESEND_API_KEY` and `RESEND_FROM_EMAIL` are configured, the API attempts to send a welcome email.
+- Email delivery failures are logged but do not fail the subscription response.
+
+Production requirement:
+
+- Verify the sending domain in Resend.
+- Set `RESEND_FROM_EMAIL` to an address on that verified domain.
+- Keep Resend sending limits and compliance requirements in mind before sending bulk newsletters.
+
 ## Anthropic API
 
 Anthropic powers longform editorial generation and enrichment scripts.
@@ -254,6 +287,7 @@ Use these after API-related changes:
 pnpm --filter @workspace/api-spec run codegen
 pnpm --filter @workspace/scripts run cohere:check
 pnpm --filter @workspace/scripts run imgix:check
+pnpm --filter @workspace/scripts run resend:check
 pnpm run typecheck
 PORT=5000 BASE_PATH=/ API_PROXY_TARGET=http://localhost:5000 pnpm run build
 ```

@@ -31,6 +31,7 @@ _Replace the heading above with the project's name, and this line with one sente
 - `scripts/src/generate-podcast-audio.ts` — Article → ElevenLabs MP3 → Cloudinary → Sanity podcast metadata. Idempotent via existing `podcastAudioUrl` unless `FORCE=1`.
 - `scripts/src/check-cohere.ts` — Read-only Cohere API key check. Uses `COHERE_API_KEY` to list visible models without running inference.
 - `scripts/src/check-imgix.ts` — Read-only Imgix/iMix Management API key check. Uses `IMGIX_API_KEY` or `IMIX_API_KEY` and lists visible sources.
+- `scripts/src/check-resend.ts` — Read-only Resend API key check. Uses `RESEND_API_KEY` to list visible email domains without sending email.
 - `scripts/src/seed-subcategories.ts`, `enrich-content.ts`, `enrich-images.ts` — earlier seeding pipeline.
 
 ## Architecture decisions
@@ -61,6 +62,7 @@ PrimeAxis Tech is a premium global tech-media site (Engadget × Wired in tone). 
 - **ElevenLabs podcasts** require `ELEVENLABS_API_KEY`, `ELEVENLABS_VOICE_ID`, `CLOUDINARY_URL`, and `SANITY_API_TOKEN`. Generated episodes are exposed at `/api/podcast/feed.xml` for podcast platforms.
 - **Cohere** should live in `.env` as `COHERE_API_KEY`. Use it for semantic search, embeddings, reranking, classification, or Q&A flows when those features are added.
 - **Imgix/iMix keys** with the `ak_` prefix are likely Imgix Management API keys. They should live in `.env` as `IMGIX_API_KEY` and/or `IMIX_API_KEY` and be sent as `Authorization: Bearer <key>`.
+- **Resend** should live in `.env` as `RESEND_API_KEY`. Newsletter subscriptions send a welcome email only when `RESEND_API_KEY` and `RESEND_FROM_EMAIL` are configured; failures are logged without failing subscription.
 - **Header `PRIMARY_NAV`** is intentionally limited to 8 short labels to avoid wrap. Add new categories to the dropdown menu, not the top bar.
 
 ## Pointers

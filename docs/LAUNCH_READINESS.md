@@ -30,6 +30,8 @@ PrimeAxis already has:
   - `BASE_PATH`
   - `API_PROXY_TARGET`
   - `DATABASE_URL`
+  - `RESEND_API_KEY`
+  - `RESEND_FROM_EMAIL`
   - `SANITY_PROJECT_ID`
   - `SANITY_DATASET`
   - `SANITY_API_TOKEN`
@@ -98,8 +100,9 @@ PrimeAxis already has:
 
 - Verify `POST /api/newsletters/subscribe` against production DB.
 - Add real frontend subscription calls where forms still show toast-only behavior.
-- Add unsubscribe/compliance flow if sending email.
-- Connect an email provider if newsletters will actually be delivered.
+- Verify Resend production domain and sender.
+- Set `RESEND_FROM_EMAIL` to a verified sender.
+- Add unsubscribe/compliance flow before sending recurring email.
 - Confirm privacy policy covers email collection.
 
 ### 6. Search and discovery

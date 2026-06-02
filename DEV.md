@@ -20,4 +20,7 @@
 # 6. Check a Cohere API key without running inference:
 #      pnpm --filter @workspace/scripts run cohere:check
 #
+# 7. Check a Resend API key without sending email:
+#      pnpm --filter @workspace/scripts run resend:check
+#
 # Secrets live in .env (gitignored). Never commit real keys to .env.example.

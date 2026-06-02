@@ -10,6 +10,7 @@ import {
   SubscribeNewsletterBody,
 } from "@workspace/api-zod";
 import { sql } from "drizzle-orm";
+import { sendNewsletterWelcomeEmail } from "../lib/resend";
 
 const router: IRouter = Router();
 
@@ -58,6 +59,14 @@ router.post("/newsletters/subscribe", async (req, res): Promise<void> => {
           subscriberCount: sql`${newslettersTable.subscriberCount} + 1`,
         })
         .where(sql`${newslettersTable.slug} = ${parsed.data.newsletterSlug}`);
+      try {
+        await sendNewsletterWelcomeEmail({
+          email: row.email,
+          newsletterSlug: row.newsletterSlug,
+        });
+      } catch (e) {
+        req.log.warn({ err: e }, "Newsletter welcome email failed");
+      }
       res.status(201).json({
         id: row.id,
         email: row.email,
