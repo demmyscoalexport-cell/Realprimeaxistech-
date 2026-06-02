@@ -17,4 +17,7 @@
 # 5. Check an Imgix/iMix API key without changing remote state:
 #      pnpm --filter @workspace/scripts run imgix:check
 #
+# 6. Check a Cohere API key without running inference:
+#      pnpm --filter @workspace/scripts run cohere:check
+#
 # Secrets live in .env (gitignored). Never commit real keys to .env.example.
