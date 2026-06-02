@@ -14,4 +14,7 @@
 # 4. Generate article podcast audio (requires Sanity, Cloudinary, ElevenLabs):
 #      pnpm --filter @workspace/scripts run podcasts
 #
+# 5. Check an Imgix/iMix API key without changing remote state:
+#      pnpm --filter @workspace/scripts run imgix:check
+#
 # Secrets live in .env (gitignored). Never commit real keys to .env.example.

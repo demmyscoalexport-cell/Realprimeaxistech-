@@ -29,6 +29,7 @@ _Replace the heading above with the project's name, and this line with one sente
 - `artifacts/studio/` — Sanity Studio (project `jyppkgsk` / dataset `production`)
 - `scripts/src/regen-by-sub.ts` — Per-subcategory content + image regenerator (HN → Claude → WaveSpeed → Cloudinary). Idempotent via `regen-v3` tag.
 - `scripts/src/generate-podcast-audio.ts` — Article → ElevenLabs MP3 → Cloudinary → Sanity podcast metadata. Idempotent via existing `podcastAudioUrl` unless `FORCE=1`.
+- `scripts/src/check-imgix.ts` — Read-only Imgix/iMix Management API key check. Uses `IMGIX_API_KEY` or `IMIX_API_KEY` and lists visible sources.
 - `scripts/src/seed-subcategories.ts`, `enrich-content.ts`, `enrich-images.ts` — earlier seeding pipeline.
 
 ## Architecture decisions
@@ -57,6 +58,7 @@ PrimeAxis Tech is a premium global tech-media site (Engadget × Wired in tone). 
 - **Claude JSON output** occasionally appends commentary or truncates mid-array — `regen-by-sub.ts` walks brackets to extract the outermost array and includes a trailing-comma repair fallback. Re-run for any sub still failing — different sampling usually succeeds.
 - **WaveSpeed** prompts must end with `no text, no watermark, no logo, no captions` to avoid garbled overlays.
 - **ElevenLabs podcasts** require `ELEVENLABS_API_KEY`, `ELEVENLABS_VOICE_ID`, `CLOUDINARY_URL`, and `SANITY_API_TOKEN`. Generated episodes are exposed at `/api/podcast/feed.xml` for podcast platforms.
+- **Imgix/iMix keys** with the `ak_` prefix are likely Imgix Management API keys. They should live in `.env` as `IMGIX_API_KEY` and/or `IMIX_API_KEY` and be sent as `Authorization: Bearer <key>`.
 - **Header `PRIMARY_NAV`** is intentionally limited to 8 short labels to avoid wrap. Add new categories to the dropdown menu, not the top bar.
 
 ## Pointers
