@@ -10,6 +10,7 @@ PrimeAxis already has:
 - Express API server
 - Sanity Studio and Sanity-backed editorial content
 - PostgreSQL/Drizzle for newsletter subscriptions
+- Optional Resend welcome email delivery for newsletter subscriptions
 - OpenAPI-generated React hooks and Zod validators
 - AI content scripts
 - AI image generation pipeline
@@ -100,8 +101,8 @@ PrimeAxis already has:
 
 - Verify `POST /api/newsletters/subscribe` against production DB.
 - Add real frontend subscription calls where forms still show toast-only behavior.
-- Verify Resend production domain and sender.
-- Set `RESEND_FROM_EMAIL` to a verified sender.
+- Verify `primeaxishy.com` in Resend.
+- Set `RESEND_FROM_EMAIL=PrimeAxis Tech <news@primeaxishy.com>`.
 - Add unsubscribe/compliance flow before sending recurring email.
 - Confirm privacy policy covers email collection.
 

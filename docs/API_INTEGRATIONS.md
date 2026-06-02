@@ -84,7 +84,7 @@ Resend sends transactional/newsletter-related email. It is currently wired to se
 | --- | --- |
 | `RESEND_API_KEY` | Resend API key. |
 | `RESEND_BASE_URL` | Base URL, usually `https://api.resend.com`. |
-| `RESEND_FROM_EMAIL` | Verified sender, e.g. `PrimeAxis Tech <news@yourdomain.com>`. Required before sending email. |
+| `RESEND_FROM_EMAIL` | Verified sender, e.g. `PrimeAxis Tech <news@primeaxishy.com>`. Required before sending email. |
 | `RESEND_REPLY_TO` | Optional reply-to address. |
 
 Used by:
@@ -105,7 +105,7 @@ Behavior:
 
 Production requirement:
 
-- Verify the sending domain in Resend.
+- Verify `primeaxishy.com` as the sending domain in Resend.
 - Set `RESEND_FROM_EMAIL` to an address on that verified domain.
 - Keep Resend sending limits and compliance requirements in mind before sending bulk newsletters.
 
