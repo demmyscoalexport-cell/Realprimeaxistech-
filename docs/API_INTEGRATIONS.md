@@ -30,7 +30,10 @@ Implemented by the Express server in `artifacts/api-server/src/routes/`.
 | `GET /api/videos` | Video list from Sanity. |
 | `GET /api/newsletters` | Newsletter metadata. |
 | `POST /api/newsletters/subscribe` | Newsletter subscription write path. |
+| `POST /api/newsletters/unsubscribe` | Remove a newsletter subscription from Sanity. |
 | `GET /api/podcast/feed.xml` | Podcast RSS feed generated from articles with `podcastAudioUrl`. |
+| `GET /api/rss.xml` | Article RSS feed. |
+| `GET /api/sitemap.xml` | XML sitemap for static routes, categories, authors, articles, and videos. |
 
 When changing API response shapes:
 
@@ -107,9 +110,11 @@ Behavior:
 
 - `POST /api/newsletters/subscribe` stores the subscription in Sanity as a `newsletterSubscriber` document.
 - Duplicate subscriptions are idempotent by email + newsletter slug.
+- `POST /api/newsletters/unsubscribe` deletes the matching `newsletterSubscriber` document.
 - If `RESEND_API_KEY` and `RESEND_FROM_EMAIL` are configured, the API attempts to send a welcome email.
 - Email delivery failures are logged but do not fail the subscription response.
 - If the Sanity token lacks create/update permissions, subscription writes fail with a 503 setup error.
+  Unsubscribe writes require delete/update permissions.
 
 Production requirement:
 
@@ -224,6 +229,9 @@ ElevenLabs powers generated podcast/audio episodes from articles.
 | `ELEVENLABS_OUTPUT_FORMAT` | MP3 output format, default `mp3_44100_128`. |
 | `PODCAST_SITE_URL` | Public site URL used by podcast RSS. |
 | `PODCAST_FEED_URL` | Public podcast RSS URL stored in Sanity platform links. |
+| `PODCAST_COVER_IMAGE_URL` | Public 1400x1400+ PNG/JPG cover art URL for podcast directories. |
+| `PODCAST_OWNER_NAME` | Podcast owner name for directory submission metadata. |
+| `PODCAST_OWNER_EMAIL` | Podcast owner email for directory submission metadata. |
 | `PODCAST_MAX_CHARS` | Max narration script length. |
 
 Main script:

@@ -123,3 +123,9 @@ export type NewsletterSubscriptionResult = {
   createdAt: string;
   created: boolean;
 };
+
+export type NewsletterUnsubscribeResult = {
+  email: string;
+  newsletterSlug: string;
+  unsubscribed: boolean;
+};

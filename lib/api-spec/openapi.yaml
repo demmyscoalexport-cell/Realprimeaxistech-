@@ -16,6 +16,7 @@ tags:
   - name: videos
   - name: podcasts
   - name: newsletters
+  - name: feeds
   - name: home
 paths:
   /healthz:
@@ -54,6 +55,32 @@ paths:
           description: RSS feed
           content:
             application/rss+xml:
+              schema:
+                type: string
+
+  /rss.xml:
+    get:
+      operationId: getArticleRssFeed
+      tags: [feeds]
+      summary: Article RSS feed
+      responses:
+        "200":
+          description: RSS feed
+          content:
+            application/rss+xml:
+              schema:
+                type: string
+
+  /sitemap.xml:
+    get:
+      operationId: getSitemap
+      tags: [feeds]
+      summary: XML sitemap
+      responses:
+        "200":
+          description: Sitemap
+          content:
+            application/xml:
               schema:
                 type: string
 
@@ -344,6 +371,27 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/NewsletterSubscription" }
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+
+  /newsletters/unsubscribe:
+    post:
+      operationId: unsubscribeNewsletter
+      tags: [newsletters]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/NewsletterUnsubscribeInput" }
+      responses:
+        "200":
+          description: Unsubscribed
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/NewsletterUnsubscribe" }
         "400":
           description: Bad request
           content:
@@ -704,6 +752,21 @@ components:
         email: { type: string }
         newsletterSlug: { type: string }
         createdAt: { type: string, format: date-time }
+
+    NewsletterUnsubscribeInput:
+      type: object
+      required: [email, newsletterSlug]
+      properties:
+        email: { type: string, format: email }
+        newsletterSlug: { type: string }
+
+    NewsletterUnsubscribe:
+      type: object
+      required: [email, newsletterSlug, unsubscribed]
+      properties:
+        email: { type: string }
+        newsletterSlug: { type: string }
+        unsubscribed: { type: boolean }
 
     HomeFeed:
       type: object

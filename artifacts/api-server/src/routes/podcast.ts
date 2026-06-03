@@ -44,7 +44,10 @@ router.get("/podcast/feed.xml", async (req, res): Promise<void> => {
   const siteUrl = absoluteSiteUrl(req);
   const episodes = await listPodcastEpisodes(limit);
   const feedUrl = `${siteUrl}/api/podcast/feed.xml`;
-  const imageUrl = `${siteUrl}/favicon.svg`;
+  const imageUrl =
+    process.env.PODCAST_COVER_IMAGE_URL?.trim() || `${siteUrl}/favicon.svg`;
+  const ownerName = process.env.PODCAST_OWNER_NAME ?? "PrimeAxis Tech";
+  const ownerEmail = process.env.PODCAST_OWNER_EMAIL;
 
   const items = episodes
     .filter((episode) => episode.podcastAudioUrl)
@@ -89,6 +92,12 @@ router.get("/podcast/feed.xml", async (req, res): Promise<void> => {
     <itunes:explicit>false</itunes:explicit>
     <itunes:type>episodic</itunes:type>
     <itunes:category text="Technology" />
+    <itunes:image href="${xmlEscape(imageUrl)}" />
+    ${
+      ownerEmail
+        ? `<itunes:owner><itunes:name>${xmlEscape(ownerName)}</itunes:name><itunes:email>${xmlEscape(ownerEmail)}</itunes:email></itunes:owner>`
+        : ""
+    }
 ${items}
   </channel>
 </rss>

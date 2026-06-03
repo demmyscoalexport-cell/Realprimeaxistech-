@@ -15,6 +15,7 @@ export {
   listPodcastEpisodes,
   listNewsletterSummaries,
   subscribeNewsletterInSanity,
+  unsubscribeNewsletterInSanity,
   isSanityWriteConfigured,
   stableNumericId,
 } from "./sanity";
@@ -31,5 +32,6 @@ export type {
   PodcastPlatformLink,
   NewsletterSummary,
   NewsletterSubscriptionResult,
+  NewsletterUnsubscribeResult,
   Subcategory,
 } from "./sanity-types";

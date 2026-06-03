@@ -10,6 +10,8 @@ const resendFromEmail =
     ? process.env.RESEND_FROM_EMAIL
     : undefined;
 const resendReplyTo = process.env.RESEND_REPLY_TO;
+const publicSiteUrl = (process.env.PUBLIC_SITE_URL ?? "https://primeaxishq.com")
+  .replace(/\/$/, "");
 
 type ResendEmailPayload = {
   from: string;
@@ -43,11 +45,13 @@ export async function sendNewsletterWelcomeEmail(opts: {
     .join(" ");
   const displayName = newsletterName || "PrimeAxis Tech";
   const subject = `Welcome to ${displayName}`;
-  const text = `You're subscribed to ${displayName} from PrimeAxis Tech.\n\nThanks for joining. You'll receive concise, editorial technology coverage from our newsroom.\n\nPrimeAxis Tech`;
+  const unsubscribeUrl = `${publicSiteUrl}/unsubscribe?newsletter=${encodeURIComponent(opts.newsletterSlug)}&email=${encodeURIComponent(opts.email)}`;
+  const text = `You're subscribed to ${displayName} from PrimeAxis Tech.\n\nThanks for joining. You'll receive concise, editorial technology coverage from our newsroom.\n\nManage or unsubscribe: ${unsubscribeUrl}\n\nPrimeAxis Tech`;
   const html = `
     <div style="font-family:Inter,Arial,sans-serif;line-height:1.6;color:#111827">
       <p>You're subscribed to <strong>${escapeHtml(displayName)}</strong> from PrimeAxis Tech.</p>
       <p>Thanks for joining. You'll receive concise, editorial technology coverage from our newsroom.</p>
+      <p><a href="${escapeHtml(unsubscribeUrl)}">Manage or unsubscribe</a></p>
       <p style="color:#6b7280">PrimeAxis Tech</p>
     </div>
   `;

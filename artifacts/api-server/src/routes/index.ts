@@ -8,6 +8,7 @@ import reviewsRouter from "./reviews";
 import videosRouter from "./videos";
 import newslettersRouter from "./newsletters";
 import podcastRouter from "./podcast";
+import feedsRouter from "./feeds";
 
 const router: IRouter = Router();
 
@@ -20,5 +21,6 @@ router.use(reviewsRouter);
 router.use(videosRouter);
 router.use(newslettersRouter);
 router.use(podcastRouter);
+router.use(feedsRouter);
 
 export default router;

@@ -227,6 +227,17 @@ export interface NewsletterSubscription {
   createdAt: string;
 }
 
+export interface NewsletterUnsubscribeInput {
+  email: string;
+  newsletterSlug: string;
+}
+
+export interface NewsletterUnsubscribe {
+  email: string;
+  newsletterSlug: string;
+  unsubscribed: boolean;
+}
+
 export interface HomeFeed {
   hero: ArticleSummary;
   spotlight: ArticleSummary[];

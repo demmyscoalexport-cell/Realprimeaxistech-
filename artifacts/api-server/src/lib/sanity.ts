@@ -709,6 +709,12 @@ export type NewsletterSubscriptionResult = {
   created: boolean;
 };
 
+export type NewsletterUnsubscribeResult = {
+  email: string;
+  newsletterSlug: string;
+  unsubscribed: boolean;
+};
+
 export function isSanityWriteConfigured(): boolean {
   return Boolean(token);
 }
@@ -837,4 +843,41 @@ export async function subscribeNewsletterInSanity(input: {
     createdAt,
     created: true,
   };
+}
+
+export async function unsubscribeNewsletterInSanity(input: {
+  email: string;
+  newsletterSlug: string;
+}): Promise<NewsletterUnsubscribeResult> {
+  const email = input.email.trim().toLowerCase();
+  const newsletterSlug = input.newsletterSlug.trim();
+
+  if (!token) {
+    throw new Error("SANITY_API_TOKEN is required to delete newsletter subscribers");
+  }
+
+  const _id = subscriberDocId(email, newsletterSlug);
+  const existing = await sanity.fetch<{ _id: string } | null>(
+    `*[_id == $id][0]{ _id }`,
+    { id: _id },
+  );
+
+  if (!existing) {
+    return { email, newsletterSlug, unsubscribed: false };
+  }
+
+  const newsletter = await sanity.fetch<{ _id: string } | null>(
+    `*[_type == "newsletter" && slug.current == $newsletterSlug][0]{ _id }`,
+    { newsletterSlug },
+  );
+
+  const transaction = sanity.transaction().delete(_id);
+  if (newsletter) {
+    transaction.patch(newsletter._id, (patch) =>
+      patch.setIfMissing({ subscriberCount: 0 }).dec({ subscriberCount: 1 }),
+    );
+  }
+
+  await transaction.commit();
+  return { email, newsletterSlug, unsubscribed: true };
 }

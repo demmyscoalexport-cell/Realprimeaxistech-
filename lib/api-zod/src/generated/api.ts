@@ -951,3 +951,15 @@ export const SubscribeNewsletterBody = zod.object({
 })
 
 
+export const UnsubscribeNewsletterBody = zod.object({
+  "email": zod.string().email(),
+  "newsletterSlug": zod.string()
+})
+
+export const UnsubscribeNewsletterResponse = zod.object({
+  "email": zod.string(),
+  "newsletterSlug": zod.string(),
+  "unsubscribed": zod.boolean()
+})
+
+

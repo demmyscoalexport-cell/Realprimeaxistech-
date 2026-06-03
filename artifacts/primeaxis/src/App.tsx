@@ -14,6 +14,7 @@ import VideosPage from "@/pages/videos";
 import AuthorPage from "@/pages/author";
 import SearchPage from "@/pages/search";
 import NewslettersPage from "@/pages/newsletters";
+import UnsubscribePage from "@/pages/unsubscribe";
 import { AboutPage, ContactPage, PrivacyPage, TermsPage } from "@/pages/static-pages";
 import NotFound from "@/pages/not-found";
 
@@ -47,6 +48,7 @@ function Routes() {
           <Route path="/author/:slug" component={AuthorPage} />
           <Route path="/search" component={SearchPage} />
           <Route path="/newsletters" component={NewslettersPage} />
+          <Route path="/unsubscribe" component={UnsubscribePage} />
           <Route path="/about" component={AboutPage} />
           <Route path="/contact" component={ContactPage} />
           <Route path="/privacy" component={PrivacyPage} />

@@ -26,4 +26,7 @@
 # 8. Check Sanity read/write token permissions:
 #      pnpm --filter @workspace/scripts run sanity:check
 #
+# Feeds:
+#      /api/rss.xml, /api/sitemap.xml, /api/podcast/feed.xml
+#
 # Secrets live in .env (gitignored). Never commit real keys to .env.example.

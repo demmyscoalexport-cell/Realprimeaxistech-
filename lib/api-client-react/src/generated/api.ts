@@ -37,6 +37,8 @@ import type {
   Newsletter,
   NewsletterSubscription,
   NewsletterSubscriptionInput,
+  NewsletterUnsubscribe,
+  NewsletterUnsubscribeInput,
   Review,
   ReviewSummary,
   SearchArticlesParams,
@@ -274,6 +276,160 @@ export function useGetPodcastFeed<TData = Awaited<ReturnType<typeof getPodcastFe
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
   const queryOptions = getGetPodcastFeedQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetArticleRssFeedUrl = () => {
+
+
+
+
+  return `/api/rss.xml`
+}
+
+/**
+ * @summary Article RSS feed
+ */
+export const getArticleRssFeed = async ( options?: RequestInit): Promise<string> => {
+
+  return customFetch<string>(getGetArticleRssFeedUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetArticleRssFeedQueryKey = () => {
+    return [
+    `/api/rss.xml`
+    ] as const;
+    }
+
+
+export const getGetArticleRssFeedQueryOptions = <TData = Awaited<ReturnType<typeof getArticleRssFeed>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getArticleRssFeed>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetArticleRssFeedQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getArticleRssFeed>>> = ({ signal }) => getArticleRssFeed({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getArticleRssFeed>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetArticleRssFeedQueryResult = NonNullable<Awaited<ReturnType<typeof getArticleRssFeed>>>
+export type GetArticleRssFeedQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Article RSS feed
+ */
+
+export function useGetArticleRssFeed<TData = Awaited<ReturnType<typeof getArticleRssFeed>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getArticleRssFeed>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetArticleRssFeedQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetSitemapUrl = () => {
+
+
+
+
+  return `/api/sitemap.xml`
+}
+
+/**
+ * @summary XML sitemap
+ */
+export const getSitemap = async ( options?: RequestInit): Promise<string> => {
+
+  return customFetch<string>(getGetSitemapUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSitemapQueryKey = () => {
+    return [
+    `/api/sitemap.xml`
+    ] as const;
+    }
+
+
+export const getGetSitemapQueryOptions = <TData = Awaited<ReturnType<typeof getSitemap>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getSitemap>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSitemapQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSitemap>>> = ({ signal }) => getSitemap({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSitemap>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetSitemapQueryResult = NonNullable<Awaited<ReturnType<typeof getSitemap>>>
+export type GetSitemapQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary XML sitemap
+ */
+
+export function useGetSitemap<TData = Awaited<ReturnType<typeof getSitemap>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getSitemap>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetSitemapQueryOptions(options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
@@ -1456,5 +1612,70 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
         TContext
       > => {
       return useMutation(getSubscribeNewsletterMutationOptions(options));
+    }
+
+export const getUnsubscribeNewsletterUrl = () => {
+
+
+
+
+  return `/api/newsletters/unsubscribe`
+}
+
+export const unsubscribeNewsletter = async (newsletterUnsubscribeInput: NewsletterUnsubscribeInput, options?: RequestInit): Promise<NewsletterUnsubscribe> => {
+
+  return customFetch<NewsletterUnsubscribe>(getUnsubscribeNewsletterUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      newsletterUnsubscribeInput,)
+  }
+);}
+
+
+
+
+export const getUnsubscribeNewsletterMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof unsubscribeNewsletter>>, TError,{data: BodyType<NewsletterUnsubscribeInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof unsubscribeNewsletter>>, TError,{data: BodyType<NewsletterUnsubscribeInput>}, TContext> => {
+
+const mutationKey = ['unsubscribeNewsletter'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof unsubscribeNewsletter>>, {data: BodyType<NewsletterUnsubscribeInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  unsubscribeNewsletter(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UnsubscribeNewsletterMutationResult = NonNullable<Awaited<ReturnType<typeof unsubscribeNewsletter>>>
+    export type UnsubscribeNewsletterMutationBody = BodyType<NewsletterUnsubscribeInput>
+    export type UnsubscribeNewsletterMutationError = ErrorType<ErrorResponse>
+
+    export const useUnsubscribeNewsletter = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof unsubscribeNewsletter>>, TError,{data: BodyType<NewsletterUnsubscribeInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof unsubscribeNewsletter>>,
+        TError,
+        {data: BodyType<NewsletterUnsubscribeInput>},
+        TContext
+      > => {
+      return useMutation(getUnsubscribeNewsletterMutationOptions(options));
     }
 

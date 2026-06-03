@@ -16,6 +16,7 @@ PrimeAxis already has:
 - AI image generation pipeline
 - ElevenLabs podcast generation pipeline
 - Podcast RSS feed endpoint
+- Article RSS and XML sitemap endpoints
 - Imgix/iMix and Cohere API key checks
 - GitHub Actions CI for install, codegen drift, typecheck, and build
 
@@ -45,6 +46,9 @@ PrimeAxis already has:
   - `ELEVENLABS_VOICE_ID`
   - `PODCAST_SITE_URL`
   - `PODCAST_FEED_URL`
+  - `PODCAST_COVER_IMAGE_URL`
+  - `PODCAST_OWNER_NAME`
+  - `PODCAST_OWNER_EMAIL`
 - Optional / future:
   - `SESSION_SECRET`
   - `DATABASE_URL`
@@ -60,7 +64,7 @@ PrimeAxis already has:
 - Verify frontend routes work on refresh.
 - Verify `/api/*` routes reach the API server.
 - Verify `/api/podcast/feed.xml` is publicly accessible.
-- Decide whether `/rss.xml` should redirect to `/api/podcast/feed.xml` or become a site-wide article feed.
+- Decide whether the production host should redirect root `/rss.xml` to `/api/rss.xml`.
 
 ### 3. Real content review
 
@@ -93,7 +97,7 @@ PrimeAxis already has:
   - `PODCAST_SITE_URL`
   - `PODCAST_FEED_URL`
 - Confirm feed validity with a podcast RSS validator.
-- Add podcast cover art that meets platform requirements.
+- Add podcast cover art that meets platform requirements and set `PODCAST_COVER_IMAGE_URL`.
 - Submit the RSS feed to the intended platforms:
   - Spotify for Podcasters
   - Apple Podcasts Connect
@@ -104,13 +108,15 @@ PrimeAxis already has:
 ### 5. Newsletter flow
 
 - Verify `POST /api/newsletters/subscribe` writes `newsletterSubscriber` documents in Sanity.
+- Verify `/unsubscribe` and `POST /api/newsletters/unsubscribe` remove `newsletterSubscriber` documents.
 - Verify `pnpm --filter @workspace/scripts run sanity:check` passes with the production token.
 - Verify frontend subscription forms call the API in production.
 - Verify `primeaxishq.com` in Resend.
 - Add the Resend DNS records from `docs/RESEND_DNS_SETUP.md`.
 - Set `RESEND_FROM_EMAIL=PrimeAxis Tech <news@primeaxishq.com>`.
 - Current check note: Resend API reports `primeaxishq.com` as verified.
-- Add unsubscribe/compliance flow before sending recurring email.
+- Add recurring-email compliance details before sending campaigns at scale.
+- Confirm welcome email unsubscribe link points to `/unsubscribe`.
 - Confirm privacy policy covers email collection.
 
 ### 6. Search and discovery
@@ -151,6 +157,7 @@ PrimeAxis already has:
   - `PodcastEpisode` where audio exists
   - `BreadcrumbList`
 - Add sitemap.
+- Verify `/api/sitemap.xml`, `/api/rss.xml`, and `/api/podcast/feed.xml`.
 - Decide whether `/rss.xml` should be article RSS, podcast RSS, or both separate feeds.
 - Verify robots.txt.
 

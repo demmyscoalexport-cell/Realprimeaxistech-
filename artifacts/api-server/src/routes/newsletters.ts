@@ -2,18 +2,30 @@ import { Router, type IRouter } from "express";
 import {
   ListNewslettersResponse,
   SubscribeNewsletterBody,
+  UnsubscribeNewsletterBody,
+  UnsubscribeNewsletterResponse,
 } from "@workspace/api-zod";
 import { sendNewsletterWelcomeEmail } from "../lib/resend";
 import {
   isSanityWriteConfigured,
   listNewsletterSummaries,
   subscribeNewsletterInSanity,
+  unsubscribeNewsletterInSanity,
 } from "../lib/cms";
 
 const router: IRouter = Router();
 const subscribeAttempts = new Map<string, { count: number; resetAt: number }>();
 const SUBSCRIBE_WINDOW_MS = 10 * 60 * 1000;
 const SUBSCRIBE_MAX_ATTEMPTS = 5;
+
+function isSanityPermissionError(error: unknown): boolean {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "statusCode" in error &&
+    error.statusCode === 403
+  );
+}
 
 function isRateLimited(key: string): boolean {
   const now = Date.now();
@@ -95,12 +107,7 @@ router.post("/newsletters/subscribe", async (req, res): Promise<void> => {
     });
   } catch (e) {
     req.log.error({ err: e }, "Newsletter subscribe failed");
-    if (
-      typeof e === "object" &&
-      e !== null &&
-      "statusCode" in e &&
-      e.statusCode === 403
-    ) {
+    if (isSanityPermissionError(e)) {
       res.status(503).json({
         error:
           "Newsletter subscriptions require a SANITY_API_TOKEN with create/update permissions",
@@ -108,6 +115,46 @@ router.post("/newsletters/subscribe", async (req, res): Promise<void> => {
       return;
     }
     res.status(400).json({ error: "Subscription failed" });
+  }
+});
+
+router.post("/newsletters/unsubscribe", async (req, res): Promise<void> => {
+  const parsed = UnsubscribeNewsletterBody.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({ error: parsed.error.message });
+    return;
+  }
+
+  if (!isSanityWriteConfigured()) {
+    res.status(503).json({
+      error:
+        "Newsletter unsubscribe requires SANITY_API_TOKEN to be configured in .env",
+    });
+    return;
+  }
+
+  const rateLimitKey = `unsubscribe:${req.ip}:${parsed.data.email.toLowerCase()}`;
+  if (isRateLimited(rateLimitKey)) {
+    res.status(429).json({ error: "Too many unsubscribe attempts" });
+    return;
+  }
+
+  try {
+    const result = await unsubscribeNewsletterInSanity({
+      email: parsed.data.email,
+      newsletterSlug: parsed.data.newsletterSlug,
+    });
+    res.json(UnsubscribeNewsletterResponse.parse(result));
+  } catch (e) {
+    req.log.error({ err: e }, "Newsletter unsubscribe failed");
+    if (isSanityPermissionError(e)) {
+      res.status(503).json({
+        error:
+          "Newsletter unsubscribe requires a SANITY_API_TOKEN with delete/update permissions",
+      });
+      return;
+    }
+    res.status(400).json({ error: "Unsubscribe failed" });
   }
 });
 
