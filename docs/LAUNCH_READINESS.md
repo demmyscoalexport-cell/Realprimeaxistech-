@@ -30,6 +30,7 @@ PrimeAxis already has:
   - `LOG_LEVEL`
   - `BASE_PATH`
   - `API_PROXY_TARGET`
+  - `PUBLIC_SITE_URL`
   - `DATABASE_URL`
   - `RESEND_API_KEY`
   - `RESEND_FROM_EMAIL`
@@ -51,7 +52,7 @@ PrimeAxis already has:
 
 ### 2. Domain, SSL, and routing
 
-- Connect the production domain.
+- Connect the production domain: `primeaxishq.com`.
 - Verify HTTPS.
 - Verify frontend routes work on refresh.
 - Verify `/api/*` routes reach the API server.
@@ -101,9 +102,10 @@ PrimeAxis already has:
 
 - Verify `POST /api/newsletters/subscribe` against production DB.
 - Add real frontend subscription calls where forms still show toast-only behavior.
-- Verify `primeaxishy.com` in Resend.
+- Verify `primeaxishq.com` in Resend.
 - Add the Resend DNS records from `docs/RESEND_DNS_SETUP.md`.
-- Set `RESEND_FROM_EMAIL=PrimeAxis Tech <news@primeaxishy.com>`.
+- Set `RESEND_FROM_EMAIL=PrimeAxis Tech <news@primeaxishq.com>`.
+- Current check note: Resend API reports `primeaxishq.com` as verified.
 - Add unsubscribe/compliance flow before sending recurring email.
 - Confirm privacy policy covers email collection.
 

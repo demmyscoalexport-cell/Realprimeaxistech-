@@ -84,7 +84,7 @@ Resend sends transactional/newsletter-related email. It is currently wired to se
 | --- | --- |
 | `RESEND_API_KEY` | Resend API key. |
 | `RESEND_BASE_URL` | Base URL, usually `https://api.resend.com`. |
-| `RESEND_FROM_EMAIL` | Verified sender, e.g. `PrimeAxis Tech <news@primeaxishy.com>`. Required before sending email. |
+| `RESEND_FROM_EMAIL` | Verified sender, e.g. `PrimeAxis Tech <news@primeaxishq.com>`. Required before sending email. |
 | `RESEND_REPLY_TO` | Optional reply-to address. |
 
 Used by:
@@ -105,10 +105,11 @@ Behavior:
 
 Production requirement:
 
-- Verify `primeaxishy.com` as the sending domain in Resend.
+- Verify `primeaxishq.com` as the sending domain in Resend.
 - Set `RESEND_FROM_EMAIL` to an address on that verified domain.
 - Keep Resend sending limits and compliance requirements in mind before sending bulk newsletters.
 - See `docs/RESEND_DNS_SETUP.md` for the DNS records checklist.
+- Current check note: `pnpm --filter @workspace/scripts run resend:check` returned `primeaxishq.com` as verified.
 
 ## Anthropic API
 
