@@ -72,4 +72,5 @@ PrimeAxis Tech is a premium global tech-media site (Engadget × Wired in tone). 
 - `docs/API_INTEGRATIONS.md` — API purpose, env vars, code locations, and safe usage notes for future AI/dev work.
 - `docs/LAUNCH_READINESS.md` — remaining professional launch checklist and production readiness notes.
 - `docs/RESEND_DNS_SETUP.md` — DNS checklist for verifying `primeaxishq.com` in Resend.
+- `docs/SOCIAL_MEDIA_SETUP.md` — recommended social names, handles, bios, and URL handoff format.
 - See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details
