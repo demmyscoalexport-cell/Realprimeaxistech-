@@ -1,4 +1,5 @@
 import { createClient, type SanityClient } from "@sanity/client";
+import { createHash } from "node:crypto";
 
 const projectId = process.env.SANITY_PROJECT_ID;
 const dataset = process.env.SANITY_DATASET || "production";
@@ -643,4 +644,197 @@ export async function listVideoSummaries(limit = 20): Promise<VideoSummary[]> {
       accentColor: v.category?.accentColor ?? "#888888",
     },
   }));
+}
+
+type RawNewsletter = {
+  _id: string;
+  slug?: string;
+  name?: string;
+  description?: string;
+  tagline?: string;
+  frequency?: string;
+  cadence?: string;
+  subscriberCount?: number;
+  accentColor?: string;
+};
+
+const FALLBACK_NEWSLETTERS: RawNewsletter[] = [
+  {
+    _id: "newsletter-the-axis",
+    slug: "the-axis",
+    name: "The Axis",
+    description:
+      "A morning briefing on the technology stories shaping the global agenda. Sent every weekday.",
+    frequency: "daily",
+    subscriberCount: 0,
+    accentColor: "#22d3ee",
+  },
+  {
+    _id: "newsletter-model-context",
+    slug: "model-context",
+    name: "Model Context",
+    description:
+      "A weekly deep read on AI research, the labs racing to deploy it, and the people building frontier intelligence.",
+    frequency: "weekly",
+    subscriberCount: 0,
+    accentColor: "#a78bfa",
+  },
+  {
+    _id: "newsletter-the-spec-sheet",
+    slug: "the-spec-sheet",
+    name: "The Spec Sheet",
+    description:
+      "Our reviews team's verdicts on the gadgets actually worth your money before you buy.",
+    frequency: "weekly",
+    subscriberCount: 0,
+    accentColor: "#f472b6",
+  },
+];
+
+export type NewsletterSummary = {
+  id: number;
+  slug: string;
+  name: string;
+  tagline: string;
+  cadence: string;
+  subscriberCount: number;
+  accentColor: string;
+};
+
+export type NewsletterSubscriptionResult = {
+  id: number;
+  email: string;
+  newsletterSlug: string;
+  createdAt: string;
+  created: boolean;
+};
+
+export function isSanityWriteConfigured(): boolean {
+  return Boolean(token);
+}
+
+function formatCadence(value?: string): string {
+  if (!value) return "Weekly";
+  return `${value.charAt(0).toUpperCase()}${value.slice(1)}`;
+}
+
+function toNewsletterSummary(row: RawNewsletter): NewsletterSummary {
+  return {
+    id: stableNumericId(row._id),
+    slug: row.slug ?? "",
+    name: row.name ?? "",
+    tagline: row.tagline ?? row.description ?? "",
+    cadence: row.cadence ?? formatCadence(row.frequency),
+    subscriberCount: row.subscriberCount ?? 0,
+    accentColor: row.accentColor ?? "#22d3ee",
+  };
+}
+
+export async function listNewsletterSummaries(): Promise<NewsletterSummary[]> {
+  const rows = await sanity.fetch<RawNewsletter[]>(
+    `*[_type == "newsletter" && defined(slug.current)] | order(name asc) {
+      _id,
+      "slug": slug.current,
+      name,
+      description,
+      tagline,
+      frequency,
+      cadence,
+      subscriberCount,
+      accentColor
+    }`,
+  );
+
+  return (rows.length > 0 ? rows : FALLBACK_NEWSLETTERS).map(
+    toNewsletterSummary,
+  );
+}
+
+function subscriberDocId(email: string, newsletterSlug: string): string {
+  const digest = createHash("sha256")
+    .update(`${newsletterSlug}:${email}`)
+    .digest("hex")
+    .slice(0, 24);
+  return `newsletterSubscriber.${newsletterSlug}.${digest}`;
+}
+
+export async function subscribeNewsletterInSanity(input: {
+  email: string;
+  newsletterSlug: string;
+}): Promise<NewsletterSubscriptionResult | null> {
+  const email = input.email.trim().toLowerCase();
+  const newsletterSlug = input.newsletterSlug.trim();
+
+  if (!token) {
+    throw new Error("SANITY_API_TOKEN is required to write newsletter subscribers");
+  }
+
+  let newsletter = await sanity.fetch<{ _id: string } | null>(
+    `*[_type == "newsletter" && slug.current == $newsletterSlug][0]{ _id }`,
+    { newsletterSlug },
+  );
+  const fallbackNewsletter = FALLBACK_NEWSLETTERS.find(
+    (item) => item.slug === newsletterSlug,
+  );
+
+  if (!newsletter && !fallbackNewsletter) return null;
+  if (!newsletter && fallbackNewsletter) {
+    newsletter = { _id: fallbackNewsletter._id };
+  }
+  if (!newsletter) return null;
+  const newsletterId = newsletter._id;
+
+  const _id = subscriberDocId(email, newsletterSlug);
+  const existing = await sanity.fetch<{ createdAt?: string } | null>(
+    `*[_id == $id][0]{ createdAt }`,
+    { id: _id },
+  );
+
+  if (existing) {
+    return {
+      id: stableNumericId(_id),
+      email,
+      newsletterSlug,
+      createdAt: existing.createdAt ?? new Date().toISOString(),
+      created: false,
+    };
+  }
+
+  const createdAt = new Date().toISOString();
+  await sanity
+    .transaction()
+    .createIfNotExists(
+      fallbackNewsletter
+        ? {
+            _id: fallbackNewsletter._id,
+            _type: "newsletter",
+            name: fallbackNewsletter.name,
+            slug: { _type: "slug", current: newsletterSlug },
+            frequency: fallbackNewsletter.frequency,
+            description: fallbackNewsletter.description,
+            accentColor: fallbackNewsletter.accentColor,
+            subscriberCount: fallbackNewsletter.subscriberCount ?? 0,
+          }
+        : { _id: newsletterId, _type: "newsletter" },
+    )
+    .create({
+      _id,
+      _type: "newsletterSubscriber",
+      email,
+      newsletterSlug,
+      createdAt,
+      source: "site",
+    })
+    .patch(newsletterId, (patch) =>
+      patch.setIfMissing({ subscriberCount: 0 }).inc({ subscriberCount: 1 }),
+    )
+    .commit();
+
+  return {
+    id: stableNumericId(_id),
+    email,
+    newsletterSlug,
+    createdAt,
+    created: true,
+  };
 }

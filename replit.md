@@ -8,14 +8,14 @@ _Replace the heading above with the project's name, and this line with one sente
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+- `pnpm --filter @workspace/db run push` — push DB schema changes if future relational app data is used
+- Required env for CMS writes: `SANITY_API_TOKEN`
 
 ## Stack
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9
 - API: Express 5
-- DB: PostgreSQL + Drizzle ORM
+- Optional DB: PostgreSQL + Drizzle ORM for future relational app data
 - Validation: Zod (`zod/v4`), `drizzle-zod`
 - API codegen: Orval (from OpenAPI spec)
 - Build: esbuild (CJS bundle)
@@ -32,6 +32,7 @@ _Replace the heading above with the project's name, and this line with one sente
 - `scripts/src/check-cohere.ts` — Read-only Cohere API key check. Uses `COHERE_API_KEY` to list visible models without running inference.
 - `scripts/src/check-imgix.ts` — Read-only Imgix/iMix Management API key check. Uses `IMGIX_API_KEY` or `IMIX_API_KEY` and lists visible sources.
 - `scripts/src/check-resend.ts` — Read-only Resend API key check. Uses `RESEND_API_KEY` to list visible email domains without sending email.
+- `scripts/src/check-sanity-token.ts` — Sanity token read/write check. Uses `SANITY_API_TOKEN` to read article count, create a temporary document, then delete it.
 - `scripts/src/seed-subcategories.ts`, `enrich-content.ts`, `enrich-images.ts` — earlier seeding pipeline.
 
 ## Architecture decisions
@@ -56,6 +57,7 @@ PrimeAxis Tech is a premium global tech-media site (Engadget × Wired in tone). 
 
 - **Never run `pnpm dev` at the repo root.** Use the configured workflows.
 - **Sanity writes** require `SANITY_API_TOKEN` exported in the shell before running scripts.
+- **Newsletter subscriptions** write `newsletterSubscriber` documents to Sanity, so `SANITY_API_TOKEN` must include create/update permissions.
 - **Long-running scripts** must be run via a Replit workflow (e.g., `regen-articles`). Bash-detached children (`nohup`/`disown`/`setsid`) get killed when the parent shell exits.
 - **Claude JSON output** occasionally appends commentary or truncates mid-array — `regen-by-sub.ts` walks brackets to extract the outermost array and includes a trailing-comma repair fallback. Re-run for any sub still failing — different sampling usually succeeds.
 - **WaveSpeed** prompts must end with `no text, no watermark, no logo, no captions` to avoid garbled overlays.

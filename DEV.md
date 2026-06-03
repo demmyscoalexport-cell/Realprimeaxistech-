@@ -23,4 +23,7 @@
 # 7. Check a Resend API key without sending email:
 #      pnpm --filter @workspace/scripts run resend:check
 #
+# 8. Check Sanity read/write token permissions:
+#      pnpm --filter @workspace/scripts run sanity:check
+#
 # Secrets live in .env (gitignored). Never commit real keys to .env.example.

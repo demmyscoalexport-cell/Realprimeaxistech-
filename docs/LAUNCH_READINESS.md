@@ -9,7 +9,7 @@ PrimeAxis already has:
 - React/Vite frontend
 - Express API server
 - Sanity Studio and Sanity-backed editorial content
-- PostgreSQL/Drizzle for newsletter subscriptions
+- Sanity-backed newsletter subscriptions
 - Optional Resend welcome email delivery for newsletter subscriptions
 - OpenAPI-generated React hooks and Zod validators
 - AI content scripts
@@ -33,7 +33,6 @@ PrimeAxis already has:
   - `BASE_PATH`
   - `API_PROXY_TARGET`
   - `PUBLIC_SITE_URL`
-  - `DATABASE_URL`
   - `RESEND_API_KEY`
   - `RESEND_FROM_EMAIL`
   - `SANITY_PROJECT_ID`
@@ -48,6 +47,7 @@ PrimeAxis already has:
   - `PODCAST_FEED_URL`
 - Optional / future:
   - `SESSION_SECRET`
+  - `DATABASE_URL`
 - Optional but configured:
   - `COHERE_API_KEY`
   - `IMGIX_API_KEY`
@@ -103,7 +103,8 @@ PrimeAxis already has:
 
 ### 5. Newsletter flow
 
-- Verify `POST /api/newsletters/subscribe` against production DB.
+- Verify `POST /api/newsletters/subscribe` writes `newsletterSubscriber` documents in Sanity.
+- Verify `pnpm --filter @workspace/scripts run sanity:check` passes with the production token.
 - Verify frontend subscription forms call the API in production.
 - Verify `primeaxishq.com` in Resend.
 - Add the Resend DNS records from `docs/RESEND_DNS_SETUP.md`.

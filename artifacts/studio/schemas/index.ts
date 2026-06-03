@@ -4,6 +4,7 @@ import { article } from "./article";
 import { review } from "./review";
 import { video } from "./video";
 import { newsletter } from "./newsletter";
+import { newsletterSubscriber } from "./newsletterSubscriber";
 import { blockContent } from "./blockContent";
 
 export const schemaTypes = [
@@ -14,4 +15,5 @@ export const schemaTypes = [
   review,
   video,
   newsletter,
+  newsletterSubscriber,
 ];

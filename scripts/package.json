@@ -10,6 +10,7 @@
     "imgix:check": "tsx --import ./load-env.mjs ./src/check-imgix.ts",
     "podcasts": "tsx --import ./load-env.mjs ./src/generate-podcast-audio.ts",
     "resend:check": "tsx --import ./load-env.mjs ./src/check-resend.ts",
+    "sanity:check": "tsx --import ./load-env.mjs ./src/check-sanity-token.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {

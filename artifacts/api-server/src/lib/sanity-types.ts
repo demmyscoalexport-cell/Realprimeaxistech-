@@ -105,3 +105,21 @@ export type VideoSummary = {
   viewCount: number;
   category: { slug: string; name: string; accentColor: string };
 };
+
+export type NewsletterSummary = {
+  id: number;
+  slug: string;
+  name: string;
+  tagline: string;
+  cadence: string;
+  subscriberCount: number;
+  accentColor: string;
+};
+
+export type NewsletterSubscriptionResult = {
+  id: number;
+  email: string;
+  newsletterSlug: string;
+  createdAt: string;
+  created: boolean;
+};

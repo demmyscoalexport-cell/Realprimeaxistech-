@@ -57,28 +57,34 @@ Used by:
 Stores:
 
 - Articles, categories, authors, reviews, videos, newsletters
+- Newsletter subscriber documents (`newsletterSubscriber`)
 - AI summaries and key takeaways
 - Hero image URLs
 - Podcast audio metadata and scripts
 
+Validation:
+
+- `pnpm --filter @workspace/scripts run sanity:check`
+- This checks read access and a temporary create/delete write operation.
+- Newsletter subscriptions require a token with create/update permissions.
+
 ## PostgreSQL / Drizzle
 
-Postgres is used for operational data, not article content.
+Postgres is no longer required for launch. Newsletter subscriptions now write to Sanity, so the platform can run with Sanity as the main backend.
 
 | Env var | Purpose |
 | --- | --- |
-| `DATABASE_URL` | Postgres connection string. |
+| `DATABASE_URL` | Optional future Postgres connection string for heavier app data such as accounts, comments, analytics, or paid subscriptions. |
 
-Used by:
+Current status:
 
-- `lib/db/`
-- Newsletter subscription routes
-
-Current note: Sanity remains the editorial CMS. Do not move article/category/author content into Postgres unless the product architecture intentionally changes.
+- `lib/db/` still exists in the workspace for future use.
+- `artifacts/api-server` no longer depends on Postgres for newsletter subscriptions.
+- Do not add Postgres back for simple editorial/newsletter flows unless the product needs relational app data.
 
 ## Resend API
 
-Resend sends transactional/newsletter-related email. It is currently wired to send a welcome email after a new newsletter subscription is stored.
+Resend sends transactional/newsletter-related email. It is currently wired to send a welcome email after a new newsletter subscription is stored in Sanity.
 
 | Env var | Purpose |
 | --- | --- |
@@ -99,9 +105,11 @@ Utility:
 
 Behavior:
 
-- `POST /api/newsletters/subscribe` stores the subscription in Postgres.
+- `POST /api/newsletters/subscribe` stores the subscription in Sanity as a `newsletterSubscriber` document.
+- Duplicate subscriptions are idempotent by email + newsletter slug.
 - If `RESEND_API_KEY` and `RESEND_FROM_EMAIL` are configured, the API attempts to send a welcome email.
 - Email delivery failures are logged but do not fail the subscription response.
+- If the Sanity token lacks create/update permissions, subscription writes fail with a 503 setup error.
 
 Production requirement:
 

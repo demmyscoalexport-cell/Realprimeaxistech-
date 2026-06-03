@@ -1,16 +1,14 @@
 import { Router, type IRouter } from "express";
 import {
-  getDb,
-  isDatabaseConfigured,
-  newslettersTable,
-  newsletterSubscriptionsTable,
-} from "@workspace/db";
-import {
   ListNewslettersResponse,
   SubscribeNewsletterBody,
 } from "@workspace/api-zod";
-import { sql } from "drizzle-orm";
 import { sendNewsletterWelcomeEmail } from "../lib/resend";
+import {
+  isSanityWriteConfigured,
+  listNewsletterSummaries,
+  subscribeNewsletterInSanity,
+} from "../lib/cms";
 
 const router: IRouter = Router();
 const subscribeAttempts = new Map<string, { count: number; resetAt: number }>();
@@ -33,13 +31,8 @@ function isRateLimited(key: string): boolean {
 }
 
 router.get("/newsletters", async (_req, res): Promise<void> => {
-  if (!isDatabaseConfigured()) {
-    res.json(ListNewslettersResponse.parse([]));
-    return;
-  }
   try {
-    const db = getDb();
-    const rows = await db.select().from(newslettersTable);
+    const rows = await listNewsletterSummaries();
     res.json(ListNewslettersResponse.parse(rows));
   } catch (e) {
     res.json(ListNewslettersResponse.parse([]));
@@ -53,10 +46,10 @@ router.post("/newsletters/subscribe", async (req, res): Promise<void> => {
     return;
   }
 
-  if (!isDatabaseConfigured()) {
+  if (!isSanityWriteConfigured()) {
     res.status(503).json({
       error:
-        "Newsletter subscriptions require DATABASE_URL to be configured in .env",
+        "Newsletter subscriptions require SANITY_API_TOKEN to be configured in .env",
     });
     return;
   }
@@ -67,22 +60,16 @@ router.post("/newsletters/subscribe", async (req, res): Promise<void> => {
     return;
   }
   try {
-    const db = getDb();
-    const [row] = await db
-      .insert(newsletterSubscriptionsTable)
-      .values({
-        email: parsed.data.email,
-        newsletterSlug: parsed.data.newsletterSlug,
-      })
-      .onConflictDoNothing()
-      .returning();
-    if (row) {
-      await db
-        .update(newslettersTable)
-        .set({
-          subscriberCount: sql`${newslettersTable.subscriberCount} + 1`,
-        })
-        .where(sql`${newslettersTable.slug} = ${parsed.data.newsletterSlug}`);
+    const row = await subscribeNewsletterInSanity({
+      email: parsed.data.email,
+      newsletterSlug: parsed.data.newsletterSlug,
+    });
+    if (!row) {
+      res.status(404).json({ error: "Newsletter not found" });
+      return;
+    }
+
+    if (row.created) {
       try {
         await sendNewsletterWelcomeEmail({
           email: row.email,
@@ -95,18 +82,31 @@ router.post("/newsletters/subscribe", async (req, res): Promise<void> => {
         id: row.id,
         email: row.email,
         newsletterSlug: row.newsletterSlug,
-        createdAt: row.createdAt.toISOString(),
+        createdAt: row.createdAt,
       });
       return;
     }
+
     res.status(201).json({
-      id: 0,
-      email: parsed.data.email,
-      newsletterSlug: parsed.data.newsletterSlug,
-      createdAt: new Date().toISOString(),
+      id: row.id,
+      email: row.email,
+      newsletterSlug: row.newsletterSlug,
+      createdAt: row.createdAt,
     });
   } catch (e) {
     req.log.error({ err: e }, "Newsletter subscribe failed");
+    if (
+      typeof e === "object" &&
+      e !== null &&
+      "statusCode" in e &&
+      e.statusCode === 403
+    ) {
+      res.status(503).json({
+        error:
+          "Newsletter subscriptions require a SANITY_API_TOKEN with create/update permissions",
+      });
+      return;
+    }
     res.status(400).json({ error: "Subscription failed" });
   }
 });

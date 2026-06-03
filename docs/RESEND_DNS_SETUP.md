@@ -80,6 +80,7 @@ Confirm these are true:
 - `RESEND_FROM_EMAIL=PrimeAxis Tech <news@primeaxishq.com>` is set in production.
 - `RESEND_REPLY_TO=hello@primeaxishq.com` is set in production.
 - The newsletter form is wired to the API route.
+- The API has `SANITY_API_TOKEN` configured so subscriptions can write `newsletterSubscriber` documents.
 - Privacy policy mentions email collection.
 - Unsubscribe/compliance flow exists before recurring newsletters are sent.
 
