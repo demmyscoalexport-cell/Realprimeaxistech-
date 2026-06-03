@@ -13,6 +13,24 @@ import { sql } from "drizzle-orm";
 import { sendNewsletterWelcomeEmail } from "../lib/resend";
 
 const router: IRouter = Router();
+const subscribeAttempts = new Map<string, { count: number; resetAt: number }>();
+const SUBSCRIBE_WINDOW_MS = 10 * 60 * 1000;
+const SUBSCRIBE_MAX_ATTEMPTS = 5;
+
+function isRateLimited(key: string): boolean {
+  const now = Date.now();
+  const current = subscribeAttempts.get(key);
+  if (!current || current.resetAt <= now) {
+    subscribeAttempts.set(key, {
+      count: 1,
+      resetAt: now + SUBSCRIBE_WINDOW_MS,
+    });
+    return false;
+  }
+
+  current.count += 1;
+  return current.count > SUBSCRIBE_MAX_ATTEMPTS;
+}
 
 router.get("/newsletters", async (_req, res): Promise<void> => {
   if (!isDatabaseConfigured()) {
@@ -29,6 +47,12 @@ router.get("/newsletters", async (_req, res): Promise<void> => {
 });
 
 router.post("/newsletters/subscribe", async (req, res): Promise<void> => {
+  const parsed = SubscribeNewsletterBody.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({ error: parsed.error.message });
+    return;
+  }
+
   if (!isDatabaseConfigured()) {
     res.status(503).json({
       error:
@@ -37,9 +61,9 @@ router.post("/newsletters/subscribe", async (req, res): Promise<void> => {
     return;
   }
 
-  const parsed = SubscribeNewsletterBody.safeParse(req.body);
-  if (!parsed.success) {
-    res.status(400).json({ error: parsed.error.message });
+  const rateLimitKey = `${req.ip}:${parsed.data.email.toLowerCase()}`;
+  if (isRateLimited(rateLimitKey)) {
+    res.status(429).json({ error: "Too many subscription attempts" });
     return;
   }
   try {

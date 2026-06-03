@@ -35,7 +35,7 @@ export function VideoLightbox({
               {title}
             </div>
             <div className="text-sm text-white/60">
-              Player preview — full video playback coming to PrimeAxis Tech.
+              Video metadata preview. Full playback requires a published video URL.
             </div>
           </div>
         </div>

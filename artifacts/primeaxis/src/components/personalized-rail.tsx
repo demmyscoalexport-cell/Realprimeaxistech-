@@ -55,8 +55,8 @@ export function PersonalizedRail() {
             <span className="gradient-text">how you read.</span>
           </h2>
           <p className="mt-3 text-sm text-muted-foreground">
-            PrimeAxis Intelligence learns from your reading and surfaces the
-            stories most relevant to you. Nothing leaves your device.
+            Your browser keeps a local reading history and surfaces related
+            stories. Nothing leaves your device.
           </p>
 
           <div className="mt-6">

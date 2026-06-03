@@ -2,7 +2,11 @@ import { createClient, type SanityClient } from "@sanity/client";
 
 const projectId = process.env.SANITY_PROJECT_ID;
 const dataset = process.env.SANITY_DATASET || "production";
-const token = process.env.SANITY_API_TOKEN;
+const token =
+  process.env.SANITY_API_TOKEN &&
+  !/^CHANGE_ME/i.test(process.env.SANITY_API_TOKEN)
+    ? process.env.SANITY_API_TOKEN
+    : undefined;
 
 if (!projectId) {
   throw new Error("SANITY_PROJECT_ID env var is required");

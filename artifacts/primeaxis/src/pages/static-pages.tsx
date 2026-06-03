@@ -90,15 +90,20 @@ export function AboutPage() {
           studio uses a digital backlot — for visuals, simulation, and scale —
           but the reporting, judgment, and analysis are always ours.
         </p>
+        <p>
+          AI-assisted features such as article summaries, generated visuals, and
+          narrated audio are reviewed as part of our editorial workflow and are
+          never a substitute for human accountability.
+        </p>
 
         <h2>Get in touch</h2>
         <p>
           Tips, story ideas, corrections, and pitches all go to{" "}
-          <a href="mailto:newsroom@primeaxistech.store">
-            newsroom@primeaxistech.store
+          <a href="mailto:news@primeaxishq.com">
+            news@primeaxishq.com
           </a>
           . Press and partnership requests:{" "}
-          <a href="mailto:press@primeaxistech.store">press@primeaxistech.store</a>.
+          <a href="mailto:press@primeaxishq.com">press@primeaxishq.com</a>.
           For everything else, see <Link href="/contact">our contact page</Link>.
         </p>
       </Prose>
@@ -112,25 +117,25 @@ export function ContactPage() {
       icon: Newspaper,
       title: "Newsroom & Tips",
       desc: "Confidential tips, story ideas, leaked documents.",
-      email: "newsroom@primeaxistech.store",
+      email: "news@primeaxishq.com",
     },
     {
       icon: Mail,
       title: "Press & Partnerships",
       desc: "Media requests, interview bookings, brand collaborations.",
-      email: "press@primeaxistech.store",
+      email: "press@primeaxishq.com",
     },
     {
       icon: Building2,
       title: "Advertising",
       desc: "Sponsorships, brand studio, newsletter placements.",
-      email: "advertise@primeaxistech.store",
+      email: "advertise@primeaxishq.com",
     },
     {
       icon: Shield,
       title: "Corrections",
       desc: "Spot something off in a story? We want to know.",
-      email: "corrections@primeaxistech.store",
+      email: "corrections@primeaxishq.com",
     },
   ];
   return (
@@ -220,7 +225,7 @@ export function PrivacyPage() {
       <PageHero
         eyebrow="Privacy Policy"
         title="What we collect, why, and how to control it."
-        lede="Last updated May 16, 2026. This policy describes how PrimeAxis Tech Media, Inc. handles personal information for visitors to primeaxistech.store and subscribers to our newsletters."
+        lede="Last updated May 16, 2026. This policy describes how PrimeAxis Tech Media, Inc. handles personal information for visitors to primeaxishq.com and subscribers to our newsletters."
         icon={Shield}
       />
       <Prose>
@@ -264,8 +269,8 @@ export function PrivacyPage() {
           correct, port, or delete personal information we hold about you, and
           to object to certain processing. To exercise any of these rights,
           email{" "}
-          <a href="mailto:privacy@primeaxistech.store">
-            privacy@primeaxistech.store
+          <a href="mailto:privacy@primeaxishq.com">
+            privacy@primeaxishq.com
           </a>
           .
         </p>
@@ -292,7 +297,7 @@ export function TermsPage() {
       <PageHero
         eyebrow="Terms of Service"
         title="The agreement between you and PrimeAxis Tech."
-        lede="Last updated May 16, 2026. By accessing primeaxistech.store you agree to these Terms. If you do not agree, please do not use the site."
+        lede="Last updated May 16, 2026. By accessing primeaxishq.com you agree to these Terms. If you do not agree, please do not use the site."
         icon={Scale}
       />
       <Prose>
@@ -356,7 +361,7 @@ export function TermsPage() {
         <h2>8. Contact</h2>
         <p>
           Questions about these Terms? Email{" "}
-          <a href="mailto:legal@primeaxistech.store">legal@primeaxistech.store</a>.
+          <a href="mailto:legal@primeaxishq.com">legal@primeaxishq.com</a>.
         </p>
       </Prose>
     </>

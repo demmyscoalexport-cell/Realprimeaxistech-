@@ -1,7 +1,14 @@
-const resendApiKey = process.env.RESEND_API_KEY;
+const resendApiKey =
+  process.env.RESEND_API_KEY && !/^CHANGE_ME/i.test(process.env.RESEND_API_KEY)
+    ? process.env.RESEND_API_KEY
+    : undefined;
 const resendBaseUrl = (process.env.RESEND_BASE_URL ?? "https://api.resend.com")
   .replace(/\/$/, "");
-const resendFromEmail = process.env.RESEND_FROM_EMAIL;
+const resendFromEmail =
+  process.env.RESEND_FROM_EMAIL &&
+  !process.env.RESEND_FROM_EMAIL.includes("example.com")
+    ? process.env.RESEND_FROM_EMAIL
+    : undefined;
 const resendReplyTo = process.env.RESEND_REPLY_TO;
 
 type ResendEmailPayload = {

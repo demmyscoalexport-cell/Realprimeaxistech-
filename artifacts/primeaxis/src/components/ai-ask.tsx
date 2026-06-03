@@ -98,8 +98,8 @@ export function AiAsk({
         Talk to "{title.slice(0, 60)}{title.length > 60 ? "…" : ""}"
       </h3>
       <p className="mt-1 text-sm text-muted-foreground">
-        PrimeAxis Intelligence reads the full story and answers in seconds —
-        grounded in the reporting, never made up.
+        A lightweight article helper searches this story's summary, takeaways,
+        and body text for relevant context.
       </p>
 
       {messages.length === 0 ? (
@@ -191,7 +191,7 @@ export function AiAsk({
         </button>
       </form>
       <div className="mt-2 text-[10px] font-mono uppercase tracking-widest text-muted-foreground">
-        Grounded in the article. Answers may be summarized.
+        Local helper. Answers are excerpts or summaries from this article.
       </div>
     </motion.div>
   );

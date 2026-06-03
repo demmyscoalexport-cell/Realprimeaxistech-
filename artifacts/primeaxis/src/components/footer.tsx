@@ -1,21 +1,22 @@
 import { Link } from "wouter";
 import { useState } from "react";
 import { Wordmark } from "./wordmark";
-import { useListCategories } from "@workspace/api-client-react";
-import { Twitter, Youtube, Instagram, Linkedin, Rss, ArrowRight } from "lucide-react";
+import {
+  useListCategories,
+  useSubscribeNewsletter,
+} from "@workspace/api-client-react";
+import { Rss, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 
 const SOCIALS = [
-  { label: "X / Twitter", href: "https://twitter.com", icon: Twitter },
-  { label: "YouTube", href: "https://youtube.com", icon: Youtube },
-  { label: "Instagram", href: "https://instagram.com", icon: Instagram },
-  { label: "LinkedIn", href: "https://linkedin.com", icon: Linkedin },
   { label: "Podcast RSS", href: "/api/podcast/feed.xml", icon: Rss },
 ];
 
 export function Footer() {
   const cats = useListCategories();
+  const subscribe = useSubscribeNewsletter();
   const [email, setEmail] = useState("");
+  const [subscribed, setSubscribed] = useState(false);
 
   const onSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,8 +24,19 @@ export function Footer() {
       toast.error("Enter a valid email");
       return;
     }
-    toast.success("You're on the list. Welcome to The Axis.");
-    setEmail("");
+    subscribe.mutate(
+      { data: { email, newsletterSlug: "the-axis" } },
+      {
+        onSuccess: () => {
+          toast.success("You're on the list. Welcome to The Axis.");
+          setSubscribed(true);
+          setEmail("");
+        },
+        onError: () => {
+          toast.error("Subscription failed. Please try again.");
+        },
+      },
+    );
   };
 
   return (
@@ -58,9 +70,14 @@ export function Footer() {
             />
             <button
               type="submit"
+              disabled={subscribe.isPending || subscribed}
               className="inline-flex items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-xs font-semibold text-background transition hover:bg-foreground/90"
             >
-              Subscribe
+              {subscribed
+                ? "Subscribed"
+                : subscribe.isPending
+                  ? "Subscribing..."
+                  : "Subscribe"}
               <ArrowRight className="h-3.5 w-3.5" />
             </button>
           </form>
@@ -140,10 +157,10 @@ export function Footer() {
           <ul className="space-y-2.5 text-sm">
             {[
               { href: "/about", label: "About PrimeAxis" },
-              { href: "/about", label: "Editorial Standards" },
-              { href: "/contact", label: "Ethics & Corrections" },
+              { href: "/ethics", label: "Editorial Standards" },
+              { href: "/ethics", label: "Ethics & Corrections" },
               { href: "/contact", label: "Press Inquiries" },
-              { href: "/contact", label: "Careers" },
+              { href: "/careers", label: "Careers" },
             ].map((l, i) => (
               <li key={i}>
                 <Link

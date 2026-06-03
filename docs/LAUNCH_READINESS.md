@@ -17,6 +17,7 @@ PrimeAxis already has:
 - ElevenLabs podcast generation pipeline
 - Podcast RSS feed endpoint
 - Imgix/iMix and Cohere API key checks
+- GitHub Actions CI for install, codegen drift, typecheck, and build
 
 ## Must-have before public launch
 
@@ -28,6 +29,7 @@ PrimeAxis already has:
   - `PORT`
   - `NODE_ENV=production`
   - `LOG_LEVEL`
+  - `CORS_ORIGIN`
   - `BASE_PATH`
   - `API_PROXY_TARGET`
   - `PUBLIC_SITE_URL`
@@ -44,6 +46,7 @@ PrimeAxis already has:
   - `ELEVENLABS_VOICE_ID`
   - `PODCAST_SITE_URL`
   - `PODCAST_FEED_URL`
+- Optional / future:
   - `SESSION_SECRET`
 - Optional but configured:
   - `COHERE_API_KEY`
@@ -101,7 +104,7 @@ PrimeAxis already has:
 ### 5. Newsletter flow
 
 - Verify `POST /api/newsletters/subscribe` against production DB.
-- Add real frontend subscription calls where forms still show toast-only behavior.
+- Verify frontend subscription forms call the API in production.
 - Verify `primeaxishq.com` in Resend.
 - Add the Resend DNS records from `docs/RESEND_DNS_SETUP.md`.
 - Set `RESEND_FROM_EMAIL=PrimeAxis Tech <news@primeaxishq.com>`.
