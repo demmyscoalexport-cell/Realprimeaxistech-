@@ -294,3 +294,36 @@ Then the app can be updated with:
 - SEO sameAs structured data
 - podcast platform links
 - share metadata
+
+## Current provided accounts
+
+These have been added to the app where a usable URL can be derived:
+
+```text
+X/Twitter: https://x.com/primeaxistech1
+YouTube: https://www.youtube.com/@PrimeAxisTech-b1k
+```
+
+Spotify was provided as a name only:
+
+```text
+Spotify: PrimeAxis Tech
+```
+
+Send the full Spotify show URL when available, for example:
+
+```text
+Spotify: https://open.spotify.com/show/...
+```
+
+Still needed if you want full footer/SEO coverage:
+
+```text
+LinkedIn:
+Instagram:
+TikTok:
+Threads:
+Facebook:
+Spotify URL:
+Apple Podcasts:
+```

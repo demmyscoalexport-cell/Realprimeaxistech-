@@ -5,10 +5,16 @@ import {
   useListCategories,
   useSubscribeNewsletter,
 } from "@workspace/api-client-react";
-import { Rss, ArrowRight } from "lucide-react";
+import { Rss, ArrowRight, Twitter, Youtube } from "lucide-react";
 import { toast } from "sonner";
 
 const SOCIALS = [
+  { label: "X / Twitter", href: "https://x.com/primeaxistech1", icon: Twitter },
+  {
+    label: "YouTube",
+    href: "https://www.youtube.com/@PrimeAxisTech-b1k",
+    icon: Youtube,
+  },
   { label: "Podcast RSS", href: "/api/podcast/feed.xml", icon: Rss },
 ];
 
