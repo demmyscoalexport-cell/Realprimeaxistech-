@@ -6,6 +6,7 @@ import {
   useSubscribeNewsletter,
 } from "@workspace/api-client-react";
 import { Rss, ArrowRight, Twitter, Youtube } from "lucide-react";
+import { SiTiktok } from "react-icons/si";
 import { toast } from "sonner";
 
 const SOCIALS = [
@@ -14,6 +15,11 @@ const SOCIALS = [
     label: "YouTube",
     href: "https://www.youtube.com/@PrimeAxisTech-b1k",
     icon: Youtube,
+  },
+  {
+    label: "TikTok",
+    href: "https://www.tiktok.com/@primeaxistech",
+    icon: SiTiktok,
   },
   { label: "Podcast RSS", href: "/api/podcast/feed.xml", icon: Rss },
 ];

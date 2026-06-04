@@ -302,6 +302,7 @@ These have been added to the app where a usable URL can be derived:
 ```text
 X/Twitter: https://x.com/primeaxistech1
 YouTube: https://www.youtube.com/@PrimeAxisTech-b1k
+TikTok: https://www.tiktok.com/@primeaxistech
 ```
 
 Spotify was provided as a name only:
@@ -321,7 +322,6 @@ Still needed if you want full footer/SEO coverage:
 ```text
 LinkedIn:
 Instagram:
-TikTok:
 Threads:
 Facebook:
 Spotify URL:
