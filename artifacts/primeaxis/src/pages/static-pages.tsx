@@ -1,6 +1,20 @@
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { Mail, Building2, Globe2, Newspaper, Shield, Scale } from "lucide-react";
+import termsHtml from "../../public/terms-and-conditions.html?raw";
+
+function extractTermsEmbed(html: string) {
+  const styles = [...html.matchAll(/<style[^>]*>[\s\S]*?<\/style>/gi)]
+    .map((match) => match[0])
+    .join("\n");
+  const bodyMatch = html.match(/<body[^>]*>([\s\S]*)<\/body>/i);
+  const body =
+    bodyMatch?.[1]?.trim() ??
+    html.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "").trim();
+  return { styles, body };
+}
+
+const termsEmbed = extractTermsEmbed(termsHtml);
 
 function PageHero({
   eyebrow,
@@ -295,75 +309,17 @@ export function TermsPage() {
   return (
     <>
       <PageHero
-        eyebrow="Terms of Service"
-        title="The agreement between you and PrimeAxis Tech."
-        lede="Last updated May 16, 2026. By accessing primeaxishq.com you agree to these Terms. If you do not agree, please do not use the site."
+        eyebrow="Terms and Conditions"
+        title="The agreement between you and PAWRA LLC."
+        lede="Last updated June 05, 2026. PAWRA LLC, doing business as Primeaxistech, provides these Legal Terms governing your access to our Services. By using the Services, you agree to be bound by all of these terms."
         icon={Scale}
       />
-      <Prose>
-        <h2>1. The service</h2>
-        <p>
-          PrimeAxis Tech provides editorial content, video, newsletters, and
-          related digital experiences (collectively, the “Service”). Access to
-          most of the Service is free; some features may require an account or
-          subscription in the future, governed by additional terms presented at
-          sign-up.
-        </p>
-
-        <h2>2. Acceptable use</h2>
-        <p>
-          You agree not to: (a) attempt to interfere with the integrity or
-          performance of the Service; (b) reverse engineer or scrape it at scale
-          without our written permission; (c) use the Service to violate any
-          law; or (d) impersonate another person or misrepresent your
-          affiliation with us.
-        </p>
-
-        <h2>3. Intellectual property</h2>
-        <p>
-          All editorial content, photography, video, designs, and trademarks
-          appearing on the Service are owned by PrimeAxis Tech Media, Inc. or
-          our licensors. You may share excerpts with attribution and a link
-          back. You may not republish full articles without written permission.
-        </p>
-
-        <h2>4. User submissions</h2>
-        <p>
-          When you send us a tip, comment, or other submission, you grant us a
-          non-exclusive, royalty-free license to use it in our reporting and
-          related promotion, with appropriate confidentiality where requested.
-        </p>
-
-        <h2>5. Disclaimers</h2>
-        <p>
-          The Service is provided “as is.” We strive for accuracy but cannot
-          guarantee it; technology coverage is fast-moving and product details
-          change. To the fullest extent permitted by law, we disclaim implied
-          warranties of merchantability, fitness for a particular purpose, and
-          non-infringement.
-        </p>
-
-        <h2>6. Limitation of liability</h2>
-        <p>
-          To the fullest extent permitted by law, PrimeAxis Tech Media, Inc.
-          will not be liable for indirect, incidental, special, consequential,
-          or punitive damages arising out of or related to your use of the
-          Service.
-        </p>
-
-        <h2>7. Governing law</h2>
-        <p>
-          These Terms are governed by the laws of the State of New York, without
-          regard to its conflict-of-laws principles. Disputes will be resolved
-          in the state or federal courts located in New York County.
-        </p>
-
-        <h2>8. Contact</h2>
-        <p>
-          Questions about these Terms? Email{" "}
-          <a href="mailto:legal@primeaxishq.com">legal@primeaxishq.com</a>.
-        </p>
-      </Prose>
+      <section className="container-page py-16">
+        <div className="termly-terms mx-auto max-w-3xl overflow-hidden rounded-xl border hairline bg-white px-6 py-10 text-[#595959] shadow-lg sm:px-10">
+          <div dangerouslySetInnerHTML={{ __html: termsEmbed.styles }} />
+          <div dangerouslySetInnerHTML={{ __html: termsEmbed.body }} />
+        </div>
+      </section>
     </>
   );
 }
