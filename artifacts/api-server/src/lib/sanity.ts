@@ -608,12 +608,13 @@ export type VideoSummary = {
   durationSeconds: number;
   publishedAt: string;
   viewCount: number;
+  videoUrl: string | null;
   category: { slug: string; name: string; accentColor: string };
 };
 
 export async function listVideoSummaries(limit = 20): Promise<VideoSummary[]> {
   const groq = `*[_type == "video" && defined(slug.current)] | order(publishedAt desc) [0...${limit}] {
-    _id, "slug": slug.current, title, description, thumbnail, thumbnailUrl, "durationSeconds": duration, publishedAt,
+    _id, "slug": slug.current, title, description, thumbnail, thumbnailUrl, videoUrl, "durationSeconds": duration, publishedAt,
     "category": category->{ ${CATEGORY_PROJ} }
   }`;
   const rows = await sanity.fetch<
@@ -624,6 +625,7 @@ export async function listVideoSummaries(limit = 20): Promise<VideoSummary[]> {
       description?: string;
       thumbnail?: unknown;
       thumbnailUrl?: string;
+      videoUrl?: string;
       durationSeconds?: number;
       publishedAt?: string;
       category?: SanityCategory | null;
@@ -638,6 +640,7 @@ export async function listVideoSummaries(limit = 20): Promise<VideoSummary[]> {
     durationSeconds: v.durationSeconds ?? 0,
     publishedAt: v.publishedAt ?? new Date(0).toISOString(),
     viewCount: 0,
+    videoUrl: v.videoUrl ?? null,
     category: {
       slug: v.category?.slug ?? "uncategorized",
       name: v.category?.name ?? "Uncategorized",

@@ -1,20 +1,17 @@
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { Mail, Building2, Globe2, Newspaper, Shield, Scale } from "lucide-react";
-import termsHtml from "../../public/terms-and-conditions.html?raw";
+import termsHtml from "@/legal/terms-and-conditions.html?raw";
 
-function extractTermsEmbed(html: string) {
-  const styles = [...html.matchAll(/<style[^>]*>[\s\S]*?<\/style>/gi)]
-    .map((match) => match[0])
-    .join("\n");
+function extractTermsBody(html: string) {
   const bodyMatch = html.match(/<body[^>]*>([\s\S]*)<\/body>/i);
-  const body =
+  return (
     bodyMatch?.[1]?.trim() ??
-    html.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "").trim();
-  return { styles, body };
+    html.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "").trim()
+  );
 }
 
-const termsEmbed = extractTermsEmbed(termsHtml);
+const termsBodyHtml = extractTermsBody(termsHtml);
 
 function PageHero({
   eyebrow,
@@ -63,9 +60,20 @@ function PageHero({
 function Prose({ children }: { children: React.ReactNode }) {
   return (
     <section className="container-page py-16">
-      <div className="prose prose-invert mx-auto max-w-3xl prose-headings:font-display prose-headings:tracking-tight prose-h2:mt-12 prose-h2:text-3xl prose-h3:text-xl prose-p:text-foreground/80 prose-p:leading-relaxed prose-a:text-primary prose-strong:text-foreground">
+      <div className="prose prose-neutral dark:prose-invert mx-auto max-w-4xl prose-headings:font-display prose-headings:tracking-tight prose-h2:mt-12 prose-h2:text-3xl prose-h3:text-xl prose-p:text-foreground/80 prose-p:leading-relaxed prose-a:text-primary prose-strong:text-foreground">
         {children}
       </div>
+    </section>
+  );
+}
+
+function TermsProse({ html }: { html: string }) {
+  return (
+    <section className="container-page py-16">
+      <div
+        className="termly-terms prose prose-neutral dark:prose-invert mx-auto max-w-4xl prose-headings:font-display prose-headings:tracking-tight prose-h1:text-4xl prose-h2:mt-12 prose-h2:text-2xl prose-h3:text-xl prose-p:text-foreground/80 prose-p:leading-relaxed prose-a:text-primary prose-strong:text-foreground prose-li:text-foreground/80"
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
     </section>
   );
 }
@@ -314,12 +322,7 @@ export function TermsPage() {
         lede="Last updated June 05, 2026. PAWRA LLC, doing business as Primeaxistech, provides these Legal Terms governing your access to our Services. By using the Services, you agree to be bound by all of these terms."
         icon={Scale}
       />
-      <section className="container-page py-16">
-        <div className="termly-terms mx-auto max-w-3xl overflow-hidden rounded-xl border hairline bg-white px-6 py-10 text-[#595959] shadow-lg sm:px-10">
-          <div dangerouslySetInnerHTML={{ __html: termsEmbed.styles }} />
-          <div dangerouslySetInnerHTML={{ __html: termsEmbed.body }} />
-        </div>
-      </section>
+      <TermsProse html={termsBodyHtml} />
     </>
   );
 }

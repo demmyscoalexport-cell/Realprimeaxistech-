@@ -286,6 +286,71 @@
     margin: 2em 0;
     color: hsl(var(--foreground));
   }
+
+  /* Termly legal document — theme-aware overrides for embedded HTML */
+  .termly-terms {
+    width: 100%;
+    max-width: none;
+    color: hsl(var(--foreground) / 0.85);
+    font-size: 0.9375rem;
+    line-height: 1.7;
+  }
+  .termly-terms [data-custom-class="body"],
+  .termly-terms [data-custom-class="body"] * {
+    background: transparent !important;
+  }
+  .termly-terms [data-custom-class="title"],
+  .termly-terms [data-custom-class="title"] * {
+    color: hsl(var(--foreground)) !important;
+    font-family: var(--font-display) !important;
+    font-size: 1.75rem !important;
+    font-weight: 700 !important;
+  }
+  .termly-terms [data-custom-class="subtitle"],
+  .termly-terms [data-custom-class="subtitle"] * {
+    color: hsl(var(--muted-foreground)) !important;
+    font-family: var(--font-sans) !important;
+    font-size: 0.875rem !important;
+  }
+  .termly-terms [data-custom-class="heading_1"],
+  .termly-terms [data-custom-class="heading_1"] * {
+    color: hsl(var(--foreground)) !important;
+    font-family: var(--font-display) !important;
+    font-size: 1.375rem !important;
+    font-weight: 700 !important;
+  }
+  .termly-terms [data-custom-class="heading_2"],
+  .termly-terms [data-custom-class="heading_2"] * {
+    color: hsl(var(--foreground)) !important;
+    font-family: var(--font-display) !important;
+    font-size: 1.125rem !important;
+    font-weight: 600 !important;
+  }
+  .termly-terms [data-custom-class="body_text"],
+  .termly-terms [data-custom-class="body_text"] * {
+    color: hsl(var(--foreground) / 0.82) !important;
+    font-family: var(--font-sans) !important;
+    font-size: 0.9375rem !important;
+    line-height: 1.7 !important;
+  }
+  .termly-terms [data-custom-class="link"],
+  .termly-terms [data-custom-class="link"] *,
+  .termly-terms a {
+    color: hsl(var(--primary)) !important;
+    word-break: break-word;
+  }
+  .termly-terms ul {
+    list-style-type: square;
+    padding-left: 1.25rem;
+  }
+  .termly-terms ul > li > ul {
+    list-style-type: circle;
+  }
+  .termly-terms h1,
+  .termly-terms h2,
+  .termly-terms h3 {
+    scroll-margin-top: 6rem;
+  }
 }
 
 /* Subtle scrollbar styling for dark mode */

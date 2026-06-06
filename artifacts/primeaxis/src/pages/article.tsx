@@ -461,6 +461,9 @@ export default function ArticlePage() {
           (allVideos ?? []).find((v) => v.slug === activeVideo)
             ?.thumbnailUrl ?? ""
         }
+        videoUrl={
+          (allVideos ?? []).find((v) => v.slug === activeVideo)?.videoUrl
+        }
       />
 
       {/* RELATED */}

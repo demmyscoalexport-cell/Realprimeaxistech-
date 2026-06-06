@@ -17,4 +17,5 @@ export interface Video {
   publishedAt: Date;
   category: CategoryRef;
   viewCount: number;
+  videoUrl?: string | null;
 }

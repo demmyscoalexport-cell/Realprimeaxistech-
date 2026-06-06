@@ -253,7 +253,8 @@ export const GetHomeFeedResponse = zod.object({
   "name": zod.string(),
   "accentColor": zod.string()
 }),
-  "viewCount": zod.number()
+  "viewCount": zod.number(),
+  "videoUrl": zod.string().nullish()
 })),
   "investigations": zod.array(zod.object({
   "id": zod.number(),
@@ -928,7 +929,8 @@ export const ListVideosResponseItem = zod.object({
   "name": zod.string(),
   "accentColor": zod.string()
 }),
-  "viewCount": zod.number()
+  "viewCount": zod.number(),
+  "videoUrl": zod.string().nullish()
 })
 export const ListVideosResponse = zod.array(ListVideosResponseItem)
 

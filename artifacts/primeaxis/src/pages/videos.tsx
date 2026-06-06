@@ -7,9 +7,11 @@ import { Play } from "lucide-react";
 
 export default function VideosPage() {
   const { data, isLoading } = useListVideos({ limit: 30 });
-  const [video, setVideo] = useState<{ title: string; thumbnailUrl: string } | null>(
-    null,
-  );
+  const [video, setVideo] = useState<{
+    title: string;
+    thumbnailUrl: string;
+    videoUrl?: string | null;
+  } | null>(null);
 
   return (
     <>
@@ -62,6 +64,7 @@ export default function VideosPage() {
                   setVideo({
                     title: v.title,
                     thumbnailUrl: v.thumbnailUrl,
+                    videoUrl: v.videoUrl,
                   })
                 }
               />
@@ -77,6 +80,7 @@ export default function VideosPage() {
         onClose={() => setVideo(null)}
         title={video?.title ?? ""}
         thumbnailUrl={video?.thumbnailUrl ?? ""}
+        videoUrl={video?.videoUrl}
       />
     </>
   );

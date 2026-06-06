@@ -203,6 +203,7 @@ export interface Video {
   publishedAt: string;
   category: CategoryRef;
   viewCount: number;
+  videoUrl?: string | null;
 }
 
 export interface Newsletter {

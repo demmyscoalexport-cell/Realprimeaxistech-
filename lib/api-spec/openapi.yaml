@@ -724,6 +724,7 @@ components:
         publishedAt: { type: string, format: date-time }
         category: { $ref: "#/components/schemas/CategoryRef" }
         viewCount: { type: integer }
+        videoUrl: { type: string, nullable: true }
 
     Newsletter:
       type: object

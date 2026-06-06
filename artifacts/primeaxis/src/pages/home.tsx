@@ -23,6 +23,7 @@ export default function HomePage() {
   const [video, setVideo] = useState<{
     title: string;
     thumbnailUrl: string;
+    videoUrl?: string | null;
   } | null>(null);
 
   if (isLoading) {
@@ -223,7 +224,11 @@ export default function HomePage() {
               video={v}
               index={i}
               onPlay={() =>
-                setVideo({ title: v.title, thumbnailUrl: v.thumbnailUrl })
+                setVideo({
+                  title: v.title,
+                  thumbnailUrl: v.thumbnailUrl,
+                  videoUrl: v.videoUrl,
+                })
               }
             />
           ))}
@@ -365,6 +370,7 @@ export default function HomePage() {
         onClose={() => setVideo(null)}
         title={video?.title ?? ""}
         thumbnailUrl={video?.thumbnailUrl ?? ""}
+        videoUrl={video?.videoUrl}
       />
     </>
   );
