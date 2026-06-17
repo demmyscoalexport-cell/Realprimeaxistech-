@@ -8,7 +8,7 @@ if (-not (Test-Path .env)) {
 }
 
 Write-Host "Starting API (5000), Site (5173), Studio (3333)..." -ForegroundColor Cyan
-Start-Process powershell -ArgumentList '-NoExit', '-Command', "Set-Location '$PWD'; pnpm dev:api"
+Start-Process powershell -ArgumentList '-NoExit', '-Command', "Set-Location '$PWD'; `$env:PORT='5000'; pnpm dev:api"
 Start-Sleep -Seconds 2
 Start-Process powershell -ArgumentList '-NoExit', '-Command', "Set-Location '$PWD'; pnpm dev:site"
 Start-Process powershell -ArgumentList '-NoExit', '-Command', "Set-Location '$PWD'; pnpm dev:studio"

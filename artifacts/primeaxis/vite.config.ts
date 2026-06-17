@@ -27,6 +27,14 @@ if (!basePath) {
   );
 }
 
+const configuredProxy = process.env.API_PROXY_TARGET?.trim();
+const apiProxyTarget =
+  configuredProxy && /localhost|127\.0\.0\.1/i.test(configuredProxy)
+    ? configuredProxy
+    : process.env.FORCE_PRODUCTION_API === "1" && configuredProxy
+      ? configuredProxy
+      : "http://localhost:5000";
+
 export default defineConfig({
   base: basePath,
   plugins: [
@@ -69,7 +77,7 @@ export default defineConfig({
     },
     proxy: {
       "/api": {
-        target: process.env.API_PROXY_TARGET || "http://localhost:5000",
+        target: apiProxyTarget,
         changeOrigin: true,
       },
     },
@@ -78,5 +86,11 @@ export default defineConfig({
     port,
     host: "0.0.0.0",
     allowedHosts: true,
+    proxy: {
+      "/api": {
+        target: apiProxyTarget,
+        changeOrigin: true,
+      },
+    },
   },
 });

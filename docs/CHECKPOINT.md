@@ -78,6 +78,12 @@ Generate podcasts:
 pnpm --filter @workspace/scripts run podcasts
 ```
 
+Verify all API routes:
+
+```powershell
+powershell -File ./scripts/src/check-apis.ps1
+```
+
 ## Required API keys (minimum)
 
 See `.env.example` and `docs/API_INTEGRATIONS.md`.
