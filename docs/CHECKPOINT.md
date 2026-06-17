@@ -106,3 +106,7 @@ If you previously stashed local WIP before branch switch: `git stash list` → l
 ## Domain
 
 Production target: https://primeaxishq.com
+
+## Deploy to Vercel
+
+See [docs/VERCEL_DEPLOYMENT.md](./VERCEL_DEPLOYMENT.md) and [docs/DEPLOYMENT_AUDIT.md](./DEPLOYMENT_AUDIT.md).

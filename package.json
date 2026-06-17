@@ -5,6 +5,7 @@
   "scripts": {
     "preinstall": "node ./scripts/preinstall.mjs",
     "build": "pnpm run typecheck && pnpm -r --if-present run build",
+    "build:vercel": "cross-env PORT=5173 BASE_PATH=/ pnpm --filter @workspace/primeaxis run build && pnpm --filter @workspace/api-server run build",
     "typecheck:libs": "tsc --build",
     "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck",
     "dev:api": "pnpm --filter @workspace/api-server run dev",
@@ -12,10 +13,14 @@
     "dev:studio": "cross-env PORT=3333 pnpm --filter primeaxis-studio run dev"
   },
   "private": true,
+  "engines": {
+    "node": ">=22"
+  },
   "devDependencies": {
     "cross-env": "^7.0.3",
     "dotenv": "^16.6.1",
     "prettier": "^3.8.3",
+    "serverless-http": "^3.2.0",
     "typescript": "~5.9.3"
   }
 }
