@@ -31,8 +31,8 @@ Step-by-step instructions to deploy https://primeaxishq.com on Vercel.
 2. Click **Add New → Project**.
 3. Import `demmyscoalexport-cell/Realprimeaxistech-`.
 4. **Framework Preset:** Other (not Next.js — this is Vite + serverless API).
-5. **Root Directory:** leave as repository root (`.`).
-6. Vercel reads `vercel.json` automatically.
+5. **Root Directory:** leave **empty** (`.`). The repo root already contains `package.json` — do **not** set `Prime-Axis-Tech` unless that subfolder exists on GitHub (it does not).
+6. Vercel reads `vercel.json` automatically. See also `docs/VERCEL_SETTINGS.md`.
 
 ---
 

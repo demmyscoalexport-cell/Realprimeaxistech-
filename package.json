@@ -13,6 +13,7 @@
     "dev:studio": "cross-env PORT=3333 pnpm --filter primeaxis-studio run dev"
   },
   "private": true,
+  "packageManager": "pnpm@10.33.0",
   "engines": {
     "node": ">=22"
   },
