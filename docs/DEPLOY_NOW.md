@@ -4,17 +4,11 @@ Do these in order. Skip nothing.
 
 ---
 
-## Step 1 — Push latest code (once)
+## Step 1 — Code on GitHub (done)
 
-From PowerShell in this folder:
+`main` now includes `vercel.json`, `build:vercel`, and `api/index.mjs` (commit `4b5d7aa`).
 
-```powershell
-git add vercel.json api/package.json .node-version package.json docs/VERCEL_SETTINGS.md docs/DEPLOY_NOW.md
-git commit -m "Harden Vercel deploy: pnpm corepack, API bundle, Node 22"
-git push origin cursor/elevenlabs-podcasts-e4e2
-```
-
-**Important:** `main` does not have `vercel.json` or the API serverless handler. You must use the branch below in Step 2.
+Vercel should auto-redeploy when it detects the push. If not, go to Step 4 and click **Redeploy**.
 
 ---
 
@@ -30,9 +24,9 @@ git push origin cursor/elevenlabs-podcasts-e4e2
 
 **Settings → Git → Production Branch**
 
-Set to: **`cursor/elevenlabs-podcasts-e4e2`**
+Set to: **`main`**
 
-*(Or merge that branch into `main` first, then keep Production Branch as `main`.)*
+*(Already updated on GitHub — no feature branch needed.)*
 
 **Settings → Build & Development**
 
@@ -102,7 +96,7 @@ https://YOUR-APP.vercel.app/                     → homepage with content
 | Symptom | Fix |
 |---------|-----|
 | pnpm help text / no build script | Root Directory is wrong — clear it |
-| `build:vercel` not found | Production branch is `main` — switch to `cursor/elevenlabs-podcasts-e4e2` or merge |
+| `build:vercel` not found | Production branch must be `main` (now has deploy config) |
 | API routes 404 | Redeploy after push; check `api/index.mjs` exists on the branch |
 | Homepage empty / no images | Add Sanity env vars; redeploy |
 | Newsletter fails | Use Sanity **Editor** token on Vercel |

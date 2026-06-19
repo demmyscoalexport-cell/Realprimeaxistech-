@@ -9,8 +9,12 @@
     "cohere:check": "tsx --import ./load-env.mjs ./src/check-cohere.ts",
     "imgix:check": "tsx --import ./load-env.mjs ./src/check-imgix.ts",
     "podcasts": "tsx --import ./load-env.mjs ./src/generate-podcast-audio.ts",
+    "podcast:check": "tsx --import ./load-env.mjs ./src/check-podcast-env.ts",
+    "videos:patch-urls": "tsx --import ./load-env.mjs ./src/patch-video-urls.ts",
+    "newsletter:digest": "tsx --import ./load-env.mjs ./src/send-newsletter-digest.ts",
     "resend:check": "tsx --import ./load-env.mjs ./src/check-resend.ts",
     "sanity:check": "tsx --import ./load-env.mjs ./src/check-sanity-token.ts",
+    "env:check": "tsx --import ./load-env.mjs ./src/check-env.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {

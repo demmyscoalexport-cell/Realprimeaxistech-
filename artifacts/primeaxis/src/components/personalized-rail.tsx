@@ -11,7 +11,7 @@ import {
 import { ArticleCard, SectionHeader } from "./cards";
 import { Link } from "wouter";
 import { Sparkles, History } from "lucide-react";
-import { withBase } from "@/lib/format";
+import { EditorialImage } from "@/components/editorial-image";
 import { motion } from "framer-motion";
 
 export function PersonalizedRail() {
@@ -70,9 +70,10 @@ export function PersonalizedRail() {
                   href={`/article/${h.slug}`}
                   className="group flex items-center gap-3"
                 >
-                  <img
-                    src={withBase(h.heroImageUrl)}
+                  <EditorialImage
+                    src={h.heroImageUrl}
                     alt=""
+                    width={400}
                     className="h-12 w-16 shrink-0 rounded-md object-cover"
                   />
                   <div className="min-w-0 flex-1">

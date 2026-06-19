@@ -52,7 +52,13 @@ export const GetHomeFeedResponse = zod.object({
   "isBreaking": zod.boolean(),
   "isFeature": zod.boolean(),
   "viewCount": zod.number(),
-  "commentCount": zod.number()
+  "commentCount": zod.number(),
+  "affiliateLinks": zod.array(zod.object({
+  "retailer": zod.string(),
+  "url": zod.string(),
+  "label": zod.string().nullish()
+})).optional(),
+  "isSponsored": zod.boolean().optional()
 }),
   "spotlight": zod.array(zod.object({
   "id": zod.number(),
@@ -86,7 +92,13 @@ export const GetHomeFeedResponse = zod.object({
   "isBreaking": zod.boolean(),
   "isFeature": zod.boolean(),
   "viewCount": zod.number(),
-  "commentCount": zod.number()
+  "commentCount": zod.number(),
+  "affiliateLinks": zod.array(zod.object({
+  "retailer": zod.string(),
+  "url": zod.string(),
+  "label": zod.string().nullish()
+})).optional(),
+  "isSponsored": zod.boolean().optional()
 })),
   "trending": zod.array(zod.object({
   "id": zod.number(),
@@ -120,7 +132,13 @@ export const GetHomeFeedResponse = zod.object({
   "isBreaking": zod.boolean(),
   "isFeature": zod.boolean(),
   "viewCount": zod.number(),
-  "commentCount": zod.number()
+  "commentCount": zod.number(),
+  "affiliateLinks": zod.array(zod.object({
+  "retailer": zod.string(),
+  "url": zod.string(),
+  "label": zod.string().nullish()
+})).optional(),
+  "isSponsored": zod.boolean().optional()
 })),
   "latest": zod.array(zod.object({
   "id": zod.number(),
@@ -154,7 +172,13 @@ export const GetHomeFeedResponse = zod.object({
   "isBreaking": zod.boolean(),
   "isFeature": zod.boolean(),
   "viewCount": zod.number(),
-  "commentCount": zod.number()
+  "commentCount": zod.number(),
+  "affiliateLinks": zod.array(zod.object({
+  "retailer": zod.string(),
+  "url": zod.string(),
+  "label": zod.string().nullish()
+})).optional(),
+  "isSponsored": zod.boolean().optional()
 })),
   "featuredReviews": zod.array(zod.object({
   "id": zod.number(),
@@ -170,7 +194,13 @@ export const GetHomeFeedResponse = zod.object({
   "accentColor": zod.string()
 }),
   "publishedAt": zod.coerce.date(),
-  "priceUsd": zod.number()
+  "priceUsd": zod.number(),
+  "affiliateLinks": zod.array(zod.object({
+  "retailer": zod.string(),
+  "url": zod.string(),
+  "label": zod.string().nullish()
+})).optional(),
+  "isSponsored": zod.boolean().optional()
 })),
   "aiAndFuture": zod.array(zod.object({
   "id": zod.number(),
@@ -204,7 +234,13 @@ export const GetHomeFeedResponse = zod.object({
   "isBreaking": zod.boolean(),
   "isFeature": zod.boolean(),
   "viewCount": zod.number(),
-  "commentCount": zod.number()
+  "commentCount": zod.number(),
+  "affiliateLinks": zod.array(zod.object({
+  "retailer": zod.string(),
+  "url": zod.string(),
+  "label": zod.string().nullish()
+})).optional(),
+  "isSponsored": zod.boolean().optional()
 })),
   "gamingAndEntertainment": zod.array(zod.object({
   "id": zod.number(),
@@ -238,7 +274,13 @@ export const GetHomeFeedResponse = zod.object({
   "isBreaking": zod.boolean(),
   "isFeature": zod.boolean(),
   "viewCount": zod.number(),
-  "commentCount": zod.number()
+  "commentCount": zod.number(),
+  "affiliateLinks": zod.array(zod.object({
+  "retailer": zod.string(),
+  "url": zod.string(),
+  "label": zod.string().nullish()
+})).optional(),
+  "isSponsored": zod.boolean().optional()
 })),
   "videos": zod.array(zod.object({
   "id": zod.number(),
@@ -288,7 +330,13 @@ export const GetHomeFeedResponse = zod.object({
   "isBreaking": zod.boolean(),
   "isFeature": zod.boolean(),
   "viewCount": zod.number(),
-  "commentCount": zod.number()
+  "commentCount": zod.number(),
+  "affiliateLinks": zod.array(zod.object({
+  "retailer": zod.string(),
+  "url": zod.string(),
+  "label": zod.string().nullish()
+})).optional(),
+  "isSponsored": zod.boolean().optional()
 })),
   "buyingGuides": zod.array(zod.object({
   "id": zod.number(),
@@ -322,7 +370,13 @@ export const GetHomeFeedResponse = zod.object({
   "isBreaking": zod.boolean(),
   "isFeature": zod.boolean(),
   "viewCount": zod.number(),
-  "commentCount": zod.number()
+  "commentCount": zod.number(),
+  "affiliateLinks": zod.array(zod.object({
+  "retailer": zod.string(),
+  "url": zod.string(),
+  "label": zod.string().nullish()
+})).optional(),
+  "isSponsored": zod.boolean().optional()
 })),
   "startups": zod.array(zod.object({
   "id": zod.number(),
@@ -356,7 +410,13 @@ export const GetHomeFeedResponse = zod.object({
   "isBreaking": zod.boolean(),
   "isFeature": zod.boolean(),
   "viewCount": zod.number(),
-  "commentCount": zod.number()
+  "commentCount": zod.number(),
+  "affiliateLinks": zod.array(zod.object({
+  "retailer": zod.string(),
+  "url": zod.string(),
+  "label": zod.string().nullish()
+})).optional(),
+  "isSponsored": zod.boolean().optional()
 })),
   "mostDiscussed": zod.array(zod.object({
   "id": zod.number(),
@@ -390,7 +450,13 @@ export const GetHomeFeedResponse = zod.object({
   "isBreaking": zod.boolean(),
   "isFeature": zod.boolean(),
   "viewCount": zod.number(),
-  "commentCount": zod.number()
+  "commentCount": zod.number(),
+  "affiliateLinks": zod.array(zod.object({
+  "retailer": zod.string(),
+  "url": zod.string(),
+  "label": zod.string().nullish()
+})).optional(),
+  "isSponsored": zod.boolean().optional()
 })),
   "categories": zod.array(zod.object({
   "id": zod.number(),
@@ -454,7 +520,13 @@ export const ListArticlesResponseItem = zod.object({
   "isBreaking": zod.boolean(),
   "isFeature": zod.boolean(),
   "viewCount": zod.number(),
-  "commentCount": zod.number()
+  "commentCount": zod.number(),
+  "affiliateLinks": zod.array(zod.object({
+  "retailer": zod.string(),
+  "url": zod.string(),
+  "label": zod.string().nullish()
+})).optional(),
+  "isSponsored": zod.boolean().optional()
 })
 export const ListArticlesResponse = zod.array(ListArticlesResponseItem)
 
@@ -499,7 +571,13 @@ export const ListTrendingArticlesResponseItem = zod.object({
   "isBreaking": zod.boolean(),
   "isFeature": zod.boolean(),
   "viewCount": zod.number(),
-  "commentCount": zod.number()
+  "commentCount": zod.number(),
+  "affiliateLinks": zod.array(zod.object({
+  "retailer": zod.string(),
+  "url": zod.string(),
+  "label": zod.string().nullish()
+})).optional(),
+  "isSponsored": zod.boolean().optional()
 })
 export const ListTrendingArticlesResponse = zod.array(ListTrendingArticlesResponseItem)
 
@@ -544,7 +622,13 @@ export const ListMostDiscussedArticlesResponseItem = zod.object({
   "isBreaking": zod.boolean(),
   "isFeature": zod.boolean(),
   "viewCount": zod.number(),
-  "commentCount": zod.number()
+  "commentCount": zod.number(),
+  "affiliateLinks": zod.array(zod.object({
+  "retailer": zod.string(),
+  "url": zod.string(),
+  "label": zod.string().nullish()
+})).optional(),
+  "isSponsored": zod.boolean().optional()
 })
 export const ListMostDiscussedArticlesResponse = zod.array(ListMostDiscussedArticlesResponseItem)
 
@@ -590,7 +674,13 @@ export const SearchArticlesResponseItem = zod.object({
   "isBreaking": zod.boolean(),
   "isFeature": zod.boolean(),
   "viewCount": zod.number(),
-  "commentCount": zod.number()
+  "commentCount": zod.number(),
+  "affiliateLinks": zod.array(zod.object({
+  "retailer": zod.string(),
+  "url": zod.string(),
+  "label": zod.string().nullish()
+})).optional(),
+  "isSponsored": zod.boolean().optional()
 })
 export const SearchArticlesResponse = zod.array(SearchArticlesResponseItem)
 
@@ -641,7 +731,13 @@ export const GetArticleBySlugResponse = zod.object({
   "viewCount": zod.number(),
   "commentCount": zod.number(),
   "isBreaking": zod.boolean(),
-  "isFeature": zod.boolean()
+  "isFeature": zod.boolean(),
+  "affiliateLinks": zod.array(zod.object({
+  "retailer": zod.string(),
+  "url": zod.string(),
+  "label": zod.string().nullish()
+})).optional(),
+  "isSponsored": zod.boolean().optional()
 })
 
 
@@ -681,7 +777,13 @@ export const GetRelatedArticlesResponseItem = zod.object({
   "isBreaking": zod.boolean(),
   "isFeature": zod.boolean(),
   "viewCount": zod.number(),
-  "commentCount": zod.number()
+  "commentCount": zod.number(),
+  "affiliateLinks": zod.array(zod.object({
+  "retailer": zod.string(),
+  "url": zod.string(),
+  "label": zod.string().nullish()
+})).optional(),
+  "isSponsored": zod.boolean().optional()
 })
 export const GetRelatedArticlesResponse = zod.array(GetRelatedArticlesResponseItem)
 
@@ -752,7 +854,13 @@ export const GetCategoryBySlugResponse = zod.object({
   "isBreaking": zod.boolean(),
   "isFeature": zod.boolean(),
   "viewCount": zod.number(),
-  "commentCount": zod.number()
+  "commentCount": zod.number(),
+  "affiliateLinks": zod.array(zod.object({
+  "retailer": zod.string(),
+  "url": zod.string(),
+  "label": zod.string().nullish()
+})).optional(),
+  "isSponsored": zod.boolean().optional()
 }))
 })
 
@@ -817,7 +925,13 @@ export const GetAuthorBySlugResponse = zod.object({
   "isBreaking": zod.boolean(),
   "isFeature": zod.boolean(),
   "viewCount": zod.number(),
-  "commentCount": zod.number()
+  "commentCount": zod.number(),
+  "affiliateLinks": zod.array(zod.object({
+  "retailer": zod.string(),
+  "url": zod.string(),
+  "label": zod.string().nullish()
+})).optional(),
+  "isSponsored": zod.boolean().optional()
 }))
 })
 
@@ -844,7 +958,13 @@ export const ListReviewsResponseItem = zod.object({
   "accentColor": zod.string()
 }),
   "publishedAt": zod.coerce.date(),
-  "priceUsd": zod.number()
+  "priceUsd": zod.number(),
+  "affiliateLinks": zod.array(zod.object({
+  "retailer": zod.string(),
+  "url": zod.string(),
+  "label": zod.string().nullish()
+})).optional(),
+  "isSponsored": zod.boolean().optional()
 })
 export const ListReviewsResponse = zod.array(ListReviewsResponseItem)
 
@@ -863,7 +983,13 @@ export const ListBestPicksResponseItem = zod.object({
   "accentColor": zod.string()
 }),
   "publishedAt": zod.coerce.date(),
-  "priceUsd": zod.number()
+  "priceUsd": zod.number(),
+  "affiliateLinks": zod.array(zod.object({
+  "retailer": zod.string(),
+  "url": zod.string(),
+  "label": zod.string().nullish()
+})).optional(),
+  "isSponsored": zod.boolean().optional()
 })
 export const ListBestPicksResponse = zod.array(ListBestPicksResponseItem)
 
@@ -904,7 +1030,13 @@ export const GetReviewBySlugResponse = zod.object({
   "sections": zod.array(zod.object({
   "heading": zod.string(),
   "body": zod.string()
-}))
+})),
+  "affiliateLinks": zod.array(zod.object({
+  "retailer": zod.string(),
+  "url": zod.string(),
+  "label": zod.string().nullish()
+})).optional(),
+  "isSponsored": zod.boolean().optional()
 })
 
 

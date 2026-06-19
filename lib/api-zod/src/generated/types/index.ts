@@ -6,6 +6,7 @@
  * OpenAPI spec version: 0.1.0
  */
 
+export * from './affiliateLink';
 export * from './article';
 export * from './articleBlock';
 export * from './articleBlockType';

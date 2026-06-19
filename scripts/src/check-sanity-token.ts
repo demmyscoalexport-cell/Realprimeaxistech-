@@ -34,9 +34,14 @@ async function main() {
     await sanity.delete(id);
     console.log("Sanity write check passed.");
   } catch (error) {
-    throw new Error(
-      `Sanity write check failed: ${(error as Error).message}`,
+    const msg = (error as Error).message;
+    console.error(
+      "Sanity write check failed (read-only token).\n" +
+        "Newsletter subscribe, podcast scripts, and video patch need an Editor token.\n" +
+        "Create one: https://www.sanity.io/manage/project/jyppkgsk/api#tokens\n" +
+        `Details: ${msg}`,
     );
+    process.exit(1);
   }
 }
 

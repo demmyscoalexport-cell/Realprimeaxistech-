@@ -6,7 +6,7 @@ import {
 import { ArrowLeft } from "lucide-react";
 import { ArticleCard } from "@/components/cards";
 import { motion } from "framer-motion";
-import { withBase } from "@/lib/format";
+import { EditorialImage } from "@/components/editorial-image";
 
 export default function AuthorPage() {
   const [, params] = useRoute("/author/:slug");
@@ -47,9 +47,10 @@ export default function AuthorPage() {
             transition={{ duration: 0.5 }}
             className="flex flex-col items-start gap-8 md:flex-row md:items-center"
           >
-            <img
-              src={withBase(author.avatarUrl)}
+            <EditorialImage
+              src={author.avatarUrl}
               alt={author.name}
+              width={400}
               className="h-32 w-32 rounded-full border hairline object-cover md:h-40 md:w-40"
             />
             <div>

@@ -5,6 +5,7 @@
  * PrimeAxis Tech — global technology media platform API
  * OpenAPI spec version: 0.1.0
  */
+import type { AffiliateLink } from './affiliateLink';
 import type { ArticleBlock } from './articleBlock';
 import type { AuthorRef } from './authorRef';
 import type { CategoryRef } from './categoryRef';
@@ -40,4 +41,6 @@ export interface Article {
   commentCount: number;
   isBreaking: boolean;
   isFeature: boolean;
+  affiliateLinks?: AffiliateLink[];
+  isSponsored?: boolean;
 }

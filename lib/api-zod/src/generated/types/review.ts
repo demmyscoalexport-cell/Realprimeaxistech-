@@ -5,6 +5,7 @@
  * PrimeAxis Tech — global technology media platform API
  * OpenAPI spec version: 0.1.0
  */
+import type { AffiliateLink } from './affiliateLink';
 import type { AuthorRef } from './authorRef';
 import type { CategoryRef } from './categoryRef';
 import type { ReviewRating } from './reviewRating';
@@ -28,4 +29,6 @@ export interface Review {
   cons: string[];
   ratings: ReviewRating[];
   sections: ReviewSection[];
+  affiliateLinks?: AffiliateLink[];
+  isSponsored?: boolean;
 }

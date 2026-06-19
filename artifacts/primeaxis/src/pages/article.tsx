@@ -28,9 +28,11 @@ import {
   CategoryChip,
   SectionHeader,
 } from "@/components/cards";
-import { formatDate, formatNumber, timeAgo, withBase } from "@/lib/format";
+import { formatDate, formatNumber, timeAgo } from "@/lib/format";
+import { EditorialImage } from "@/components/editorial-image";
 import { toast } from "sonner";
 import { ListenButton } from "@/components/listen-button";
+import { ReviewBuyLinks } from "@/components/review-buy-links";
 import { AiAsk } from "@/components/ai-ask";
 import { recordRead } from "@/lib/personalization";
 
@@ -137,6 +139,11 @@ export default function ArticlePage() {
               Breaking
             </span>
           )}
+          {article.isSponsored && (
+            <span className="inline-flex items-center rounded-full border hairline bg-card/60 px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+              Sponsored
+            </span>
+          )}
           <CategoryChip category={article.category} />
         </div>
         <motion.h1
@@ -155,9 +162,10 @@ export default function ArticlePage() {
             href={`/author/${article.author.slug}`}
             className="flex items-center gap-3"
           >
-            <img
-              src={withBase(article.author.avatarUrl)}
+            <EditorialImage
+              src={article.author.avatarUrl}
               alt={article.author.name}
+              width={200}
               className="h-12 w-12 rounded-full border hairline object-cover"
             />
             <div className="text-sm">
@@ -194,8 +202,8 @@ export default function ArticlePage() {
 
       <div className="container-page mt-10 max-w-6xl">
         <div className="relative aspect-[21/9] overflow-hidden rounded-3xl border hairline">
-          <img
-            src={withBase(article.heroImageUrl)}
+          <EditorialImage
+            src={article.heroImageUrl}
             alt=""
             className="h-full w-full object-cover"
           />
@@ -274,8 +282,8 @@ export default function ArticlePage() {
               if (b.type === "image") {
                 return (
                   <figure key={i} className="my-10">
-                    <img
-                      src={withBase(b.content)}
+                    <EditorialImage
+                      src={b.content}
                       alt={b.caption ?? ""}
                       className="w-full rounded-2xl border hairline"
                     />
@@ -329,6 +337,7 @@ export default function ArticlePage() {
             audioUrl={article.podcastAudioUrl}
             audioDurationSeconds={article.podcastDurationSeconds}
           />
+          <ReviewBuyLinks links={article.affiliateLinks ?? []} />
           <div className="rounded-2xl border hairline bg-card/40 p-5">
             <div className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
               Share
@@ -383,9 +392,10 @@ export default function ArticlePage() {
             href={`/author/${article.author.slug}`}
             className="block rounded-2xl border hairline bg-card/40 p-5 transition hover:bg-card"
           >
-            <img
-              src={withBase(article.author.avatarUrl)}
+            <EditorialImage
+              src={article.author.avatarUrl}
               alt={article.author.name}
+              width={200}
               className="h-16 w-16 rounded-full object-cover"
             />
             <div className="mt-3 font-display text-lg font-bold">
@@ -421,8 +431,8 @@ export default function ArticlePage() {
               className="group relative block w-full overflow-hidden rounded-2xl border hairline text-left"
             >
               <div className="relative aspect-[21/9]">
-                <img
-                  src={withBase(match.thumbnailUrl)}
+                <EditorialImage
+                  src={match.thumbnailUrl}
                   alt={match.title}
                   className="editorial-img h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.02]"
                 />

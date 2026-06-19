@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { motion } from "framer-motion";
-import { Mail, Building2, Globe2, Newspaper, Shield, Scale } from "lucide-react";
+import { Mail, Building2, Globe2, Newspaper, Shield, Scale, Link2, Megaphone } from "lucide-react";
 import termsHtml from "@/legal/terms-and-conditions.html?raw";
 
 function extractTermsBody(html: string) {
@@ -152,6 +152,7 @@ export function ContactPage() {
       title: "Advertising",
       desc: "Sponsorships, brand studio, newsletter placements.",
       email: "advertise@primeaxishq.com",
+      href: "/advertise",
     },
     {
       icon: Shield,
@@ -170,24 +171,36 @@ export function ContactPage() {
       />
       <section className="container-page py-16">
         <div className="grid gap-5 md:grid-cols-2">
-          {channels.map((c) => (
-            <a
-              key={c.email}
-              href={`mailto:${c.email}`}
-              className="group relative overflow-hidden rounded-2xl border hairline bg-card/40 p-7 transition hover:bg-card"
-            >
-              <div className="flex items-center gap-3">
-                <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl border hairline bg-background/60">
-                  <c.icon className="h-5 w-5 text-primary" />
+          {channels.map((c) => {
+            const inner = (
+              <>
+                <div className="flex items-center gap-3">
+                  <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl border hairline bg-background/60">
+                    <c.icon className="h-5 w-5 text-primary" />
+                  </div>
+                  <h3 className="font-display text-xl font-semibold">{c.title}</h3>
                 </div>
-                <h3 className="font-display text-xl font-semibold">{c.title}</h3>
-              </div>
-              <p className="mt-3 text-sm text-muted-foreground">{c.desc}</p>
-              <div className="mt-5 inline-flex items-center gap-2 font-mono text-xs text-foreground/80 transition group-hover:text-foreground">
-                {c.email} →
-              </div>
-            </a>
-          ))}
+                <p className="mt-3 text-sm text-muted-foreground">{c.desc}</p>
+                <div className="mt-5 inline-flex items-center gap-2 font-mono text-xs text-foreground/80 transition group-hover:text-foreground">
+                  {c.email} →
+                </div>
+              </>
+            );
+            const cls =
+              "group relative overflow-hidden rounded-2xl border hairline bg-card/40 p-7 transition hover:bg-card";
+            if ("href" in c && c.href) {
+              return (
+                <Link key={c.email} href={c.href} className={cls}>
+                  {inner}
+                </Link>
+              );
+            }
+            return (
+              <a key={c.email} href={`mailto:${c.email}`} className={cls}>
+                {inner}
+              </a>
+            );
+          })}
         </div>
         <div className="mt-12 grid gap-5 rounded-2xl border hairline bg-card/30 p-8 md:grid-cols-3">
           <div className="flex items-start gap-3">
@@ -323,6 +336,145 @@ export function TermsPage() {
         icon={Scale}
       />
       <TermsProse html={termsBodyHtml} />
+    </>
+  );
+}
+
+export function AffiliateDisclosurePage() {
+  return (
+    <>
+      <PageHero
+        eyebrow="Affiliate Disclosure"
+        title="How we earn from product links."
+        lede="Last updated June 05, 2026. PrimeAxis Tech is reader-supported. Some links on our site — especially on product reviews — may earn us a commission when you make a qualifying purchase."
+        icon={Link2}
+      />
+      <Prose>
+        <h2>What this means</h2>
+        <p>
+          When you click a &ldquo;Buy at&hellip;&rdquo; button on a PrimeAxis review
+          and complete a purchase at a retailer such as Amazon or Best Buy, we may
+          receive a small referral fee at no extra cost to you. These commissions
+          help fund our newsroom, testing lab, and editorial operations.
+        </p>
+
+        <h2>Editorial independence</h2>
+        <p>
+          Affiliate relationships never influence our scores, verdicts, or
+          recommendations. Our reviewers do not know which links earn commissions
+          when they write, and editors cannot change a score based on commercial
+          considerations. If we received a review unit or travel support from a
+          manufacturer, we disclose that in the review itself.
+        </p>
+
+        <h2>Which links are affiliate links</h2>
+        <p>
+          Buy buttons on review pages are clearly labeled and open retailer sites
+          in a new tab. Standard article links to company websites, documentation,
+          or news sources are not affiliate links unless explicitly noted.
+        </p>
+
+        <h2>Questions</h2>
+        <p>
+          For questions about this policy, email{" "}
+          <a href="mailto:editorial@primeaxishq.com">
+            editorial@primeaxishq.com
+          </a>
+          .
+        </p>
+      </Prose>
+    </>
+  );
+}
+
+export function AdvertisePage() {
+  const packages = [
+    {
+      title: "Newsletter — The Axis",
+      price: "From $350 / issue",
+      items: [
+        "Primary sponsor block (120 words + logo)",
+        "Secondary mention (60 words)",
+        "Series discounts for 4+ consecutive issues",
+      ],
+    },
+    {
+      title: "Homepage & category",
+      price: "From $1,200 / week",
+      items: [
+        "Homepage hero band (7 days)",
+        "Category rail sponsorship (AI, Gadgets, EV)",
+        "Clear “Sponsored” labeling",
+      ],
+    },
+    {
+      title: "Reviews & buying guides",
+      price: "From $1,500",
+      items: [
+        "Sponsored review (lab-tested, disclosed)",
+        "Buying-guide product callout",
+        "Full editorial standards apply",
+      ],
+    },
+    {
+      title: "Podcast",
+      price: "From $500 / episode",
+      items: [
+        "15–30 second host-read pre-roll",
+        "FTC disclosure included",
+        "Series pricing for monthly runs",
+      ],
+    },
+  ];
+
+  return (
+    <>
+      <PageHero
+        eyebrow="Advertising"
+        title="Reach builders, buyers, and decision-makers."
+        lede="PrimeAxis Tech connects your brand with a high-intent technology audience across the site, newsletters, and podcast. All placements are clearly labeled."
+        icon={Megaphone}
+      />
+      <section className="container-page py-16">
+        <div className="grid gap-5 md:grid-cols-2">
+          {packages.map((pkg) => (
+            <div
+              key={pkg.title}
+              className="rounded-2xl border hairline bg-card/40 p-7"
+            >
+              <h3 className="font-display text-xl font-bold">{pkg.title}</h3>
+              <div className="mt-1 font-mono text-xs text-primary">{pkg.price}</div>
+              <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
+                {pkg.items.map((item) => (
+                  <li key={item} className="flex gap-2">
+                    <span className="text-primary">·</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+        <div className="mt-12 rounded-2xl border hairline bg-card/30 p-8 text-center">
+          <p className="text-muted-foreground">
+            Full rate card, audience metrics, and brand guidelines are in our media kit.
+          </p>
+          <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <a
+              href="mailto:advertise@primeaxishq.com?subject=PrimeAxis%20sponsorship%20inquiry"
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
+            >
+              advertise@primeaxishq.com
+            </a>
+            <Link
+              href="/contact"
+              className="text-sm text-primary hover:underline"
+            >
+              Other contact channels →
+            </Link>
+          </div>
+        </div>
+      </section>
     </>
   );
 }

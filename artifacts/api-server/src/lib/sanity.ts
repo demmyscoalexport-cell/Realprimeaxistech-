@@ -1,5 +1,6 @@
 import { createClient, type SanityClient } from "@sanity/client";
 import { createHash } from "node:crypto";
+import { fallbackVideoUrl } from "./video-url-map.js";
 
 const projectId = process.env.SANITY_PROJECT_ID;
 const dataset = process.env.SANITY_DATASET || "production";
@@ -32,17 +33,32 @@ export function stableNumericId(s: string | undefined | null): number {
   return Math.abs(h | 0);
 }
 
-function imageUrl(img: unknown, fallback = ""): string {
-  if (!img || typeof img !== "object") return fallback;
+function normalizeExternalUrl(value: string | undefined | null): string {
+  const trimmed = (value ?? "").trim();
+  if (!trimmed) return "";
+  if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) return trimmed;
+  if (trimmed.startsWith("//")) return `https:${trimmed}`;
+  return "";
+}
+
+function imageUrlFromAsset(img: unknown): string {
+  if (!img || typeof img !== "object") return "";
   const ref = (img as { asset?: { _ref?: string; url?: string } }).asset;
-  if (ref?.url) return ref.url;
+  if (ref?.url) return normalizeExternalUrl(ref.url) || ref.url;
   if (ref?._ref) {
     const m = ref._ref.match(/^image-([a-f0-9]+)-(\d+x\d+)-(\w+)$/);
     if (m) {
       return `https://cdn.sanity.io/images/${projectId}/${dataset}/${m[1]}-${m[2]}.${m[3]}`;
     }
   }
-  return fallback;
+  return "";
+}
+
+/** Prefer explicit Cloudinary/CDN URLs stored on documents, then Sanity assets. */
+function imageUrl(img: unknown, fallback = ""): string {
+  const external = normalizeExternalUrl(fallback);
+  if (external) return external;
+  return imageUrlFromAsset(img);
 }
 
 type SanitySubcategory = {
@@ -94,6 +110,8 @@ export type ArticleSummary = {
   isFeature: boolean;
   viewCount: number;
   commentCount: number;
+  affiliateLinks: AffiliateLink[];
+  isSponsored: boolean;
 };
 
 export type PodcastPlatformLink = {
@@ -118,6 +136,8 @@ type RawArticleSummary = {
   podcastPlatforms?: PodcastPlatformLink[];
   isBreaking?: boolean;
   isFeature?: boolean;
+  affiliateLinks?: RawAffiliateLink[];
+  isSponsored?: boolean;
   subcategorySlug?: string | null;
   category?: SanityCategory | null;
   author?: SanityAuthor | null;
@@ -140,6 +160,8 @@ const ARTICLE_SUMMARY_PROJ = `
   podcastPlatforms,
   isBreaking,
   isFeature,
+  affiliateLinks,
+  isSponsored,
   subcategorySlug,
   "category": category->{ ${CATEGORY_PROJ} },
   "author": author->{ ${AUTHOR_PROJ} }
@@ -178,6 +200,8 @@ function toArticleSummary(r: RawArticleSummary): ArticleSummary {
     isFeature: r.isFeature ?? false,
     viewCount: 0,
     commentCount: 0,
+    affiliateLinks: toAffiliateLinks(r.affiliateLinks),
+    isSponsored: r.isSponsored ?? false,
   };
 }
 
@@ -502,7 +526,21 @@ export type ReviewSummary = {
   verdict: string;
   publishedAt: string;
   priceUsd: number;
+  affiliateLinks: AffiliateLink[];
+  isSponsored: boolean;
   category: { slug: string; name: string; accentColor: string };
+};
+
+export type AffiliateLink = {
+  retailer: string;
+  url: string;
+  label: string | null;
+};
+
+type RawAffiliateLink = {
+  retailer?: string;
+  url?: string;
+  label?: string;
 };
 
 type RawReviewSummary = {
@@ -516,14 +554,26 @@ type RawReviewSummary = {
   verdict?: string;
   publishedAt?: string;
   priceUsd?: number;
+  affiliateLinks?: RawAffiliateLink[];
+  isSponsored?: boolean;
   category?: SanityCategory | null;
 };
 
 const REVIEW_SUMMARY_PROJ = `
   _id, "slug": slug.current, productName, tagline, heroImage, heroImageUrl, score, verdict,
-  publishedAt, priceUsd,
+  publishedAt, priceUsd, affiliateLinks, isSponsored,
   "category": category->{ ${CATEGORY_PROJ} }
 `;
+
+function toAffiliateLinks(links: RawAffiliateLink[] | undefined): AffiliateLink[] {
+  return (links ?? [])
+    .filter((link) => link.retailer && link.url)
+    .map((link) => ({
+      retailer: link.retailer!,
+      url: link.url!,
+      label: link.label?.trim() || null,
+    }));
+}
 
 function toReviewSummary(r: RawReviewSummary): ReviewSummary {
   return {
@@ -536,6 +586,8 @@ function toReviewSummary(r: RawReviewSummary): ReviewSummary {
     verdict: r.verdict ?? "",
     publishedAt: r.publishedAt ?? new Date(0).toISOString(),
     priceUsd: r.priceUsd ?? 0,
+    affiliateLinks: toAffiliateLinks(r.affiliateLinks),
+    isSponsored: r.isSponsored ?? false,
     category: {
       slug: r.category?.slug ?? "uncategorized",
       name: r.category?.name ?? "Uncategorized",
@@ -640,7 +692,7 @@ export async function listVideoSummaries(limit = 20): Promise<VideoSummary[]> {
     durationSeconds: v.durationSeconds ?? 0,
     publishedAt: v.publishedAt ?? new Date(0).toISOString(),
     viewCount: 0,
-    videoUrl: v.videoUrl ?? null,
+    videoUrl: v.videoUrl ?? fallbackVideoUrl(v.slug ?? ""),
     category: {
       slug: v.category?.slug ?? "uncategorized",
       name: v.category?.name ?? "Uncategorized",

@@ -513,6 +513,10 @@ components:
         isFeature: { type: boolean }
         viewCount: { type: integer }
         commentCount: { type: integer }
+        affiliateLinks:
+          type: array
+          items: { $ref: "#/components/schemas/AffiliateLink" }
+        isSponsored: { type: boolean }
 
     Article:
       type: object
@@ -576,6 +580,10 @@ components:
         commentCount: { type: integer }
         isBreaking: { type: boolean }
         isFeature: { type: boolean }
+        affiliateLinks:
+          type: array
+          items: { $ref: "#/components/schemas/AffiliateLink" }
+        isSponsored: { type: boolean }
 
     ArticleBlock:
       type: object
@@ -638,6 +646,10 @@ components:
         category: { $ref: "#/components/schemas/CategoryRef" }
         publishedAt: { type: string, format: date-time }
         priceUsd: { type: number }
+        affiliateLinks:
+          type: array
+          items: { $ref: "#/components/schemas/AffiliateLink" }
+        isSponsored: { type: boolean }
 
     Review:
       type: object
@@ -687,6 +699,10 @@ components:
         sections:
           type: array
           items: { $ref: "#/components/schemas/ReviewSection" }
+        affiliateLinks:
+          type: array
+          items: { $ref: "#/components/schemas/AffiliateLink" }
+        isSponsored: { type: boolean }
 
     ReviewRating:
       type: object
@@ -694,6 +710,14 @@ components:
       properties:
         label: { type: string }
         score: { type: number }
+
+    AffiliateLink:
+      type: object
+      required: [retailer, url]
+      properties:
+        retailer: { type: string }
+        url: { type: string }
+        label: { type: string, nullable: true }
 
     ReviewSection:
       type: object

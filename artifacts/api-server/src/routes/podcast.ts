@@ -49,8 +49,13 @@ router.get("/podcast/feed.xml", async (req, res): Promise<void> => {
   const ownerName = process.env.PODCAST_OWNER_NAME ?? "PrimeAxis Tech";
   const ownerEmail = process.env.PODCAST_OWNER_EMAIL;
 
-  const items = episodes
-    .filter((episode) => episode.podcastAudioUrl)
+  const playable = episodes.filter((episode) => episode.podcastAudioUrl);
+  const channelSummary =
+    playable.length > 0
+      ? "AI-narrated PrimeAxis Tech episodes generated from the newsroom's latest reporting."
+      : "PrimeAxis Tech podcast feed. Episodes will appear here once audio is generated from our latest reporting. Subscribe now to get new episodes automatically.";
+
+  const items = playable
     .map((episode) => {
       const episodeUrl = `${siteUrl}/article/${encodeURIComponent(episode.slug)}`;
       const description = episode.subtitle || episode.excerpt;
@@ -78,7 +83,7 @@ router.get("/podcast/feed.xml", async (req, res): Promise<void> => {
   <channel>
     <title>PrimeAxis Tech Podcasts</title>
     <link>${xmlEscape(siteUrl)}</link>
-    <description>AI-narrated PrimeAxis Tech episodes generated from the newsroom's latest reporting.</description>
+    <description>${xmlEscape(channelSummary)}</description>
     <language>en-us</language>
     <lastBuildDate>${rssDate(new Date().toISOString())}</lastBuildDate>
     <atom:link xmlns:atom="http://www.w3.org/2005/Atom" href="${xmlEscape(feedUrl)}" rel="self" type="application/rss+xml" />
@@ -88,7 +93,7 @@ router.get("/podcast/feed.xml", async (req, res): Promise<void> => {
       <link>${xmlEscape(siteUrl)}</link>
     </image>
     <itunes:author>PrimeAxis Tech</itunes:author>
-    <itunes:summary>AI-narrated briefings from PrimeAxis Tech across AI, gadgets, gaming, EVs, robotics, cybersecurity, and the future of computing.</itunes:summary>
+    <itunes:summary>${xmlEscape(channelSummary)}</itunes:summary>
     <itunes:explicit>false</itunes:explicit>
     <itunes:type>episodic</itunes:type>
     <itunes:category text="Technology" />

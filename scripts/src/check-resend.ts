@@ -2,8 +2,10 @@ const apiKey = process.env.RESEND_API_KEY;
 const baseUrl = (process.env.RESEND_BASE_URL ?? "https://api.resend.com")
   .replace(/\/$/, "");
 
-if (!apiKey) {
-  throw new Error("Missing RESEND_API_KEY env");
+if (!apiKey || /^CHANGE_ME/i.test(apiKey)) {
+  throw new Error(
+    "Missing RESEND_API_KEY in .env — create one at https://resend.com/api-keys",
+  );
 }
 
 type ResendDomain = {

@@ -44,6 +44,12 @@ export interface PodcastPlatformLink {
   url: string;
 }
 
+export interface AffiliateLink {
+  retailer: string;
+  url: string;
+  label?: string | null;
+}
+
 export interface ArticleSummary {
   id: number;
   slug: string;
@@ -70,6 +76,8 @@ export interface ArticleSummary {
   isFeature: boolean;
   viewCount: number;
   commentCount: number;
+  affiliateLinks?: AffiliateLink[];
+  isSponsored?: boolean;
 }
 
 export interface AuthorDetail {
@@ -148,6 +156,8 @@ export interface Article {
   commentCount: number;
   isBreaking: boolean;
   isFeature: boolean;
+  affiliateLinks?: AffiliateLink[];
+  isSponsored?: boolean;
 }
 
 export interface ReviewSummary {
@@ -161,6 +171,8 @@ export interface ReviewSummary {
   category: CategoryRef;
   publishedAt: string;
   priceUsd: number;
+  affiliateLinks?: AffiliateLink[];
+  isSponsored?: boolean;
 }
 
 export interface ReviewRating {
@@ -191,6 +203,8 @@ export interface Review {
   cons: string[];
   ratings: ReviewRating[];
   sections: ReviewSection[];
+  affiliateLinks?: AffiliateLink[];
+  isSponsored?: boolean;
 }
 
 export interface Video {

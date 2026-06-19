@@ -96,6 +96,49 @@ export const review = defineType({
       validation: (r) => r.required().min(0),
     }),
     defineField({
+      name: "affiliateLinks",
+      title: "Affiliate buy links",
+      type: "array",
+      description:
+        "Optional retailer links (Amazon Associates, etc.). Shown as buy buttons on the review page.",
+      of: [
+        {
+          type: "object",
+          fields: [
+            defineField({
+              name: "retailer",
+              title: "Retailer",
+              type: "string",
+              options: {
+                list: [
+                  { title: "Amazon", value: "amazon" },
+                  { title: "Best Buy", value: "bestbuy" },
+                  { title: "B&H Photo", value: "bh" },
+                  { title: "Other", value: "other" },
+                ],
+              },
+              validation: (r) => r.required(),
+            }),
+            defineField({
+              name: "url",
+              title: "Affiliate URL",
+              type: "url",
+              validation: (r) => r.required(),
+            }),
+            defineField({
+              name: "label",
+              title: "Button label (optional)",
+              type: "string",
+              description: 'Defaults to "Buy at Amazon" etc.',
+            }),
+          ],
+          preview: {
+            select: { title: "retailer", subtitle: "url" },
+          },
+        },
+      ],
+    }),
+    defineField({
       name: "pros",
       title: "Pros",
       type: "array",
@@ -143,6 +186,13 @@ export const review = defineType({
           preview: { select: { title: "heading" } },
         },
       ],
+    }),
+    defineField({
+      name: "isSponsored",
+      title: "Sponsored review",
+      type: "boolean",
+      description: "When enabled, a “Sponsored” label appears on the review.",
+      initialValue: false,
     }),
   ],
   preview: {

@@ -4,8 +4,10 @@ import {
   getGetReviewBySlugQueryKey,
 } from "@workspace/api-client-react";
 import { ScoreBadge, CategoryChip } from "@/components/cards";
+import { ReviewBuyLinks } from "@/components/review-buy-links";
 import { ArrowLeft, Check, X } from "lucide-react";
-import { formatPrice, formatDate, withBase } from "@/lib/format";
+import { formatPrice, formatDate } from "@/lib/format";
+import { EditorialImage } from "@/components/editorial-image";
 import { motion } from "framer-motion";
 import { useEffect } from "react";
 
@@ -54,8 +56,8 @@ export default function ReviewPage() {
         </div>
         <div className="container-page mt-6 max-w-6xl">
           <div className="relative aspect-[21/9] overflow-hidden rounded-3xl border hairline">
-            <img
-              src={withBase(data.heroImageUrl)}
+            <EditorialImage
+              src={data.heroImageUrl}
               alt={data.productName}
               className="h-full w-full object-cover"
             />
@@ -63,10 +65,17 @@ export default function ReviewPage() {
             <div className="absolute inset-x-0 bottom-0 p-6 text-white md:p-12">
               <div className="flex items-end justify-between gap-6">
                 <div>
-                  <CategoryChip
-                    category={data.category}
-                    className="bg-white/10 text-white border-white/20"
-                  />
+                  <div className="flex flex-wrap items-center gap-2">
+                    <CategoryChip
+                      category={data.category}
+                      className="bg-white/10 text-white border-white/20"
+                    />
+                    {data.isSponsored && (
+                      <span className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-widest text-white/90">
+                        Sponsored
+                      </span>
+                    )}
+                  </div>
                   <motion.h1
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -143,10 +152,11 @@ export default function ReviewPage() {
           {data.galleryImages && data.galleryImages.length > 0 && (
             <div className="mt-12 grid gap-3 sm:grid-cols-2">
               {data.galleryImages.map((g, i) => (
-                <img
+                <EditorialImage
                   key={i}
-                  src={withBase(g)}
+                  src={g}
                   alt=""
+                  width={800}
                   className="aspect-[16/10] w-full rounded-2xl border hairline object-cover"
                 />
               ))}
@@ -198,14 +208,17 @@ export default function ReviewPage() {
             </div>
           </div>
 
+          <ReviewBuyLinks links={data.affiliateLinks ?? []} />
+
           <Link
             href={`/author/${data.author.slug}`}
             className="block rounded-2xl border hairline bg-card/40 p-5 transition hover:bg-card"
           >
             <div className="flex items-center gap-3">
-              <img
-                src={withBase(data.author.avatarUrl)}
+              <EditorialImage
+                src={data.author.avatarUrl}
                 alt=""
+                width={200}
                 className="h-12 w-12 rounded-full object-cover"
               />
               <div>

@@ -171,6 +171,7 @@ export function Footer() {
               { href: "/about", label: "About PrimeAxis" },
               { href: "/ethics", label: "Editorial Standards" },
               { href: "/ethics", label: "Ethics & Corrections" },
+              { href: "/advertise", label: "Advertising" },
               { href: "/contact", label: "Press Inquiries" },
               { href: "/careers", label: "Careers" },
             ].map((l, i) => (
@@ -197,6 +198,9 @@ export function Footer() {
             </Link>
             <Link href="/terms" className="hover:text-foreground">
               Terms
+            </Link>
+            <Link href="/affiliate-disclosure" className="hover:text-foreground">
+              Affiliate disclosure
             </Link>
             <Link href="/privacy" className="hover:text-foreground">
               Cookies

@@ -15,7 +15,7 @@ import AuthorPage from "@/pages/author";
 import SearchPage from "@/pages/search";
 import NewslettersPage from "@/pages/newsletters";
 import UnsubscribePage from "@/pages/unsubscribe";
-import { AboutPage, ContactPage, PrivacyPage, TermsPage } from "@/pages/static-pages";
+import { AboutPage, ContactPage, PrivacyPage, TermsPage, AffiliateDisclosurePage, AdvertisePage } from "@/pages/static-pages";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient({
@@ -53,6 +53,8 @@ function Routes() {
           <Route path="/contact" component={ContactPage} />
           <Route path="/privacy" component={PrivacyPage} />
           <Route path="/terms" component={TermsPage} />
+          <Route path="/affiliate-disclosure" component={AffiliateDisclosurePage} />
+          <Route path="/advertise" component={AdvertisePage} />
           <Route path="/ethics" component={AboutPage} />
           <Route path="/careers" component={ContactPage} />
           <Route component={NotFound} />

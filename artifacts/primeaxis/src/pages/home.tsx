@@ -11,7 +11,7 @@ import {
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Sparkles, Mail } from "lucide-react";
-import { formatNumber } from "@/lib/format";
+import { formatNumber, timeAgo } from "@/lib/format";
 import { useState } from "react";
 import { VideoLightbox } from "@/components/video-lightbox";
 import { PersonalizedRail } from "@/components/personalized-rail";
@@ -96,10 +96,10 @@ export default function HomePage() {
             <div>
               <div className="mb-5 flex items-center justify-between">
                 <h3 className="font-display text-lg font-bold">
-                  Trending
+                  Editor&apos;s picks
                 </h3>
                 <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                  Last 24h
+                  Curated
                 </span>
               </div>
               <ol className="space-y-5">
@@ -116,7 +116,7 @@ export default function HomePage() {
                         </h4>
                       </Link>
                       <div className="mt-1 text-xs text-muted-foreground">
-                        {formatNumber(a.viewCount ?? 0)} reading
+                        {a.readingMinutes} min read · {timeAgo(a.publishedAt)}
                       </div>
                     </div>
                   </li>
@@ -127,7 +127,7 @@ export default function HomePage() {
             <div>
               <div className="mb-5 flex items-center justify-between">
                 <h3 className="font-display text-lg font-bold">
-                  Most Discussed
+                  Worth a second read
                 </h3>
               </div>
               <div className="space-y-5">
@@ -405,9 +405,11 @@ function NewsletterInline({
       >
         Subscribe <ArrowUpRight className="h-3.5 w-3.5" />
       </Link>
-      <div className="mt-3 text-xs text-muted-foreground">
-        {formatNumber(newsletter.subscriberCount)} readers
-      </div>
+      {newsletter.subscriberCount != null && newsletter.subscriberCount > 0 && (
+        <div className="mt-3 text-xs text-muted-foreground">
+          {formatNumber(newsletter.subscriberCount)} readers
+        </div>
+      )}
     </div>
   );
 }

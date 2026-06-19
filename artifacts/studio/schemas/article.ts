@@ -159,6 +159,55 @@ export const article = defineType({
       ],
     }),
     defineField({
+      name: "affiliateLinks",
+      title: "Affiliate buy links",
+      type: "array",
+      description:
+        "Optional retailer links for buying guides. Shown as buy buttons in the article sidebar.",
+      of: [
+        {
+          type: "object",
+          fields: [
+            defineField({
+              name: "retailer",
+              title: "Retailer",
+              type: "string",
+              options: {
+                list: [
+                  { title: "Amazon", value: "amazon" },
+                  { title: "Best Buy", value: "bestbuy" },
+                  { title: "B&H Photo", value: "bh" },
+                  { title: "Other", value: "other" },
+                ],
+              },
+              validation: (r) => r.required(),
+            }),
+            defineField({
+              name: "url",
+              title: "Affiliate URL",
+              type: "url",
+              validation: (r) => r.required(),
+            }),
+            defineField({
+              name: "label",
+              title: "Button label (optional)",
+              type: "string",
+            }),
+          ],
+          preview: {
+            select: { title: "retailer", subtitle: "url" },
+          },
+        },
+      ],
+    }),
+    defineField({
+      name: "isSponsored",
+      title: "Sponsored content",
+      type: "boolean",
+      description: "When enabled, a “Sponsored” label appears on the article.",
+      initialValue: false,
+    }),
+    defineField({
       name: "body",
       title: "Body",
       type: "blockContent",

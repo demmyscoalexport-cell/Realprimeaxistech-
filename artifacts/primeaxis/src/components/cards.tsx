@@ -6,8 +6,8 @@ import {
   formatPrice,
   timeAgo,
   formatDuration,
-  withBase,
 } from "@/lib/format";
+import { EditorialImage } from "@/components/editorial-image";
 
 type ArticleLite = {
   slug: string;
@@ -67,7 +67,7 @@ export function MetaLine({
         <Clock className="h-3 w-3" />
         {article.readingMinutes} min
       </span>
-      {article.viewCount !== undefined && (
+      {article.viewCount != null && article.viewCount > 0 && (
         <>
           <span className="opacity-40">·</span>
           <span className="inline-flex items-center gap-1">
@@ -90,8 +90,8 @@ export function ArticleHeroCard({ article }: { article: ArticleLite }) {
     >
       <Link href={`/article/${article.slug}`}>
         <div className="relative aspect-[16/9] overflow-hidden md:aspect-[21/9]">
-          <img
-            src={withBase(article.heroImageUrl)}
+          <EditorialImage
+            src={article.heroImageUrl}
             alt={article.title}
             loading="eager"
             className="editorial-img h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.03]"
@@ -122,9 +122,10 @@ export function ArticleHeroCard({ article }: { article: ArticleLite }) {
             </p>
           )}
           <div className="mt-7 flex items-center gap-3">
-            <img
-              src={withBase(article.author.avatarUrl)}
+            <EditorialImage
+              src={article.author.avatarUrl}
               alt={article.author.name}
+              width={200}
               className="h-9 w-9 rounded-full border border-white/20 object-cover"
             />
             <div className="text-sm leading-tight">
@@ -170,9 +171,10 @@ export function ArticleCard({
           className="flex items-start gap-4"
         >
           <div className="relative h-20 w-28 shrink-0 overflow-hidden rounded-md">
-            <img
-              src={withBase(article.heroImageUrl)}
+            <EditorialImage
+              src={article.heroImageUrl}
               alt=""
+              width={600}
               className="editorial-img h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
             />
           </div>
@@ -200,8 +202,8 @@ export function ArticleCard({
           href={`/article/${article.slug}`}
           className="img-frame relative aspect-[16/10] overflow-hidden rounded-xl"
         >
-          <img
-            src={withBase(article.heroImageUrl)}
+          <EditorialImage
+            src={article.heroImageUrl}
             alt={article.title}
             className="editorial-img h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.03]"
           />
@@ -220,9 +222,10 @@ export function ArticleCard({
             </p>
           )}
           <div className="mt-4 flex items-center gap-3 text-sm">
-            <img
-              src={withBase(article.author.avatarUrl)}
+            <EditorialImage
+              src={article.author.avatarUrl}
               alt=""
+              width={200}
               className="h-7 w-7 rounded-full object-cover"
             />
             <span className="font-medium">{article.author.name}</span>
@@ -245,9 +248,10 @@ export function ArticleCard({
           href={`/article/${article.slug}`}
           className="img-frame relative aspect-[16/10] overflow-hidden rounded-lg"
         >
-          <img
-            src={withBase(article.heroImageUrl)}
+          <EditorialImage
+            src={article.heroImageUrl}
             alt={article.title}
+            width={800}
             className="editorial-img h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.035]"
           />
         </Link>
@@ -275,9 +279,10 @@ export function ArticleCard({
         href={`/article/${article.slug}`}
         className="relative aspect-[16/9] overflow-hidden"
       >
-        <img
-          src={withBase(article.heroImageUrl)}
+        <EditorialImage
+          src={article.heroImageUrl}
           alt={article.title}
+          width={800}
           className="editorial-img h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]"
         />
         {article.isBreaking && (
@@ -300,9 +305,10 @@ export function ArticleCard({
           </p>
         )}
         <div className="mt-auto flex items-center gap-3 pt-4 text-xs text-muted-foreground">
-          <img
-            src={withBase(article.author.avatarUrl)}
+          <EditorialImage
+            src={article.author.avatarUrl}
             alt=""
+            width={200}
             className="h-6 w-6 rounded-full object-cover"
           />
           <span className="font-medium text-foreground/80">
@@ -392,8 +398,8 @@ export function ReviewCard({
             variant === "compact" ? "aspect-[16/10]" : "aspect-[16/9]"
           }`}
         >
-          <img
-            src={withBase(review.heroImageUrl)}
+          <EditorialImage
+            src={review.heroImageUrl}
             alt={review.productName}
             className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
           />
@@ -460,9 +466,10 @@ export function VideoCard({
       onClick={onPlay}
     >
       <div className="relative aspect-video overflow-hidden rounded-2xl border hairline">
-        <img
-          src={withBase(video.thumbnailUrl)}
+        <EditorialImage
+          src={video.thumbnailUrl}
           alt={video.title}
+          width={800}
           className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
