@@ -5,6 +5,7 @@ import {
 } from "@/components/ui/dialog";
 import { YouTubeEmbed } from "@/components/youtube-embed";
 import { parseYouTubeVideoId } from "@/lib/youtube";
+import { resolveMediaUrl } from "@/lib/format";
 
 function isDirectVideoUrl(url: string): boolean {
   return /\.(mp4|webm|ogg)(\?|$)/i.test(url);
@@ -39,7 +40,7 @@ export function VideoLightbox({
               controls
               autoPlay
               playsInline
-              poster={thumbnailUrl || undefined}
+              poster={thumbnailUrl ? resolveMediaUrl(thumbnailUrl, 1280) : undefined}
               className="h-full w-full"
             >
               <track kind="captions" />
@@ -60,7 +61,7 @@ export function VideoLightbox({
           <div className="relative aspect-video bg-muted">
             {thumbnailUrl ? (
               <img
-                src={thumbnailUrl}
+                src={resolveMediaUrl(thumbnailUrl, 1280)}
                 alt={title}
                 className="h-full w-full object-cover opacity-40"
               />

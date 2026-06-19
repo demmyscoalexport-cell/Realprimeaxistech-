@@ -11,6 +11,7 @@ import {
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Sparkles, Mail } from "lucide-react";
+import { EditorialImage } from "@/components/editorial-image";
 import { formatNumber, timeAgo } from "@/lib/format";
 import { useState } from "react";
 import { VideoLightbox } from "@/components/video-lightbox";
@@ -257,7 +258,7 @@ export default function HomePage() {
                   href={`/article/${a.slug}`}
                   className="relative aspect-[16/10] overflow-hidden rounded-2xl border hairline"
                 >
-                  <img
+                  <EditorialImage
                     src={a.heroImageUrl}
                     alt={a.title}
                     className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-105"
@@ -275,8 +276,9 @@ export default function HomePage() {
                   </Link>
                   <p className="mt-3 text-muted-foreground">{a.excerpt}</p>
                   <div className="mt-5 flex items-center gap-3 text-sm">
-                    <img
+                    <EditorialImage
                       src={a.author.avatarUrl}
+                      width={80}
                       alt=""
                       className="h-9 w-9 rounded-full object-cover"
                     />
