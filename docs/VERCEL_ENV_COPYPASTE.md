@@ -57,6 +57,23 @@ Optional Resend override (usually omit on Vercel):
 
 ---
 
+## Required — AI search & article Q&A (Cohere)
+
+- [ ] `COHERE_API_KEY` = `CHANGE_ME` *(from [dashboard.cohere.com](https://dashboard.cohere.com/api-keys))*
+- [ ] `COHERE_BASE_URL` = `https://api.cohere.com`
+- [ ] `COHERE_CHAT_MODEL` = `command-r-plus`
+- [ ] `COHERE_EMBED_MODEL` = `embed-english-v3.0`
+- [ ] `COHERE_RERANK_MODEL` = `rerank-english-v3.0`
+
+Without `COHERE_API_KEY`, search and related articles still work with keyword/category fallbacks; article Q&A falls back to local excerpt matching in the browser.
+
+**Smoke test after save + redeploy:**
+
+- [ ] `https://primeaxishq.com/api/articles/search?q=ai&limit=3` → JSON article list
+- [ ] Open any article → Ask the article → question returns a Cohere-grounded answer
+
+---
+
 ## Optional — scripts only (run locally / CI, not runtime display)
 
 These are **not** needed for the live site to load content or images.
@@ -81,7 +98,6 @@ These are **not** needed for the live site to load content or images.
 
 ### Other script integrations
 
-- [ ] `COHERE_API_KEY` = `CHANGE_ME`
 - [ ] `WAVESPEED_API_KEY` = `CHANGE_ME`
 - [ ] `ASSEMBLYAI_API_KEY` = `CHANGE_ME`
 - [ ] `MUX_TOKEN_ID` = `CHANGE_ME`
@@ -118,4 +134,9 @@ PODCAST_COVER_IMAGE_URL=https://primeaxishq.com/podcast-cover.png
 PODCAST_OWNER_NAME=PrimeAxis Tech
 PODCAST_OWNER_EMAIL=podcasts@primeaxishq.com
 LOG_LEVEL=info
+COHERE_API_KEY=CHANGE_ME
+COHERE_BASE_URL=https://api.cohere.com
+COHERE_CHAT_MODEL=command-r-plus
+COHERE_EMBED_MODEL=embed-english-v3.0
+COHERE_RERANK_MODEL=rerank-english-v3.0
 ```

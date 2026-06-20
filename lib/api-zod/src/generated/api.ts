@@ -633,6 +633,9 @@ export const ListMostDiscussedArticlesResponseItem = zod.object({
 export const ListMostDiscussedArticlesResponse = zod.array(ListMostDiscussedArticlesResponseItem)
 
 
+/**
+ * @summary Search articles (keyword + Cohere rerank when configured)
+ */
 export const searchArticlesQueryLimitMax = 50;
 
 
@@ -786,6 +789,26 @@ export const GetRelatedArticlesResponseItem = zod.object({
   "isSponsored": zod.boolean().optional()
 })
 export const GetRelatedArticlesResponse = zod.array(GetRelatedArticlesResponseItem)
+
+
+/**
+ * @summary Ask a question about an article (Cohere-powered)
+ */
+export const AskArticleParams = zod.object({
+  "slug": zod.coerce.string()
+})
+
+export const askArticleBodyQuestionMax = 500;
+
+
+
+export const AskArticleBody = zod.object({
+  "question": zod.string().min(1).max(askArticleBodyQuestionMax)
+})
+
+export const AskArticleResponse = zod.object({
+  "answer": zod.string()
+})
 
 
 export const ListCategoriesResponseItem = zod.object({

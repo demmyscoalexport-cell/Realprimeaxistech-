@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Sparkles, Send, Bot, User } from "lucide-react";
 import type { ArticleBlock } from "@workspace/api-client-react";
+import { askArticle } from "@workspace/api-client-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 type Msg = { role: "user" | "assistant"; content: string };
@@ -29,12 +30,42 @@ function score(query: string, paragraph: string): number {
   return s;
 }
 
+function localFallbackAnswer(
+  q: string,
+  aiSummary: string,
+  keyTakeaways: string[],
+  paragraphs: string[],
+): string {
+  const lower = q.toLowerCase();
+  if (/summar(y|ize|ise)|tldr|tl;dr|brief|overview/.test(lower)) {
+    return aiSummary;
+  }
+  if (/takeaway|key point|highlight|bullet/.test(lower)) {
+    return (
+      "Key takeaways from this story:\n\n" +
+      keyTakeaways.map((t) => `• ${t}`).join("\n")
+    );
+  }
+  const ranked = paragraphs
+    .map((p) => ({ p, s: score(q, p) }))
+    .filter((r) => r.s > 0)
+    .sort((a, b) => b.s - a.s)
+    .slice(0, 2)
+    .map((r) => r.p);
+  if (ranked.length > 0) {
+    return ranked.join("\n\n");
+  }
+  return `Based on the article: ${aiSummary}`;
+}
+
 export function AiAsk({
+  slug,
   title,
   body,
   aiSummary,
   keyTakeaways,
 }: {
+  slug: string;
   title: string;
   body: ArticleBlock[];
   aiSummary: string;
@@ -44,41 +75,26 @@ export function AiAsk({
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [pending, setPending] = useState(false);
+  const [usedFallback, setUsedFallback] = useState(false);
 
-  const ask = (raw: string) => {
+  const ask = async (raw: string) => {
     const q = raw.trim();
     if (!q || pending) return;
     setMessages((m) => [...m, { role: "user", content: q }]);
     setInput("");
     setPending(true);
 
-    setTimeout(() => {
-      let answer = "";
-      const lower = q.toLowerCase();
-      if (
-        /summar(y|ize|ise)|tldr|tl;dr|brief|overview/.test(lower)
-      ) {
-        answer = aiSummary;
-      } else if (/takeaway|key point|highlight|bullet/.test(lower)) {
-        answer =
-          "Key takeaways from this story:\n\n" +
-          keyTakeaways.map((t) => `• ${t}`).join("\n");
-      } else {
-        const ranked = paragraphs
-          .map((p) => ({ p, s: score(q, p) }))
-          .filter((r) => r.s > 0)
-          .sort((a, b) => b.s - a.s)
-          .slice(0, 2)
-          .map((r) => r.p);
-        if (ranked.length > 0) {
-          answer = ranked.join("\n\n");
-        } else {
-          answer = `Based on the article: ${aiSummary}`;
-        }
-      }
+    try {
+      const result = await askArticle(slug, { question: q });
+      setUsedFallback(false);
+      setMessages((m) => [...m, { role: "assistant", content: result.answer }]);
+    } catch {
+      const answer = localFallbackAnswer(q, aiSummary, keyTakeaways, paragraphs);
+      setUsedFallback(true);
       setMessages((m) => [...m, { role: "assistant", content: answer }]);
+    } finally {
       setPending(false);
-    }, 350);
+    }
   };
 
   return (
@@ -98,8 +114,7 @@ export function AiAsk({
         Talk to "{title.slice(0, 60)}{title.length > 60 ? "…" : ""}"
       </h3>
       <p className="mt-1 text-sm text-muted-foreground">
-        A lightweight article helper searches this story's summary, takeaways,
-        and body text for relevant context.
+        Ask questions grounded in this story's summary, takeaways, and body text.
       </p>
 
       {messages.length === 0 ? (
@@ -107,7 +122,7 @@ export function AiAsk({
           {STARTERS.map((s) => (
             <button
               key={s}
-              onClick={() => ask(s)}
+              onClick={() => void ask(s)}
               className="rounded-full border hairline bg-card px-3 py-1.5 text-xs hover:bg-accent"
             >
               {s}
@@ -171,7 +186,7 @@ export function AiAsk({
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          ask(input);
+          void ask(input);
         }}
         className="mt-5 flex items-center gap-2 rounded-full border hairline bg-background px-2 py-1.5"
       >
@@ -191,7 +206,9 @@ export function AiAsk({
         </button>
       </form>
       <div className="mt-2 text-[10px] font-mono uppercase tracking-widest text-muted-foreground">
-        Local helper. Answers are excerpts or summaries from this article.
+        {usedFallback
+          ? "Offline helper. Answers are excerpts or summaries from this article."
+          : "Powered by Cohere. Answers use this article as context."}
       </div>
     </motion.div>
   );

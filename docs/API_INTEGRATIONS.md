@@ -17,9 +17,10 @@ Implemented by the Express server in `artifacts/api-server/src/routes/`.
 | `GET /api/articles` | Paginated article list with category/tag/subcategory filters. |
 | `GET /api/articles/trending` | Trending article list. Currently ordered by published date with placeholder view counts. |
 | `GET /api/articles/most-discussed` | Most-discussed article list. Currently ordered by published date with placeholder comment counts. |
-| `GET /api/articles/search` | Keyword search against Sanity article fields. |
+| `GET /api/articles/search` | Hybrid keyword + Cohere rerank search (keyword-only fallback). |
 | `GET /api/articles/:slug` | Article detail, including body, AI summary, takeaways, and podcast metadata. |
-| `GET /api/articles/:slug/related` | Related articles by category. |
+| `GET /api/articles/:slug/related` | Related articles via Cohere rerank (category fallback). |
+| `POST /api/articles/:slug/ask` | Article-aware Q&A via Cohere chat (503 when unavailable). |
 | `GET /api/categories` | Category list with article counts. |
 | `GET /api/categories/:slug` | Category detail plus articles. |
 | `GET /api/authors` | Author list with article counts. |
@@ -152,31 +153,34 @@ Avoid:
 
 ## Cohere API
 
-Cohere is configured for future semantic search, embeddings, reranking, classification, summarization, chat, and article Q&A.
+Cohere powers semantic search, related-article ranking, and article Q&A on the live API.
 
 | Env var | Purpose |
 | --- | --- |
 | `COHERE_API_KEY` | Cohere API key. |
 | `COHERE_BASE_URL` | Base URL, usually `https://api.cohere.com`. |
-| `COHERE_CHAT_MODEL` | Chat/generation model default. |
-| `COHERE_EMBED_MODEL` | Embedding model default. |
-| `COHERE_RERANK_MODEL` | Rerank model default. |
+| `COHERE_CHAT_MODEL` | Chat model for article Q&A (default `command-r-plus`). |
+| `COHERE_EMBED_MODEL` | Embedding model (default `embed-english-v3.0`). |
+| `COHERE_RERANK_MODEL` | Rerank model (default `rerank-english-v3.0`). |
+
+Used by:
+
+- `artifacts/api-server/src/lib/cohere.ts` — embed, rerank, chat helpers
+- `artifacts/api-server/src/lib/article-ai.ts` — search, related, ask orchestration
+- `artifacts/api-server/src/routes/articles.ts` — `/articles/search`, `/articles/:slug/related`, `/articles/:slug/ask`
+- `artifacts/primeaxis/src/components/ai-ask.tsx` — article Q&A UI (falls back locally if API unavailable)
+- `scripts/src/index-article-embeddings.ts` — optional offline embedding index
 
 Utility:
 
 - `pnpm --filter @workspace/scripts run cohere:check`
+- `pnpm --filter @workspace/scripts run cohere:index-embeddings` *(optional; writes `scripts/data/article-embeddings.json`)*
 
-Current validation:
+Behavior:
 
-- The local key was checked with a read-only model-list request.
-- It was valid and could see 20 models.
-
-Recommended product uses:
-
-- Upgrade `/api/articles/search` from keyword matching to semantic search.
-- Add embeddings for related articles and personalization.
-- Use reranking for search result quality.
-- Upgrade `AiAsk` from keyword matching to real article-aware Q&A.
+- Without `COHERE_API_KEY`, search uses Sanity keyword matching and related articles use same-category ordering.
+- `POST /api/articles/:slug/ask` returns 503 when Cohere is unavailable; the frontend falls back to local excerpt matching.
+- Rerank uses article `title + excerpt (+ tags)` — no precomputed embedding cache required at runtime.
 
 ## WaveSpeed API
 

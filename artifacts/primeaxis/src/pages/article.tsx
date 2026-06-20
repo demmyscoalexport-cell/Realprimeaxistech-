@@ -249,6 +249,7 @@ export default function ArticlePage() {
           {/* AI Ask */}
           <div className="mt-6">
             <AiAsk
+              slug={article.slug}
               title={article.title}
               body={article.body}
               aiSummary={article.aiSummary}

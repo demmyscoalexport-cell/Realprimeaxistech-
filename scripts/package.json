@@ -7,6 +7,7 @@
     "hello": "tsx --import ./load-env.mjs ./src/hello.ts",
     "seed": "tsx --import ./load-env.mjs ./src/seed-primeaxis.ts",
     "cohere:check": "tsx --import ./load-env.mjs ./src/check-cohere.ts",
+    "cohere:index-embeddings": "tsx --import ./load-env.mjs ./src/index-article-embeddings.ts",
     "imgix:check": "tsx --import ./load-env.mjs ./src/check-imgix.ts",
     "podcasts": "tsx --import ./load-env.mjs ./src/generate-podcast-audio.ts",
     "podcast:check": "tsx --import ./load-env.mjs ./src/check-podcast-env.ts",

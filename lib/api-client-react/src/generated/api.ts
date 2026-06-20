@@ -21,6 +21,8 @@ import type {
 
 import type {
   Article,
+  ArticleAskInput,
+  ArticleAskResponse,
   ArticleSummary,
   Author,
   AuthorDetail,
@@ -691,6 +693,9 @@ export const getSearchArticlesUrl = (params: SearchArticlesParams,) => {
   return stringifiedParams.length > 0 ? `/api/articles/search?${stringifiedParams}` : `/api/articles/search`
 }
 
+/**
+ * @summary Search articles (keyword + Cohere rerank when configured)
+ */
 export const searchArticles = async (params: SearchArticlesParams, options?: RequestInit): Promise<ArticleSummary[]> => {
 
   return customFetch<ArticleSummary[]>(getSearchArticlesUrl(params),
@@ -735,6 +740,9 @@ export type SearchArticlesQueryResult = NonNullable<Awaited<ReturnType<typeof se
 export type SearchArticlesQueryError = ErrorType<unknown>
 
 
+/**
+ * @summary Search articles (keyword + Cohere rerank when configured)
+ */
 
 export function useSearchArticles<TData = Awaited<ReturnType<typeof searchArticles>>, TError = ErrorType<unknown>>(
  params: SearchArticlesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof searchArticles>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
@@ -895,6 +903,78 @@ export function useGetRelatedArticles<TData = Awaited<ReturnType<typeof getRelat
 
 
 
+
+export const getAskArticleUrl = (slug: string,) => {
+
+
+
+
+  return `/api/articles/${slug}/ask`
+}
+
+/**
+ * @summary Ask a question about an article (Cohere-powered)
+ */
+export const askArticle = async (slug: string,
+    articleAskInput: ArticleAskInput, options?: RequestInit): Promise<ArticleAskResponse> => {
+
+  return customFetch<ArticleAskResponse>(getAskArticleUrl(slug),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      articleAskInput,)
+  }
+);}
+
+
+
+
+export const getAskArticleMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof askArticle>>, TError,{slug: string;data: BodyType<ArticleAskInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof askArticle>>, TError,{slug: string;data: BodyType<ArticleAskInput>}, TContext> => {
+
+const mutationKey = ['askArticle'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof askArticle>>, {slug: string;data: BodyType<ArticleAskInput>}> = (props) => {
+          const {slug,data} = props ?? {};
+
+          return  askArticle(slug,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AskArticleMutationResult = NonNullable<Awaited<ReturnType<typeof askArticle>>>
+    export type AskArticleMutationBody = BodyType<ArticleAskInput>
+    export type AskArticleMutationError = ErrorType<ErrorResponse>
+
+    /**
+ * @summary Ask a question about an article (Cohere-powered)
+ */
+export const useAskArticle = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof askArticle>>, TError,{slug: string;data: BodyType<ArticleAskInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof askArticle>>,
+        TError,
+        {slug: string;data: BodyType<ArticleAskInput>},
+        TContext
+      > => {
+      return useMutation(getAskArticleMutationOptions(options));
+    }
 
 export const getListCategoriesUrl = () => {
 

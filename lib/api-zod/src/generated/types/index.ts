@@ -8,6 +8,8 @@
 
 export * from './affiliateLink';
 export * from './article';
+export * from './articleAskInput';
+export * from './articleAskResponse';
 export * from './articleBlock';
 export * from './articleBlockType';
 export * from './articleSummary';

@@ -13,6 +13,18 @@ export interface ErrorResponse {
   error: string;
 }
 
+export interface ArticleAskInput {
+  /**
+     * @minLength 1
+     * @maxLength 500
+     */
+  question: string;
+}
+
+export interface ArticleAskResponse {
+  answer: string;
+}
+
 export interface Author {
   id: number;
   slug: string;

@@ -151,6 +151,7 @@ paths:
     get:
       operationId: searchArticles
       tags: [articles]
+      summary: Search articles (keyword + Cohere rerank when configured)
       parameters:
         - in: query
           name: q
@@ -206,6 +207,43 @@ paths:
               schema:
                 type: array
                 items: { $ref: "#/components/schemas/ArticleSummary" }
+
+  /articles/{slug}/ask:
+    post:
+      operationId: askArticle
+      tags: [articles]
+      summary: Ask a question about an article (Cohere-powered)
+      parameters:
+        - in: path
+          name: slug
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ArticleAskInput" }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ArticleAskResponse" }
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+        "503":
+          description: AI unavailable
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
 
   /categories:
     get:
@@ -411,6 +449,21 @@ components:
       required: [error]
       properties:
         error: { type: string }
+
+    ArticleAskInput:
+      type: object
+      required: [question]
+      properties:
+        question:
+          type: string
+          minLength: 1
+          maxLength: 500
+
+    ArticleAskResponse:
+      type: object
+      required: [answer]
+      properties:
+        answer: { type: string }
 
     Author:
       type: object
