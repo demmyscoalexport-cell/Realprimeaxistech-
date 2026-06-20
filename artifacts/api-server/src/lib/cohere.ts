@@ -12,7 +12,8 @@ const cohereBaseUrl = (
 ).replace(/\/$/, "");
 
 const DEPRECATED_CHAT_ALIASES: Record<string, string> = {
-  "command-r-plus": "command-r-plus-08-2024",
+  "command-r-plus": "command-a-03-2025",
+  "command-r-plus-08-2024": "command-a-03-2025",
   "command-r": "command-r-08-2024",
 };
 
@@ -21,7 +22,7 @@ function resolveChatModel(model: string): string {
 }
 
 const cohereChatModel = resolveChatModel(
-  process.env.COHERE_CHAT_MODEL ?? "command-r-plus-08-2024",
+  process.env.COHERE_CHAT_MODEL ?? "command-a-03-2025",
 );
 const cohereEmbedModel = process.env.COHERE_EMBED_MODEL ?? "embed-english-v3.0";
 const cohereRerankModel =
@@ -148,6 +149,7 @@ export async function cohereChat(opts: {
 }): Promise<string> {
   const payload = await cohereFetch<CohereChatResponse>("/v2/chat", {
     model: cohereChatModel,
+    stream: false,
     messages: [
       { role: "system", content: opts.system },
       { role: "user", content: opts.user },

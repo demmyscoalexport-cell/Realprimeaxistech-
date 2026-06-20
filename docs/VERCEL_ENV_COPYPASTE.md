@@ -136,7 +136,7 @@ PODCAST_OWNER_EMAIL=podcasts@primeaxishq.com
 LOG_LEVEL=info
 COHERE_API_KEY=CHANGE_ME
 COHERE_BASE_URL=https://api.cohere.com
-COHERE_CHAT_MODEL=command-r-plus-08-2024
+COHERE_CHAT_MODEL=command-a-03-2025
 COHERE_EMBED_MODEL=embed-english-v3.0
 COHERE_RERANK_MODEL=rerank-english-v3.0
 ```
