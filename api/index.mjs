@@ -1,25 +1,16 @@
-import serverless from "serverless-http";
+let appPromise;
 
-let handlerPromise;
-
-function loadHandler() {
-  if (!handlerPromise) {
-    handlerPromise = import("../artifacts/api-server/dist/app.mjs").then(
-      ({ default: app }) =>
-        serverless(app, {
-          request(request, _event, context) {
-            if (context && "callbackWaitsForEmptyEventLoop" in context) {
-              context.callbackWaitsForEmptyEventLoop = false;
-            }
-            request.apiGateway = request.apiGateway ?? { event: _event, context };
-          },
-        }),
+function loadApp() {
+  if (!appPromise) {
+    appPromise = import("../artifacts/api-server/dist/app.mjs").then(
+      ({ default: app }) => app,
     );
   }
-  return handlerPromise;
+  return appPromise;
 }
 
+/** Vercel passes Node req/res — invoke Express directly (serverless-http hangs here). */
 export default async function vercelHandler(req, res) {
-  const handler = await loadHandler();
-  return handler(req, res);
+  const app = await loadApp();
+  return app(req, res);
 }
