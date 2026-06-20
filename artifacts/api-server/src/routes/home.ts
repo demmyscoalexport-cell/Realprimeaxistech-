@@ -9,7 +9,17 @@ import {
 
 const router: IRouter = Router();
 
+const HOME_FEED_CACHE_TTL_MS = 60_000;
+let homeFeedCache: { expiresAt: number; body: unknown } | null = null;
+
 router.get("/home/feed", async (_req, res): Promise<void> => {
+  const now = Date.now();
+  if (homeFeedCache && homeFeedCache.expiresAt > now) {
+    res.setHeader("Cache-Control", "public, s-maxage=60, stale-while-revalidate=120");
+    res.json(homeFeedCache.body);
+    return;
+  }
+
   const [all, featuredReviews, videos, categories] = await Promise.all([
     listArticleSummaries({ limit: 100 }),
     listReviewSummaries(6, false),
@@ -81,23 +91,25 @@ router.get("/home/feed", async (_req, res): Promise<void> => {
     .slice(0, 4);
   const mostDiscussed = all.slice(0, 5);
 
-  res.json(
-    GetHomeFeedResponse.parse({
-      hero: featured,
-      spotlight,
-      trending,
-      latest,
-      featuredReviews,
-      aiAndFuture,
-      gamingAndEntertainment,
-      videos,
-      investigations,
-      buyingGuides,
-      startups,
-      mostDiscussed,
-      categories,
-    }),
-  );
+  const body = GetHomeFeedResponse.parse({
+    hero: featured,
+    spotlight,
+    trending,
+    latest,
+    featuredReviews,
+    aiAndFuture,
+    gamingAndEntertainment,
+    videos,
+    investigations,
+    buyingGuides,
+    startups,
+    mostDiscussed,
+    categories,
+  });
+
+  homeFeedCache = { expiresAt: now + HOME_FEED_CACHE_TTL_MS, body };
+  res.setHeader("Cache-Control", "public, s-maxage=60, stale-while-revalidate=120");
+  res.json(body);
 });
 
 export default router;

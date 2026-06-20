@@ -23,25 +23,32 @@ function corsOrigins(): string[] | undefined {
 
 const allowedOrigins = corsOrigins();
 
-app.use(
-  pinoHttp({
-    logger,
-    serializers: {
-      req(req) {
-        return {
-          id: req.id,
-          method: req.method,
-          url: req.url?.split("?")[0],
-        };
+if (process.env.VERCEL !== "1") {
+  app.use(
+    pinoHttp({
+      logger,
+      serializers: {
+        req(req) {
+          return {
+            id: req.id,
+            method: req.method,
+            url: req.url?.split("?")[0],
+          };
+        },
+        res(res) {
+          return {
+            statusCode: res.statusCode,
+          };
+        },
       },
-      res(res) {
-        return {
-          statusCode: res.statusCode,
-        };
-      },
-    },
-  }),
-);
+    }),
+  );
+} else {
+  app.use((req, _res, next) => {
+    req.log = logger;
+    next();
+  });
+}
 app.use(
   cors(
     allowedOrigins

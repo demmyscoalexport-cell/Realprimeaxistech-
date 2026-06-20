@@ -1,4 +1,5 @@
 import pino from "pino";
+import type { Logger } from "pino";
 
 const baseOptions = {
   level: process.env.LOG_LEVEL ?? "info",
@@ -9,8 +10,20 @@ const baseOptions = {
   ],
 };
 
-/** Sync stdout logging avoids pino worker threads, which hang Vercel serverless. */
-export const logger = pino(
-  baseOptions,
-  pino.destination({ dest: 1, sync: true }),
-);
+const noopLogger = {
+  level: "silent",
+  fatal: () => {},
+  error: () => {},
+  warn: () => {},
+  info: () => {},
+  debug: () => {},
+  trace: () => {},
+  silent: () => {},
+  child: () => noopLogger,
+} as unknown as Logger;
+
+/** On Vercel, skip pino entirely — bundled worker threads caused 504 cold starts. */
+export const logger: Logger =
+  process.env.VERCEL === "1"
+    ? noopLogger
+    : pino(baseOptions, pino.destination({ dest: 1, sync: true }));

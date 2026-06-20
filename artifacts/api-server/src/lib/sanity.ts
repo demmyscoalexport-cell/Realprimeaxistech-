@@ -19,13 +19,19 @@ function projectId(): string {
   return id;
 }
 
+function useSanityCdn(): boolean {
+  if (process.env.SANITY_USE_CDN === "false") return false;
+  if (process.env.SANITY_USE_CDN === "true") return true;
+  return process.env.NODE_ENV === "production";
+}
+
 function getSanityClient(): SanityClient {
   if (!sanityClient) {
     sanityClient = createClient({
       projectId: projectId(),
       dataset: dataset(),
       apiVersion: "2024-01-01",
-      useCdn: false,
+      useCdn: useSanityCdn(),
       token: token(),
       perspective: "published",
     });
@@ -872,7 +878,7 @@ export async function subscribeNewsletterInSanity(input: {
   }
 
   const createdAt = new Date().toISOString();
-  await sanity
+  await getSanityClient()
     .transaction()
     .createIfNotExists(
       fallbackNewsletter

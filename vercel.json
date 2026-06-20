@@ -11,7 +11,7 @@
   "functions": {
     "api/index.mjs": {
       "maxDuration": 60,
-      "includeFiles": "artifacts/api-server/dist/**"
+      "includeFiles": "artifacts/api-server/dist/*.mjs"
     },
     "api/healthz.mjs": {
       "maxDuration": 10
