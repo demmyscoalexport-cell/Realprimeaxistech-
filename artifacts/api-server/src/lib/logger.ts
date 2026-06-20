@@ -1,20 +1,16 @@
 import pino from "pino";
 
-const isProduction = process.env.NODE_ENV === "production";
-
-export const logger = pino({
+const baseOptions = {
   level: process.env.LOG_LEVEL ?? "info",
   redact: [
     "req.headers.authorization",
     "req.headers.cookie",
     "res.headers['set-cookie']",
   ],
-  ...(isProduction
-    ? {}
-    : {
-        transport: {
-          target: "pino-pretty",
-          options: { colorize: true },
-        },
-      }),
-});
+};
+
+/** Sync stdout logging avoids pino worker threads, which hang Vercel serverless. */
+export const logger = pino(
+  baseOptions,
+  pino.destination({ dest: 1, sync: true }),
+);

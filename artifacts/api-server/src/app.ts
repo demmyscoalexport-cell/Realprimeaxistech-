@@ -5,7 +5,23 @@ import router from "./routes";
 import { logger } from "./lib/logger";
 
 const app: Express = express();
-const corsOrigin = process.env.CORS_ORIGIN || process.env.PUBLIC_SITE_URL;
+function corsOrigins(): string[] | undefined {
+  const raw = process.env.CORS_ORIGIN || process.env.PUBLIC_SITE_URL;
+  if (!raw) return undefined;
+  const origins = raw.split(",").map((value) => value.trim()).filter(Boolean);
+  for (const origin of [...origins]) {
+    try {
+      const url = new URL(origin);
+      if (url.hostname.startsWith("www.")) continue;
+      origins.push(`${url.protocol}//www.${url.hostname}`);
+    } catch {
+      // ignore invalid URLs in CORS_ORIGIN
+    }
+  }
+  return [...new Set(origins)];
+}
+
+const allowedOrigins = corsOrigins();
 
 app.use(
   pinoHttp({
@@ -26,7 +42,21 @@ app.use(
     },
   }),
 );
-app.use(cors(corsOrigin ? { origin: corsOrigin } : undefined));
+app.use(
+  cors(
+    allowedOrigins
+      ? {
+          origin(origin, callback) {
+            if (!origin || allowedOrigins.includes(origin)) {
+              callback(null, true);
+              return;
+            }
+            callback(null, false);
+          },
+        }
+      : undefined,
+  ),
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

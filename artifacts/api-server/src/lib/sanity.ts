@@ -2,26 +2,36 @@ import { createClient, type SanityClient } from "@sanity/client";
 import { createHash } from "node:crypto";
 import { fallbackVideoUrl } from "./video-url-map.js";
 
-const projectId = process.env.SANITY_PROJECT_ID;
-const dataset = process.env.SANITY_DATASET || "production";
-const token =
+const dataset = () => process.env.SANITY_DATASET || "production";
+const token = () =>
   process.env.SANITY_API_TOKEN &&
   !/^CHANGE_ME/i.test(process.env.SANITY_API_TOKEN)
     ? process.env.SANITY_API_TOKEN
     : undefined;
 
-if (!projectId) {
-  throw new Error("SANITY_PROJECT_ID env var is required");
+let sanityClient: SanityClient | undefined;
+
+function projectId(): string {
+  const id = process.env.SANITY_PROJECT_ID;
+  if (!id) {
+    throw new Error("SANITY_PROJECT_ID env var is required");
+  }
+  return id;
 }
 
-export const sanity: SanityClient = createClient({
-  projectId,
-  dataset,
-  apiVersion: "2024-01-01",
-  useCdn: false,
-  token,
-  perspective: "published",
-});
+function getSanityClient(): SanityClient {
+  if (!sanityClient) {
+    sanityClient = createClient({
+      projectId: projectId(),
+      dataset: dataset(),
+      apiVersion: "2024-01-01",
+      useCdn: false,
+      token: token(),
+      perspective: "published",
+    });
+  }
+  return sanityClient;
+}
 
 export function stableNumericId(s: string | undefined | null): number {
   if (!s) return 0;
@@ -48,7 +58,7 @@ function imageUrlFromAsset(img: unknown): string {
   if (ref?._ref) {
     const m = ref._ref.match(/^image-([a-f0-9]+)-(\d+x\d+)-(\w+)$/);
     if (m) {
-      return `https://cdn.sanity.io/images/${projectId}/${dataset}/${m[1]}-${m[2]}.${m[3]}`;
+      return `https://cdn.sanity.io/images/${projectId()}/${dataset()}/${m[1]}-${m[2]}.${m[3]}`;
     }
   }
   return "";
@@ -245,7 +255,7 @@ export async function listArticleSummaries(opts: {
       : `publishedAt desc`;
 
   const groq = `*[${conditions.join(" && ")}] | order(${order}) [${offset}...${offset + limit}] { ${ARTICLE_SUMMARY_PROJ} }`;
-  const rows = await sanity.fetch<RawArticleSummary[]>(groq, params);
+  const rows = await getSanityClient().fetch<RawArticleSummary[]>(groq, params);
   return rows.map(toArticleSummary);
 }
 
@@ -254,7 +264,7 @@ export async function searchArticleSummaries(
   limit = 20,
 ): Promise<ArticleSummary[]> {
   const groq = `*[_type == "article" && defined(slug.current) && (title match $q || excerpt match $q || subtitle match $q)] | order(publishedAt desc) [0...${limit}] { ${ARTICLE_SUMMARY_PROJ} }`;
-  const rows = await sanity.fetch<RawArticleSummary[]>(groq, {
+  const rows = await getSanityClient().fetch<RawArticleSummary[]>(groq, {
     q: `*${q}*`,
   });
   return rows.map(toArticleSummary);
@@ -343,7 +353,7 @@ export async function getArticleBySlug(
     aiSummary,
     podcastScript
   }`;
-  const r = await sanity.fetch<
+  const r = await getSanityClient().fetch<
     | (RawArticleSummary & {
         subtitle?: string;
         _updatedAt?: string;
@@ -380,7 +390,7 @@ export async function listPodcastEpisodes(limit = 100): Promise<PodcastEpisode[]
     _updatedAt,
     podcastScript
   }`;
-  const rows = await sanity.fetch<
+  const rows = await getSanityClient().fetch<
     (RawArticleSummary & {
       subtitle?: string;
       _updatedAt?: string;
@@ -426,7 +436,7 @@ export async function listCategoriesWithCounts(): Promise<CategoryWithCount[]> {
     ${CATEGORY_PROJ},
     "articleCount": count(*[_type == "article" && references(^._id)])
   }`;
-  const rows = await sanity.fetch<
+  const rows = await getSanityClient().fetch<
     (SanityCategory & { articleCount: number })[]
   >(groq);
   return rows.map((c) => ({
@@ -447,7 +457,7 @@ export async function getCategoryBySlug(
     ${CATEGORY_PROJ},
     "articleCount": count(*[_type == "article" && references(^._id)])
   }`;
-  const r = await sanity.fetch<
+  const r = await getSanityClient().fetch<
     (SanityCategory & { articleCount: number }) | null
   >(groq, { slug });
   if (!r) return null;
@@ -478,7 +488,7 @@ export async function listAuthorsWithCounts(): Promise<AuthorWithCount[]> {
     ${AUTHOR_PROJ},
     "articleCount": count(*[_type == "article" && references(^._id)])
   }`;
-  const rows = await sanity.fetch<(SanityAuthor & { articleCount: number })[]>(
+  const rows = await getSanityClient().fetch<(SanityAuthor & { articleCount: number })[]>(
     groq,
   );
   return rows.map((a) => ({
@@ -500,7 +510,7 @@ export async function getAuthorBySlug(
     ${AUTHOR_PROJ},
     "articleCount": count(*[_type == "article" && references(^._id)])
   }`;
-  const r = await sanity.fetch<
+  const r = await getSanityClient().fetch<
     (SanityAuthor & { articleCount: number }) | null
   >(groq, { slug });
   if (!r) return null;
@@ -604,7 +614,7 @@ export async function listReviewSummaries(
   if (bestPicksOnly) cond.push(`score >= 8`);
   const order = bestPicksOnly ? `score desc` : `publishedAt desc`;
   const groq = `*[${cond.join(" && ")}] | order(${order}) [0...${limit}] { ${REVIEW_SUMMARY_PROJ} }`;
-  const rows = await sanity.fetch<RawReviewSummary[]>(groq);
+  const rows = await getSanityClient().fetch<RawReviewSummary[]>(groq);
   return rows.map(toReviewSummary);
 }
 
@@ -617,7 +627,7 @@ export async function getReviewBySlug(slug: string) {
     "author": author->{ ${AUTHOR_PROJ} },
     pros, cons, ratings, sections
   }`;
-  const r = await sanity.fetch<
+  const r = await getSanityClient().fetch<
     | (RawReviewSummary & {
         galleryImages?: unknown[];
         galleryImageUrls?: string[];
@@ -669,7 +679,7 @@ export async function listVideoSummaries(limit = 20): Promise<VideoSummary[]> {
     _id, "slug": slug.current, title, description, thumbnail, thumbnailUrl, videoUrl, "durationSeconds": duration, publishedAt,
     "category": category->{ ${CATEGORY_PROJ} }
   }`;
-  const rows = await sanity.fetch<
+  const rows = await getSanityClient().fetch<
     {
       _id: string;
       slug: string;
@@ -771,7 +781,7 @@ export type NewsletterUnsubscribeResult = {
 };
 
 export function isSanityWriteConfigured(): boolean {
-  return Boolean(token);
+  return Boolean(token());
 }
 
 function formatCadence(value?: string): string {
@@ -792,7 +802,7 @@ function toNewsletterSummary(row: RawNewsletter): NewsletterSummary {
 }
 
 export async function listNewsletterSummaries(): Promise<NewsletterSummary[]> {
-  const rows = await sanity.fetch<RawNewsletter[]>(
+  const rows = await getSanityClient().fetch<RawNewsletter[]>(
     `*[_type == "newsletter" && defined(slug.current)] | order(name asc) {
       _id,
       "slug": slug.current,
@@ -826,11 +836,11 @@ export async function subscribeNewsletterInSanity(input: {
   const email = input.email.trim().toLowerCase();
   const newsletterSlug = input.newsletterSlug.trim();
 
-  if (!token) {
+  if (!token()) {
     throw new Error("SANITY_API_TOKEN is required to write newsletter subscribers");
   }
 
-  let newsletter = await sanity.fetch<{ _id: string } | null>(
+  let newsletter = await getSanityClient().fetch<{ _id: string } | null>(
     `*[_type == "newsletter" && slug.current == $newsletterSlug][0]{ _id }`,
     { newsletterSlug },
   );
@@ -846,7 +856,7 @@ export async function subscribeNewsletterInSanity(input: {
   const newsletterId = newsletter._id;
 
   const _id = subscriberDocId(email, newsletterSlug);
-  const existing = await sanity.fetch<{ createdAt?: string } | null>(
+  const existing = await getSanityClient().fetch<{ createdAt?: string } | null>(
     `*[_id == $id][0]{ createdAt }`,
     { id: _id },
   );
@@ -907,12 +917,12 @@ export async function unsubscribeNewsletterInSanity(input: {
   const email = input.email.trim().toLowerCase();
   const newsletterSlug = input.newsletterSlug.trim();
 
-  if (!token) {
+  if (!token()) {
     throw new Error("SANITY_API_TOKEN is required to delete newsletter subscribers");
   }
 
   const _id = subscriberDocId(email, newsletterSlug);
-  const existing = await sanity.fetch<{ _id: string } | null>(
+  const existing = await getSanityClient().fetch<{ _id: string } | null>(
     `*[_id == $id][0]{ _id }`,
     { id: _id },
   );
@@ -921,12 +931,12 @@ export async function unsubscribeNewsletterInSanity(input: {
     return { email, newsletterSlug, unsubscribed: false };
   }
 
-  const newsletter = await sanity.fetch<{ _id: string } | null>(
+  const newsletter = await getSanityClient().fetch<{ _id: string } | null>(
     `*[_type == "newsletter" && slug.current == $newsletterSlug][0]{ _id }`,
     { newsletterSlug },
   );
 
-  const transaction = sanity.transaction().delete(_id);
+  const transaction = getSanityClient().transaction().delete(_id);
   if (newsletter) {
     transaction.patch(newsletter._id, (patch) =>
       patch.setIfMissing({ subscriberCount: 0 }).dec({ subscriberCount: 1 }),
