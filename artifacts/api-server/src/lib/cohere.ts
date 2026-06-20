@@ -11,7 +11,18 @@ const cohereBaseUrl = (
   process.env.COHERE_BASE_URL ?? "https://api.cohere.com"
 ).replace(/\/$/, "");
 
-const cohereChatModel = process.env.COHERE_CHAT_MODEL ?? "command-r-plus";
+const DEPRECATED_CHAT_ALIASES: Record<string, string> = {
+  "command-r-plus": "command-r-plus-08-2024",
+  "command-r": "command-r-08-2024",
+};
+
+function resolveChatModel(model: string): string {
+  return DEPRECATED_CHAT_ALIASES[model] ?? model;
+}
+
+const cohereChatModel = resolveChatModel(
+  process.env.COHERE_CHAT_MODEL ?? "command-r-plus-08-2024",
+);
 const cohereEmbedModel = process.env.COHERE_EMBED_MODEL ?? "embed-english-v3.0";
 const cohereRerankModel =
   process.env.COHERE_RERANK_MODEL ?? "rerank-english-v3.0";
@@ -72,9 +83,12 @@ async function cohereFetch<T>(
   const payload = (await response.json().catch(() => ({}))) as T &
     CohereErrorBody;
   if (!response.ok) {
-    throw new Error(
-      payload.message ?? `Cohere request failed with ${response.status}`,
-    );
+    const err =
+      payload.message ??
+      (payload as { error?: string }).error ??
+      `Cohere request failed with ${response.status}`;
+    logger.warn({ path, status: response.status, err }, "Cohere API error");
+    throw new Error(err);
   }
   return payload;
 }
@@ -118,7 +132,11 @@ function extractChatText(message?: CohereChatMessage): string {
   if (!message?.content) return "";
   if (typeof message.content === "string") return message.content.trim();
   return message.content
-    .map((part) => (part.type === "text" ? (part.text ?? "") : ""))
+    .map((part) => {
+      if (typeof part === "string") return part;
+      if (part.text) return part.text;
+      return part.type === "text" ? (part.text ?? "") : "";
+    })
     .join("")
     .trim();
 }

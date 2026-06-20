@@ -61,7 +61,7 @@ Optional Resend override (usually omit on Vercel):
 
 - [ ] `COHERE_API_KEY` = `CHANGE_ME` *(from [dashboard.cohere.com](https://dashboard.cohere.com/api-keys))*
 - [ ] `COHERE_BASE_URL` = `https://api.cohere.com`
-- [ ] `COHERE_CHAT_MODEL` = `command-r-plus`
+- [ ] `COHERE_CHAT_MODEL` = `command-r-plus-08-2024`
 - [ ] `COHERE_EMBED_MODEL` = `embed-english-v3.0`
 - [ ] `COHERE_RERANK_MODEL` = `rerank-english-v3.0`
 
@@ -136,7 +136,7 @@ PODCAST_OWNER_EMAIL=podcasts@primeaxishq.com
 LOG_LEVEL=info
 COHERE_API_KEY=CHANGE_ME
 COHERE_BASE_URL=https://api.cohere.com
-COHERE_CHAT_MODEL=command-r-plus
+COHERE_CHAT_MODEL=command-r-plus-08-2024
 COHERE_EMBED_MODEL=embed-english-v3.0
 COHERE_RERANK_MODEL=rerank-english-v3.0
 ```
