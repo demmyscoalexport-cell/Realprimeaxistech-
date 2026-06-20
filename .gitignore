@@ -63,3 +63,8 @@ attached_assets/
 
 # Local tool config
 .config/
+
+# Local test / feed dumps (do not commit)
+feed-local.json
+feed-prod.json
+home-test.html
