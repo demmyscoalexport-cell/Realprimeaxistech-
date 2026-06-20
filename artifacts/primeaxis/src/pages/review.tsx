@@ -10,6 +10,7 @@ import { formatPrice, formatDate } from "@/lib/format";
 import { EditorialImage } from "@/components/editorial-image";
 import { motion } from "framer-motion";
 import { useEffect } from "react";
+import { usePageMeta } from "@/lib/seo";
 
 export default function ReviewPage() {
   const [, params] = useRoute("/review/:slug");
@@ -18,6 +19,14 @@ export default function ReviewPage() {
     query: { enabled: !!slug, queryKey: getGetReviewBySlugQueryKey(slug) },
   });
   useEffect(() => window.scrollTo({ top: 0 }), [slug]);
+
+  usePageMeta({
+    title: data ? `${data.productName} Review — PrimeAxis Tech` : undefined,
+    description: data?.summary,
+    path: data ? `/review/${data.slug}` : undefined,
+    image: data?.heroImageUrl,
+    type: "article",
+  });
 
   if (isLoading) {
     return (

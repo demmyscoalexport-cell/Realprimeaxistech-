@@ -45,20 +45,26 @@ Add these in **Vercel → Project → Settings → Environment Variables**.
 | Variable | Value | Environments |
 |----------|-------|--------------|
 | `NODE_ENV` | `production` | Production |
-| `CORS_ORIGIN` | `https://primeaxishq.com` | Production |
-| `PUBLIC_SITE_URL` | `https://primeaxishq.com` | Production |
+| `CORS_ORIGIN` | `https://www.primeaxishq.com,https://primeaxishq.com` | Production |
+| `PUBLIC_SITE_URL` | `https://www.primeaxishq.com` | Production |
 | `SANITY_PROJECT_ID` | `jyppkgsk` | Production, Preview |
 | `SANITY_DATASET` | `production` | Production, Preview |
 | `SANITY_API_TOKEN` | Your Sanity write token | Production, Preview |
 | `RESEND_API_KEY` | Your Resend key | Production |
 | `RESEND_FROM_EMAIL` | `PrimeAxis Tech <news@primeaxishq.com>` | Production |
 | `RESEND_REPLY_TO` | `hello@primeaxishq.com` | Production |
-| `PODCAST_SITE_URL` | `https://primeaxishq.com` | Production |
-| `PODCAST_FEED_URL` | `https://primeaxishq.com/api/podcast/feed.xml` | Production |
+| `PODCAST_SITE_URL` | `https://www.primeaxishq.com` | Production |
+| `PODCAST_FEED_URL` | `https://www.primeaxishq.com/api/podcast/feed.xml` | Production |
 | `PODCAST_COVER_IMAGE_URL` | Your 1400×1400 cover URL | Production |
 | `PODCAST_OWNER_NAME` | `PrimeAxis Tech` | Production |
 | `PODCAST_OWNER_EMAIL` | `podcasts@primeaxishq.com` | Production |
 | `LOG_LEVEL` | `info` | Production |
+| `COHERE_API_KEY` | Your Cohere API key (`co_...`) | Production, Preview |
+| `COHERE_CHAT_MODEL` | `command-a-03-2025` | Production, Preview |
+| `COHERE_EMBED_MODEL` | `embed-english-v3.0` | Production, Preview |
+| `COHERE_RERANK_MODEL` | `rerank-english-v3.0` | Production, Preview |
+
+**Article Q&A (`POST /api/articles/:slug/ask`) requires `COHERE_API_KEY` on Vercel.** Without it, search still works (keyword fallback) but ask returns 503.
 
 ### Preview deployments (optional)
 
@@ -71,15 +77,38 @@ Use the same Sanity/Resend vars or separate staging keys. Set:
 
 Use `.env` copied from `.env.example`. Do not upload `.env` to Vercel manually for local work.
 
-### Not needed on Vercel runtime
+### Local scripts only (not required on Vercel runtime)
 
-These are for **local scripts only** (run on your machine, not Vercel):
+These are for **local scripts** (run on your machine, not Vercel serverless):
 
-- `AI_INTEGRATIONS_ANTHROPIC_API_KEY`, `WAVESPEED_API_KEY`, `CLOUDINARY_URL`, `ELEVENLABS_*`, `COHERE_*`, `IMGIX_*`, `DATABASE_URL`
+- `AI_INTEGRATIONS_ANTHROPIC_API_KEY`, `WAVESPEED_API_KEY`, `CLOUDINARY_URL`, `ELEVENLABS_*`, `IMGIX_*`, `DATABASE_URL`
 
 ---
 
-## Step 4: Build configuration
+## Step 4: Redeploy production (pick up latest `main`)
+
+After pushing to GitHub or changing env vars:
+
+### Option A — Vercel Dashboard (recommended)
+
+1. [vercel.com](https://vercel.com) → project **futurestack-news-52** (serves primeaxishq.com).
+2. **Deployments** → latest `main` commit → **⋮** → **Redeploy** → check **Use existing Build Cache** off if env vars changed.
+3. Wait for **Ready**, then smoke-test:
+   - `GET https://www.primeaxishq.com/api/healthz` → `{"status":"ok"}`
+   - `GET https://www.primeaxishq.com/api/articles/search?q=ai` → 200
+   - `POST https://www.primeaxishq.com/api/articles/{slug}/ask` → 200 (needs `COHERE_API_KEY`)
+
+### Option B — Vercel CLI
+
+```powershell
+cd path\to\Prime-Axis-Tech
+vercel link    # once: select futurestack-news-52
+vercel --prod
+```
+
+---
+
+## Step 5: Build configuration
 
 Vercel reads these from `vercel.json`:
 

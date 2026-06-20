@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://primeaxishq.com/api/sitemap.xml
+Sitemap: https://www.primeaxishq.com/api/sitemap.xml

@@ -35,6 +35,7 @@ import { ListenButton } from "@/components/listen-button";
 import { ReviewBuyLinks } from "@/components/review-buy-links";
 import { AiAsk } from "@/components/ai-ask";
 import { recordRead } from "@/lib/personalization";
+import { usePageMeta } from "@/lib/seo";
 
 export default function ArticlePage() {
   const [, params] = useRoute("/article/:slug");
@@ -64,6 +65,14 @@ export default function ArticlePage() {
     window.scrollTo({ top: 0 });
     setActiveVideo(null);
   }, [slug]);
+
+  usePageMeta({
+    title: article ? `${article.title} — PrimeAxis Tech` : undefined,
+    description: article?.excerpt,
+    path: article ? `/article/${article.slug}` : undefined,
+    image: article?.heroImageUrl,
+    type: "article",
+  });
 
   useEffect(() => {
     if (!article) return;
