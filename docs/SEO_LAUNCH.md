@@ -120,5 +120,6 @@ Invoke-WebRequest -Uri "https://www.primeaxishq.com/api/sitemap.xml" -UseBasicPa
 
 ## Related docs
 
+- [PROMOTION_PLAN.md](./PROMOTION_PLAN.md) — full launch playbook: content cadence, social, newsletter, monetization, 90-day timeline
 - [VERCEL_DEPLOYMENT.md](./VERCEL_DEPLOYMENT.md) — deploy and redeploy
 - [VERCEL_ENV_COPYPASTE.md](./VERCEL_ENV_COPYPASTE.md) — env var checklist including Cohere for article Q&A
