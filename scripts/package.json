@@ -19,7 +19,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.96.0",
+    "@anthropic-ai/sdk": "^0.105.0",
     "@sanity/client": "^7.22.0",
     "@workspace/db": "workspace:*",
     "cloudinary": "^2.10.0",
